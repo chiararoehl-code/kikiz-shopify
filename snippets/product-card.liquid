@@ -1,0 +1,122 @@
+{%- comment -%}
+  Central, reusable product card. Used by Weekly Drop and, later, collection
+  pages, related products, search and cross-sells.
+  Accepts:
+    product (object, required)
+    show_badge (boolean, optional, default true)
+    show_quick_add (boolean, optional, default true)
+    show_secondary_image (boolean, optional, default true)
+{%- endcomment -%}
+
+{%- liquid
+  assign featured_image = product.featured_image
+  assign secondary_image = product.images[1]
+  assign flavor_text = product.metafields.custom.short_flavor_description
+  assign drop_badge = product.metafields.custom.drop_badge
+  assign is_sold_out = true
+  if product.available
+    assign is_sold_out = false
+  endif
+-%}
+
+<article class="product-card">
+  <a href="{{ product.url }}" class="product-card__media-link" tabindex="-1" aria-hidden="true">
+    <div class="product-card__media shape-rounded">
+      {%- if featured_image -%}
+        <img
+          class="product-card__image product-card__image--primary"
+          src="{{ featured_image | image_url: width: 600 }}"
+          srcset="
+            {{ featured_image | image_url: width: 400 }} 400w,
+            {{ featured_image | image_url: width: 600 }} 600w,
+            {{ featured_image | image_url: width: 800 }} 800w,
+            {{ featured_image | image_url: width: 1000 }} 1000w
+          "
+          sizes="(min-width: 1300px) 23vw, (min-width: 990px) 30vw, (min-width: 750px) 46vw, 82vw"
+          width="{{ featured_image.width }}"
+          height="{{ featured_image.height }}"
+          alt="{{ featured_image.alt | default: product.title | escape }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        <div class="product-card__media-placeholder" aria-hidden="true"></div>
+      {%- endif -%}
+
+      {%- if show_secondary_image != false and secondary_image -%}
+        <img
+          class="product-card__image product-card__image--secondary"
+          src="{{ secondary_image | image_url: width: 600 }}"
+          srcset="
+            {{ secondary_image | image_url: width: 400 }} 400w,
+            {{ secondary_image | image_url: width: 600 }} 600w,
+            {{ secondary_image | image_url: width: 800 }} 800w,
+            {{ secondary_image | image_url: width: 1000 }} 1000w
+          "
+          sizes="(min-width: 1300px) 23vw, (min-width: 990px) 30vw, (min-width: 750px) 46vw, 82vw"
+          width="{{ secondary_image.width }}"
+          height="{{ secondary_image.height }}"
+          alt=""
+          loading="lazy"
+          aria-hidden="true"
+        >
+      {%- endif -%}
+
+      {%- if is_sold_out -%}
+        {%- render 'badge', text: 'products.product_card.sold_out' | t, style: 'sold-out' -%}
+      {%- elsif show_badge != false and drop_badge != blank -%}
+        {%- render 'badge', text: drop_badge, style: 'accent' -%}
+      {%- endif -%}
+    </div>
+  </a>
+
+  <div class="product-card__content">
+    <h3 class="product-card__title h3">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+
+    {%- if flavor_text != blank -%}
+      <p class="product-card__flavor text-small">{{ flavor_text }}</p>
+    {%- endif -%}
+
+    {%- render 'price', product: product -%}
+
+    {%- if show_quick_add != false -%}
+      <div class="product-card__actions">
+        {%- if is_sold_out -%}
+          <button type="button" class="btn btn--secondary product-card__add-button" disabled>
+            {{ 'products.product_card.sold_out' | t }}
+          </button>
+        {%- elsif product.variants.size == 1 -%}
+          <form
+            data-product-form
+            action="{{ routes.cart_add_url }}"
+            method="post"
+            novalidate
+          >
+            <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button
+              type="submit"
+              class="btn btn--primary product-card__add-button"
+              data-add-to-cart-button
+              data-default-label="{{ 'products.product_card.add_to_cart' | t }}"
+              data-success-label="{{ 'products.product_card.added' | t }}"
+              data-error-label="{{ 'products.product_card.error' | t }}"
+              aria-label="{{ 'products.product_card.add_to_cart_accessible' | t: product: product.title }}"
+            >
+              {{ 'products.product_card.add_to_cart' | t }}
+            </button>
+          </form>
+        {%- else -%}
+          <a
+            href="{{ product.url }}"
+            class="btn btn--secondary product-card__add-button"
+            aria-label="{{ 'products.product_card.choose_options_accessible' | t: product: product.title }}"
+          >
+            {{ 'products.product_card.choose_options' | t }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>

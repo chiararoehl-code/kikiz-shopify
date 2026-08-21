@@ -35,7 +35,7 @@
           sizes="100vw"
           width="{{ section.settings.image.width }}"
           height="{{ section.settings.image.height }}"
-          alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+          alt="{{ section.settings.image.alt | escape }}"
           loading="eager"
           fetchpriority="high"
         >

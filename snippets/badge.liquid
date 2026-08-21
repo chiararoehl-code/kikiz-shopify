@@ -1,0 +1,15 @@
+{%- comment -%}
+  Renders a small badge label with our accent star flourish.
+  Accepts:
+    text (string, required)
+    style (string, optional) — "accent" (default) or "sold-out"
+{%- endcomment -%}
+
+{%- if text != blank -%}
+  <span class="badge badge--{{ style | default: 'accent' }}">
+    {%- if style != 'sold-out' -%}
+      <span class="badge__shape shape-star" aria-hidden="true"></span>
+    {%- endif -%}
+    <span class="badge__text">{{ text }}</span>
+  </span>
+{%- endif -%}

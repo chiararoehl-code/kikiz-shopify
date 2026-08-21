@@ -1,0 +1,27 @@
+{%- comment -%}
+  Renders a product's price, including compare-at / sale state.
+  Accepts:
+    product (object, required)
+    variant (object, optional) — defaults to product.selected_or_first_available_variant
+{%- endcomment -%}
+
+{%- liquid
+  assign target_variant = variant | default: product.selected_or_first_available_variant
+  assign compare_at_price = target_variant.compare_at_price
+  assign current_price = target_variant.price
+  assign is_on_sale = false
+  if compare_at_price != blank and compare_at_price > current_price
+    assign is_on_sale = true
+  endif
+-%}
+
+<div class="price{% if is_on_sale %} price--on-sale{% endif %}">
+  {%- if is_on_sale -%}
+    <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+    <span class="price__compare-at">{{ compare_at_price | money }}</span>
+    <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+    <span class="price__sale">{{ current_price | money }}</span>
+  {%- else -%}
+    <span class="price__regular">{{ current_price | money }}</span>
+  {%- endif -%}
+</div>

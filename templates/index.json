@@ -7,7 +7,11 @@
     "hero": {
       "type": "brand-hero",
       "settings": {}
+    },
+    "weekly-drop": {
+      "type": "weekly-drop",
+      "settings": {}
     }
   },
-  "order": ["announcement-bar", "hero"]
+  "order": ["announcement-bar", "hero", "weekly-drop"]
 }

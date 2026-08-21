@@ -23,6 +23,25 @@
       "social_instagram": "Instagram",
       "social_tiktok": "TikTok",
       "copyright": "All rights reserved."
+    },
+    "weekly_drop": {
+      "placeholder": "Select a collection in the theme editor to show this week's drop.",
+      "empty": "No cookies available right now — check back soon."
+    }
+  },
+  "products": {
+    "product_card": {
+      "add_to_cart": "ADD TO BOX",
+      "added": "ADDED",
+      "error": "TRY AGAIN",
+      "sold_out": "SOLD OUT",
+      "choose_options": "CHOOSE OPTIONS",
+      "add_to_cart_accessible": "Add {{ product }} to box",
+      "choose_options_accessible": "Choose options for {{ product }}"
+    },
+    "price": {
+      "regular_price": "Regular price",
+      "sale_price": "Sale price"
     }
   }
 }
