@@ -127,8 +127,8 @@ input {
   top: -100%;
   left: var(--space-4);
   z-index: 1000;
-  background-color: var(--color-primary);
-  color: var(--color-surface);
+  background-color: var(--color-brand-secondary);
+  color: var(--color-off-white);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-small);
 }
@@ -138,7 +138,7 @@ input {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-brand-secondary);
   outline-offset: 2px;
 }
 
@@ -203,14 +203,32 @@ input {
 }
 
 .btn--primary {
-  background-color: var(--color-primary);
-  color: var(--color-surface);
+  background-color: var(--color-brand-secondary);
+  color: var(--color-off-white);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-brand-dark);
 }
 
 .btn--secondary {
   background-color: transparent;
-  border-color: var(--color-text);
-  color: var(--color-text);
+  border-color: var(--color-brand-secondary);
+  color: var(--color-brand-secondary);
+}
+
+.btn--secondary:hover {
+  background-color: var(--color-brand-secondary);
+  color: var(--color-off-white);
+}
+
+.btn--campaign {
+  background-color: var(--color-brand-primary);
+  color: var(--color-brand-dark);
+}
+
+.btn--campaign:hover {
+  background-color: var(--color-off-white);
 }
 
 .btn--text {
@@ -221,6 +239,77 @@ input {
 }
 
 /* ==========================================================================
+   Color scheme system
+   Every content section picks one of these instead of setting its own
+   background/text colors. Keeps the Lavender x Green x Off White rhythm
+   consistent instead of inventing new tones per section.
+   ========================================================================== */
+
+.color-scheme--lavender {
+  background-color: var(--color-brand-primary);
+  color: var(--color-brand-dark);
+}
+
+.color-scheme--green {
+  background-color: var(--color-brand-secondary);
+  color: var(--color-brand-primary);
+}
+
+.color-scheme--green-dark {
+  background-color: var(--color-brand-dark);
+  color: var(--color-brand-primary);
+}
+
+.color-scheme--off-white {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* ==========================================================================
+   Shape language
+   Primary: soft rounded rectangle. Secondary: circle. Accent: 8-point star.
+   Defined centrally, used sparingly — not every section needs a sticker.
+   ========================================================================== */
+
+.shape-rounded {
+  border-radius: var(--radius-large);
+}
+
+.shape-circle {
+  border-radius: 50%;
+}
+
+.shape-star {
+  clip-path: polygon(
+    50% 0%, 58% 31%, 85% 15%, 69% 42%, 100% 50%, 69% 58%, 85% 85%, 58% 69%,
+    50% 100%, 42% 69%, 15% 85%, 31% 58%, 0% 50%, 31% 42%, 15% 15%, 42% 31%
+  );
+}
+
+/* ==========================================================================
+   Announcement bar
+   ========================================================================== */
+
+.announcement-bar {
+  padding-block: var(--space-2);
+  text-align: center;
+}
+
+.announcement-bar__text {
+  margin: 0;
+  font-size: var(--text-small);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.announcement-bar__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ==========================================================================
    Header
    ========================================================================== */
 
@@ -228,7 +317,7 @@ input {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--color-surface);
+  background-color: var(--color-background);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -277,6 +366,11 @@ input {
   font-size: var(--text-small);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  transition: color 0.15s ease;
+}
+
+.site-nav__link:hover {
+  color: var(--color-brand-secondary);
 }
 
 .site-header__utility {
@@ -289,7 +383,7 @@ input {
   display: none;
   align-items: center;
   gap: var(--space-2);
-  background-color: var(--color-background);
+  background-color: var(--color-surface);
   border-radius: var(--radius-pill);
   padding-inline: var(--space-3);
 }
@@ -314,6 +408,11 @@ input {
   position: relative;
   display: inline-flex;
   padding: var(--space-2);
+  transition: color 0.15s ease;
+}
+
+.header-icon-link:hover {
+  color: var(--color-brand-secondary);
 }
 
 .header-icon-link svg {
@@ -329,8 +428,8 @@ input {
   height: 16px;
   padding-inline: 3px;
   border-radius: var(--radius-pill);
-  background-color: var(--color-primary);
-  color: var(--color-surface);
+  background-color: var(--color-brand-secondary);
+  color: var(--color-off-white);
   font-size: 10px;
   font-weight: 700;
   display: flex;
@@ -406,11 +505,228 @@ input {
 }
 
 /* ==========================================================================
+   Hero
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  min-height: var(--hero-min-height, 70vh);
+}
+
+.hero--height-small { --hero-min-height: 50vh; }
+.hero--height-medium { --hero-min-height: 70vh; }
+.hero--height-large { --hero-min-height: 85vh; }
+.hero--height-fullscreen { --hero-min-height: 100svh; }
+
+.hero__media {
+  overflow: hidden;
+}
+
+.hero__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: hero-image-reveal 0.8s ease both;
+}
+
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-ink);
+  opacity: var(--hero-overlay-opacity, 0.4);
+  pointer-events: none;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero__accent-shape {
+  position: absolute;
+  top: var(--space-5);
+  right: var(--space-5);
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-brand-dark);
+  opacity: 0.9;
+  animation: hero-spin 24s linear infinite;
+}
+
+.hero__eyebrow {
+  margin: 0 0 var(--space-3);
+}
+
+.hero__heading {
+  margin: 0 0 var(--space-4);
+  text-wrap: balance;
+  animation: hero-fade-up 0.6s ease both;
+  animation-delay: 0.05s;
+}
+
+.hero__eyebrow {
+  animation: hero-fade-up 0.6s ease both;
+}
+
+.hero__body {
+  margin: 0 0 var(--space-5);
+  animation: hero-fade-up 0.6s ease both;
+  animation-delay: 0.1s;
+}
+
+.hero__body p {
+  margin: 0 0 var(--space-3);
+}
+
+.hero__body p:last-child {
+  margin-bottom: 0;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  animation: hero-fade-up 0.6s ease both;
+  animation-delay: 0.15s;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.text-align-center .hero__actions {
+  justify-content: center;
+}
+
+.text-align-center .hero__accent-shape {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+
+@keyframes hero-image-reveal {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Full-bleed layout: media fills the section, content overlays it */
+
+.hero--full-bleed .hero__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hero--full-bleed .hero__content {
+  width: 100%;
+  padding: var(--space-6);
+  justify-content: center;
+}
+
+.hero--full-bleed[data-position-v="top"] .hero__content { justify-content: flex-start; }
+.hero--full-bleed[data-position-v="middle"] .hero__content { justify-content: center; }
+.hero--full-bleed[data-position-v="bottom"] .hero__content { justify-content: flex-end; }
+
+.hero--full-bleed[data-position-h="left"] .hero__content { align-items: flex-start; }
+.hero--full-bleed[data-position-h="center"] .hero__content { align-items: center; }
+.hero--full-bleed[data-position-h="right"] .hero__content { align-items: flex-end; }
+
+.hero--full-bleed .hero__content > * {
+  max-width: 640px;
+}
+
+/* Split layout: text panel + image side by side */
+
+.hero--split {
+  flex-direction: row;
+  align-items: stretch;
+}
+
+.hero--split .hero__media {
+  flex: 1 1 50%;
+  min-height: 320px;
+}
+
+.hero--split .hero__content {
+  flex: 1 1 50%;
+  justify-content: center;
+  padding: var(--space-7) var(--space-6);
+}
+
+.hero--split[data-position-h="right"] {
+  flex-direction: row-reverse;
+}
+
+.hero--split[data-position-v="top"] .hero__content { justify-content: flex-start; }
+.hero--split[data-position-v="bottom"] .hero__content { justify-content: flex-end; }
+
+.hero--no-media .hero__content {
+  flex: 1 1 100%;
+}
+
+@media screen and (max-width: 749px) {
+  .hero--split {
+    flex-direction: column;
+  }
+
+  .hero--split .hero__media,
+  .hero--split .hero__content {
+    flex: none;
+    width: 100%;
+  }
+
+  .hero--split .hero__media {
+    min-height: 260px;
+  }
+
+  .hero--split .hero__content {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .hero__accent-shape {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* ==========================================================================
    Footer
    ========================================================================== */
 
 .site-footer {
-  border-top: 1px solid var(--color-border);
+  background-color: var(--color-brand-dark);
+  color: var(--color-off-white);
   margin-top: var(--space-9);
   padding-block: var(--space-7);
 }
@@ -422,7 +738,7 @@ input {
 }
 
 .site-footer__text {
-  color: var(--color-muted);
+  color: color-mix(in srgb, var(--color-off-white) 75%, transparent);
   margin-top: var(--space-2);
 }
 
@@ -430,6 +746,10 @@ input {
   display: flex;
   gap: var(--space-2);
   margin-top: var(--space-3);
+}
+
+.site-footer__social .header-icon-link:hover {
+  color: var(--color-brand-primary);
 }
 
 .site-footer__list {
@@ -440,14 +760,19 @@ input {
 
 .site-footer__list a {
   text-decoration: none;
-  color: var(--color-muted);
+  color: color-mix(in srgb, var(--color-off-white) 75%, transparent);
+  transition: color 0.15s ease;
+}
+
+.site-footer__list a:hover {
+  color: var(--color-brand-primary);
 }
 
 .site-footer__bottom {
   margin-top: var(--space-6);
   padding-top: var(--space-5);
-  border-top: 1px solid var(--color-border);
-  color: var(--color-muted);
+  border-top: 1px solid color-mix(in srgb, var(--color-off-white) 20%, transparent);
+  color: color-mix(in srgb, var(--color-off-white) 65%, transparent);
   font-size: var(--text-small);
 }
 

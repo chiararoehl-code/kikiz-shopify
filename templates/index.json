@@ -1,4 +1,13 @@
 {
-  "sections": {},
-  "order": []
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {}
+    },
+    "hero": {
+      "type": "brand-hero",
+      "settings": {}
+    }
+  },
+  "order": ["announcement-bar", "hero"]
 }

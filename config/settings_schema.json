@@ -12,59 +12,63 @@
     "settings": [
       {
         "type": "header",
-        "content": "Brand colors"
+        "content": "Brand palette"
+      },
+      {
+        "type": "paragraph",
+        "content": "Lavender × Deep Green × Off White. These are the raw brand swatches. Semantic roles (background, text, buttons) are derived from them centrally in the theme so every section stays on-brand."
       },
       {
         "type": "color",
-        "id": "color_primary",
-        "label": "Primary",
-        "default": "#FF5A36"
+        "id": "color_lavender",
+        "label": "Lavender",
+        "default": "#E8C9F4"
       },
       {
         "type": "color",
-        "id": "color_secondary",
-        "label": "Secondary",
-        "default": "#2B2118"
+        "id": "color_green",
+        "label": "Green",
+        "default": "#237A0B"
       },
       {
         "type": "color",
-        "id": "color_accent",
-        "label": "Accent",
-        "default": "#FFD23F"
+        "id": "color_green_dark",
+        "label": "Deep green",
+        "default": "#174F0C"
+      },
+      {
+        "type": "color",
+        "id": "color_off_white",
+        "label": "Off white",
+        "default": "#FFFDF8"
+      },
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Ink",
+        "default": "#171717"
       },
       {
         "type": "header",
-        "content": "Base colors"
-      },
-      {
-        "type": "color",
-        "id": "color_background",
-        "label": "Background",
-        "default": "#FFF8F0"
+        "content": "Surface & UI colors"
       },
       {
         "type": "color",
         "id": "color_surface",
-        "label": "Surface",
+        "label": "Surface (cards, header, drawers)",
         "default": "#FFFFFF"
-      },
-      {
-        "type": "color",
-        "id": "color_text",
-        "label": "Text",
-        "default": "#221A14"
       },
       {
         "type": "color",
         "id": "color_muted",
         "label": "Muted text",
-        "default": "#7A6C5D"
+        "default": "#6E6E68"
       },
       {
         "type": "color",
         "id": "color_border",
         "label": "Border",
-        "default": "#E8DDD0"
+        "default": "#E4DEE6"
       }
     ]
   },
@@ -79,7 +83,7 @@
         "type": "font_picker",
         "id": "font_display",
         "label": "Display font",
-        "info": "Used for headlines and campaign typography",
+        "info": "Oversized, expressive, editorial. Used for hero, campaign and section headlines.",
         "default": "assistant_n4"
       },
       {
@@ -90,7 +94,7 @@
         "type": "font_picker",
         "id": "font_body",
         "label": "Body font",
-        "info": "Used for UI, navigation and long-form text",
+        "info": "Clean and highly legible. Used for navigation, product info and UI.",
         "default": "assistant_n4"
       }
     ]

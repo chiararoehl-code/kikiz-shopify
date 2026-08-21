@@ -1,0 +1,245 @@
+{%- liquid
+  assign position_parts = section.settings.content_position | split: '-'
+  assign position_v = position_parts[0]
+  assign position_h = position_parts[1]
+-%}
+
+<section
+  class="hero hero--{{ section.settings.layout }} hero--height-{{ section.settings.height }} color-scheme--{{ section.settings.color_scheme }}{% if section.settings.image == blank %} hero--no-media{% endif %}"
+  data-position-v="{{ position_v }}"
+  data-position-h="{{ position_h }}"
+>
+  {%- if section.settings.image != blank -%}
+    <div class="hero__media">
+      <picture>
+        {%- if section.settings.image_mobile != blank -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="
+              {{ section.settings.image_mobile | image_url: width: 375 }} 375w,
+              {{ section.settings.image_mobile | image_url: width: 750 }} 750w,
+              {{ section.settings.image_mobile | image_url: width: 1000 }} 1000w
+            "
+            sizes="100vw"
+          >
+        {%- endif -%}
+        <img
+          class="hero__image"
+          src="{{ section.settings.image | image_url: width: 1600 }}"
+          srcset="
+            {{ section.settings.image | image_url: width: 750 }} 750w,
+            {{ section.settings.image | image_url: width: 1100 }} 1100w,
+            {{ section.settings.image | image_url: width: 1600 }} 1600w,
+            {{ section.settings.image | image_url: width: 2000 }} 2000w
+          "
+          sizes="100vw"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          alt="{{ section.settings.image.alt | default: section.settings.heading | escape }}"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </picture>
+      {%- if section.settings.layout == 'full-bleed' and section.settings.enable_overlay -%}
+        <div
+          class="hero__overlay"
+          style="--hero-overlay-opacity: {{ section.settings.overlay_opacity | times: 1.0 | divided_by: 100 }};"
+          aria-hidden="true"
+        ></div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="hero__content text-align-{{ section.settings.text_alignment }}">
+    <span class="hero__accent-shape shape-star" aria-hidden="true"></span>
+
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="hero__eyebrow label">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h1 class="hero__heading display-xl">{{ section.settings.heading }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.body != blank -%}
+      <div class="hero__body body-lg">{{ section.settings.body }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.primary_cta_label != blank or section.settings.secondary_cta_label != blank -%}
+      <div class="hero__actions">
+        {%- if section.settings.primary_cta_label != blank -%}
+          <a href="{{ section.settings.primary_cta_link | default: '#' }}" class="btn btn--primary">
+            {{ section.settings.primary_cta_label }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.secondary_cta_label != blank -%}
+          <a href="{{ section.settings.secondary_cta_link | default: '#' }}" class="btn btn--secondary">
+            {{ section.settings.secondary_cta_label }}
+          </a>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "FRESH THIS WEEK"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Headline",
+      "default": "MEET YOUR NEW OBSESSION."
+    },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>Big cookies. New flavors. Every week.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_label",
+      "label": "Primary button label",
+      "default": "SHOP THE DROP"
+    },
+    {
+      "type": "url",
+      "id": "primary_cta_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_label",
+      "label": "Secondary button label",
+      "default": "SEE ALL COOKIES"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Optional. Falls back to the desktop image if empty."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_overlay",
+      "label": "Enable overlay",
+      "info": "Adds a scrim over the image so text stays readable. Full-bleed layout only.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 80,
+      "step": 10,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        { "value": "split", "label": "Split — text panel + image" },
+        { "value": "full-bleed", "label": "Full bleed — image with text overlay" }
+      ],
+      "default": "split"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+        { "value": "top-left", "label": "Top left" },
+        { "value": "top-center", "label": "Top center" },
+        { "value": "top-right", "label": "Top right" },
+        { "value": "middle-left", "label": "Middle left" },
+        { "value": "middle-center", "label": "Middle center" },
+        { "value": "middle-right", "label": "Middle right" },
+        { "value": "bottom-left", "label": "Bottom left" },
+        { "value": "bottom-center", "label": "Bottom center" },
+        { "value": "bottom-right", "label": "Bottom right" }
+      ],
+      "default": "middle-left"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Hero height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" },
+        { "value": "fullscreen", "label": "Fullscreen" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "lavender", "label": "Lavender / Deep green text" },
+        { "value": "green", "label": "Green / Lavender text" },
+        { "value": "green-dark", "label": "Deep green / Lavender text" },
+        { "value": "off-white", "label": "Off white / Deep green text" }
+      ],
+      "default": "lavender"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand hero"
+    }
+  ]
+}
+{% endschema %}
