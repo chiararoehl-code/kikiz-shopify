@@ -1,0 +1,65 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+    {%- endif -%}
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- style -%}
+      {{ settings.font_display | font_face: font_display: 'swap' }}
+      {{ settings.font_body | font_face: font_display: 'swap' }}
+
+      :root {
+        --color-primary: {{ settings.color_primary }};
+        --color-secondary: {{ settings.color_secondary }};
+        --color-accent: {{ settings.color_accent }};
+        --color-background: {{ settings.color_background }};
+        --color-surface: {{ settings.color_surface }};
+        --color-text: {{ settings.color_text }};
+        --color-muted: {{ settings.color_muted }};
+        --color-border: {{ settings.color_border }};
+        --font-display: {{ settings.font_display.family }}, {{ settings.font_display.fallback_families }};
+        --font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+        --page-width: {{ settings.page_width }}px;
+      }
+    {%- endstyle -%}
+
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+    {{ content_for_header }}
+  </head>
+
+  <body>
+    <a class="visually-hidden skip-to-content-link" href="#MainContent">
+      {{ 'general.accessibility.skip_to_content' | t }}
+    </a>
+
+    {% section 'header' %}
+
+    <main id="MainContent" class="main-content">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    {{ 'theme.js' | asset_url | script_tag }}
+  </body>
+</html>

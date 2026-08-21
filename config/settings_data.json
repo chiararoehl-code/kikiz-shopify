@@ -1,0 +1,21 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_primary": "#FF5A36",
+      "color_secondary": "#2B2118",
+      "color_accent": "#FFD23F",
+      "color_background": "#FFF8F0",
+      "color_surface": "#FFFFFF",
+      "color_text": "#221A14",
+      "color_muted": "#7A6C5D",
+      "color_border": "#E8DDD0",
+      "font_display": "assistant_n4",
+      "font_body": "assistant_n4",
+      "page_width": 1280,
+      "social_instagram_url": "",
+      "social_tiktok_url": "",
+      "favicon": null
+    }
+  }
+}

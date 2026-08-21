@@ -1,0 +1,61 @@
+<footer class="site-footer">
+  <div class="site-footer__inner container">
+    <div class="site-footer__brand">
+      <span class="site-header__logo-text">{{ shop.name }}</span>
+      {%- if section.settings.footer_text != blank -%}
+        <div class="site-footer__text">{{ section.settings.footer_text }}</div>
+      {%- endif -%}
+
+      {%- if settings.social_instagram_url != blank or settings.social_tiktok_url != blank -%}
+        <div class="site-footer__social">
+          {%- if settings.social_instagram_url != blank -%}
+            <a href="{{ settings.social_instagram_url }}" class="header-icon-link" target="_blank" rel="noopener">
+              <span class="visually-hidden">{{ 'sections.footer.social_instagram' | t }}</span>
+              {% render 'icons', icon: 'instagram' %}
+            </a>
+          {%- endif -%}
+          {%- if settings.social_tiktok_url != blank -%}
+            <a href="{{ settings.social_tiktok_url }}" class="header-icon-link" target="_blank" rel="noopener">
+              <span class="visually-hidden">{{ 'sections.footer.social_tiktok' | t }}</span>
+              {% render 'icons', icon: 'tiktok' %}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.footer_menu != blank -%}
+      <nav class="site-footer__nav" aria-label="{{ section.settings.footer_menu.title }}">
+        <ul class="site-footer__list">
+          {%- for link in section.settings.footer_menu.links -%}
+            <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+  </div>
+
+  <div class="site-footer__bottom container">
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'sections.footer.copyright' | t }}</p>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer menu",
+      "default": "footer"
+    },
+    {
+      "type": "richtext",
+      "id": "footer_text",
+      "label": "Footer text",
+      "default": "<p>Freshly baked cookies, dropped weekly.</p>"
+    }
+  ]
+}
+{% endschema %}

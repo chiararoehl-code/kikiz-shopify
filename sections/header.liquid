@@ -1,0 +1,114 @@
+<header class="site-header" data-header>
+  <div class="site-header__inner container">
+    <button
+      type="button"
+      class="header-toggle"
+      data-header-toggle
+      aria-expanded="false"
+      aria-controls="MobileNav"
+    >
+      <span class="visually-hidden">{{ 'sections.header.open_menu' | t }}</span>
+      {% render 'icons', icon: 'menu' %}
+    </button>
+
+    <a href="{{ routes.root_url }}" class="site-header__logo">
+      {%- if section.settings.logo != blank -%}
+        <img
+          src="{{ section.settings.logo | image_url: width: 300 }}"
+          alt="{{ shop.name }}"
+          width="{{ section.settings.logo.width }}"
+          height="{{ section.settings.logo.height }}"
+          style="height: {{ section.settings.logo_height }}px; width: auto;"
+          loading="eager"
+        >
+      {%- else -%}
+        <span class="site-header__logo-text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <nav class="site-nav" aria-label="{{ 'sections.header.open_menu' | t }}">
+      <ul class="site-nav__list">
+        {%- for link in linklists.main-menu.links -%}
+          <li class="site-nav__item">
+            <a href="{{ link.url }}" class="site-nav__link"{% if link.active %} aria-current="page"{% endif %}>
+              {{ link.title }}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="site-header__utility">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="header-search">
+        <label class="visually-hidden" for="Header-Search">{{ 'sections.header.search' | t }}</label>
+        <input
+          type="search"
+          name="q"
+          id="Header-Search"
+          class="header-search__input"
+          placeholder="{{ 'sections.header.search' | t }}"
+          value="{{ search.terms | escape }}"
+        >
+        <button type="submit" class="header-search__submit">
+          <span class="visually-hidden">{{ 'sections.header.search' | t }}</span>
+          {% render 'icons', icon: 'search' %}
+        </button>
+      </form>
+
+      <a href="{{ routes.account_url }}" class="header-icon-link">
+        <span class="visually-hidden">{{ 'sections.header.account' | t }}</span>
+        {% render 'icons', icon: 'account' %}
+      </a>
+
+      <a href="{{ routes.cart_url }}" class="header-icon-link header-cart-link">
+        <span class="visually-hidden">{{ 'sections.header.cart' | t }}</span>
+        {% render 'icons', icon: 'cart' %}
+        {%- if cart.item_count > 0 -%}
+          <span class="header-cart-count" data-cart-count>{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+  </div>
+
+  <div class="mobile-nav-overlay" data-header-overlay hidden></div>
+
+  <div class="mobile-nav" id="MobileNav" data-header-drawer hidden>
+    <div class="mobile-nav__header">
+      <span class="site-header__logo-text">{{ shop.name }}</span>
+      <button type="button" class="header-toggle" data-header-close>
+        <span class="visually-hidden">{{ 'sections.header.close_menu' | t }}</span>
+        {% render 'icons', icon: 'close' %}
+      </button>
+    </div>
+    <ul class="mobile-nav__list">
+      {%- for link in linklists.main-menu.links -%}
+        <li class="mobile-nav__item">
+          <a href="{{ link.url }}" class="mobile-nav__link">{{ link.title }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}
