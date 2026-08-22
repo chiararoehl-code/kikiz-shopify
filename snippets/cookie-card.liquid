@@ -1,0 +1,41 @@
+{%- comment -%}
+  Large, visual, display-only flavor card for discovery contexts (Weekly Drop).
+  No quantity controls, no price, no add-to-cart — pure brand/product presentation.
+  For the compact picker used inside the box builder, see flavor-selector.liquid.
+  Accepts:
+    flavor (cookie_flavor metaobject, required)
+{%- endcomment -%}
+
+<article class="cookie-card">
+  <div class="cookie-card__media shape-rounded">
+    {%- if flavor.image.reference -%}
+      <img
+        class="cookie-card__image"
+        src="{{ flavor.image.reference | image_url: width: 800 }}"
+        srcset="
+          {{ flavor.image.reference | image_url: width: 500 }} 500w,
+          {{ flavor.image.reference | image_url: width: 800 }} 800w,
+          {{ flavor.image.reference | image_url: width: 1100 }} 1100w
+        "
+        sizes="(min-width: 990px) 30vw, (min-width: 750px) 46vw, 82vw"
+        width="{{ flavor.image.reference.width }}"
+        height="{{ flavor.image.reference.height }}"
+        alt="{{ flavor.image.reference.alt | default: flavor.name.value | escape }}"
+        loading="lazy"
+      >
+    {%- else -%}
+      <div class="cookie-card__media-placeholder" aria-hidden="true"></div>
+    {%- endif -%}
+
+    {%- if flavor.badge.value != blank -%}
+      {%- render 'badge', text: flavor.badge.value, style: 'accent' -%}
+    {%- endif -%}
+  </div>
+
+  <div class="cookie-card__content">
+    <h3 class="cookie-card__title h3">{{ flavor.name.value }}</h3>
+    {%- if flavor.short_description.value != blank -%}
+      <p class="cookie-card__description text-small">{{ flavor.short_description.value }}</p>
+    {%- endif -%}
+  </div>
+</article>

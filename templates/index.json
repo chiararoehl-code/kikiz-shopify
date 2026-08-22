@@ -11,7 +11,11 @@
     "weekly-drop": {
       "type": "weekly-drop",
       "settings": {}
+    },
+    "box-selector": {
+      "type": "box-selector",
+      "settings": {}
     }
   },
-  "order": ["announcement-bar", "hero", "weekly-drop"]
+  "order": ["announcement-bar", "hero", "weekly-drop", "box-selector"]
 }

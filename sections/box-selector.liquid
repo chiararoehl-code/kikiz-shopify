@@ -1,0 +1,201 @@
+{%- liquid
+  assign all_flavors = shop.metaobjects.cookie_flavor.values | sort: 'sort_order'
+  assign flavor_count = 0
+  for flavor in all_flavors
+    if flavor.active.value and flavor.available_this_week.value
+      assign flavor_count = flavor_count | plus: 1
+    endif
+  endfor
+
+  assign box_3_disabled = false
+  assign box_3_disabled_label = ''
+  if section.settings.box_product_3.available == false
+    assign box_3_disabled = true
+    assign box_3_disabled_label = 'box_builder.sold_out' | t
+  elsif flavor_count == 0
+    assign box_3_disabled = true
+    assign box_3_disabled_label = 'box_builder.coming_soon' | t
+  endif
+
+  assign box_6_disabled = false
+  assign box_6_disabled_label = ''
+  if section.settings.box_product_6.available == false
+    assign box_6_disabled = true
+    assign box_6_disabled_label = 'box_builder.sold_out' | t
+  elsif flavor_count == 0
+    assign box_6_disabled = true
+    assign box_6_disabled_label = 'box_builder.coming_soon' | t
+  endif
+-%}
+
+<section class="box-selector color-scheme--{{ section.settings.color_scheme }}" id="box-selector">
+  <div class="box-selector__header container">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="label">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="box-selector__heading display-l">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.supporting_text != blank -%}
+      <p class="box-selector__supporting body-lg">{{ section.settings.supporting_text }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if flavor_count == 0 -%}
+    <div class="box-selector__empty container">
+      <p>{{ 'box_builder.empty_flavors' | t }}</p>
+    </div>
+  {%- endif -%}
+
+  <div class="box-selector__options container">
+    {%- if section.settings.box_product_3 != blank -%}
+      {%- render 'box-option-card',
+        product: section.settings.box_product_3,
+        box_size: 3,
+        disabled: box_3_disabled,
+        disabled_label: box_3_disabled_label
+      -%}
+    {%- elsif request.design_mode -%}
+      <p class="box-selector__placeholder">{{ 'box_builder.placeholder_3' | t }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.box_product_6 != blank -%}
+      {%- render 'box-option-card',
+        product: section.settings.box_product_6,
+        box_size: 6,
+        disabled: box_6_disabled,
+        disabled_label: box_6_disabled_label
+      -%}
+    {%- elsif request.design_mode -%}
+      <p class="box-selector__placeholder">{{ 'box_builder.placeholder_6' | t }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if flavor_count > 0 -%}
+    <div
+      class="box-builder"
+      data-box-builder
+      hidden
+      data-tpl-build-your="{{ 'box_builder.build_your' | t }}"
+      data-tpl-counter="{{ 'box_builder.counter' | t }}"
+      data-tpl-select-cookies="{{ 'box_builder.select_cookies' | t }}"
+      data-tpl-select-more="{{ 'box_builder.select_more' | t }}"
+    >
+      <div class="box-builder__overlay" data-box-builder-close></div>
+
+      <div class="box-builder__panel" role="dialog" aria-modal="true" aria-labelledby="BoxBuilderTitle">
+        <header class="box-builder__header">
+          <button type="button" class="box-builder__close" data-box-builder-close>
+            <span class="visually-hidden">{{ 'box_builder.close' | t }}</span>
+            {%- render 'icons', icon: 'close' -%}
+          </button>
+          <p class="label">{{ section.settings.eyebrow }}</p>
+          <h2 id="BoxBuilderTitle" class="box-builder__title h2" data-box-builder-title>
+            {{ 'box_builder.build_your' | t }}
+          </h2>
+          <p class="box-builder__subtitle body">{{ 'box_builder.subtitle' | t }}</p>
+        </header>
+
+        <div class="box-builder__flavors" data-box-builder-flavors>
+          {%- for flavor in all_flavors -%}
+            {%- if flavor.active.value and flavor.available_this_week.value -%}
+              {%- render 'flavor-selector', flavor: flavor -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        <footer class="box-builder__footer">
+          <p class="box-builder__error" data-box-builder-error hidden>
+            {{ 'box_builder.error_message' | t }}
+          </p>
+          <p class="box-builder__counter" data-box-builder-counter aria-live="polite">
+            0 / 0 {{ 'box_builder.selected' | t }}
+          </p>
+          <form data-product-form action="{{ routes.cart_add_url }}" method="post" novalidate>
+            <div data-box-builder-properties></div>
+            <input type="hidden" name="id" value="" data-box-builder-variant-input>
+            <input type="hidden" name="quantity" value="1">
+            <button
+              type="submit"
+              class="btn btn--primary box-builder__submit"
+              data-box-builder-submit
+              data-add-to-cart-button
+              disabled
+              data-default-label="{{ 'box_builder.add_to_cart' | t }}"
+              data-loading-label="{{ 'box_builder.adding' | t }}"
+              data-success-label="{{ 'box_builder.added' | t }}"
+              data-error-label="{{ 'box_builder.error' | t }}"
+            >
+              {{ 'box_builder.select_cookies' | t }}
+            </button>
+          </form>
+        </footer>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Box selector",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "PICK YOUR BOX"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "BUILD YOUR BOX"
+    },
+    {
+      "type": "text",
+      "id": "supporting_text",
+      "label": "Supporting text",
+      "default": "Mix and match your favorite flavors."
+    },
+    {
+      "type": "header",
+      "content": "Box products"
+    },
+    {
+      "type": "product",
+      "id": "box_product_3",
+      "label": "3-cookie box product"
+    },
+    {
+      "type": "product",
+      "id": "box_product_6",
+      "label": "6-cookie box product"
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "lavender", "label": "Lavender / Deep green text" },
+        { "value": "off-white", "label": "Off white / Deep green text" },
+        { "value": "green", "label": "Green / Lavender text" },
+        { "value": "green-dark", "label": "Deep green / Lavender text" }
+      ],
+      "default": "lavender"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Box selector"
+    }
+  ]
+}
+{% endschema %}

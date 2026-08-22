@@ -1,12 +1,16 @@
 <section class="weekly-drop color-scheme--{{ section.settings.color_scheme }}">
-  {%- if section.settings.collection == blank -%}
-    {%- if request.design_mode -%}
-      <div class="weekly-drop__placeholder container">
-        <p>{{ 'sections.weekly_drop.placeholder' | t }}</p>
-      </div>
-    {%- endif -%}
-  {%- elsif section.settings.collection.products.size == 0 -%}
-    <div class="weekly-drop__header container">
+  {%- liquid
+    assign all_flavors = shop.metaobjects.cookie_flavor.values | sort: 'sort_order'
+    assign flavor_count = 0
+    for flavor in all_flavors
+      if flavor.active.value and flavor.available_this_week.value
+        assign flavor_count = flavor_count | plus: 1
+      endif
+    endfor
+  -%}
+
+  <div class="weekly-drop__header container">
+    <div class="weekly-drop__heading-group">
       {%- if section.settings.eyebrow != blank -%}
         <p class="label">{{ section.settings.eyebrow }}</p>
       {%- endif -%}
@@ -14,35 +18,31 @@
         <h2 class="weekly-drop__heading display-l">{{ section.settings.heading }}</h2>
       {%- endif -%}
     </div>
+    {%- if section.settings.supporting_text != blank -%}
+      <p class="weekly-drop__supporting body-lg">{{ section.settings.supporting_text }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if flavor_count == 0 -%}
     <div class="weekly-drop__empty container">
       <p>{{ 'sections.weekly_drop.empty' | t }}</p>
     </div>
   {%- else -%}
-    <div class="weekly-drop__header container">
-      <div class="weekly-drop__heading-group">
-        {%- if section.settings.eyebrow != blank -%}
-          <p class="label">{{ section.settings.eyebrow }}</p>
-        {%- endif -%}
-        {%- if section.settings.heading != blank -%}
-          <h2 class="weekly-drop__heading display-l">{{ section.settings.heading }}</h2>
-        {%- endif -%}
-      </div>
-      {%- if section.settings.supporting_text != blank -%}
-        <p class="weekly-drop__supporting body-lg">{{ section.settings.supporting_text }}</p>
-      {%- endif -%}
-    </div>
-
     <ul class="product-rail container" role="list">
-      {%- for product in section.settings.collection.products limit: section.settings.product_limit -%}
-        <li class="product-rail__item">
-          {%- render 'product-card', product: product -%}
-        </li>
+      {%- assign shown = 0 -%}
+      {%- for flavor in all_flavors -%}
+        {%- if flavor.active.value and flavor.available_this_week.value and shown < section.settings.flavor_limit -%}
+          <li class="product-rail__item">
+            {%- render 'cookie-card', flavor: flavor -%}
+          </li>
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endif -%}
       {%- endfor -%}
     </ul>
 
     {%- if section.settings.cta_label != blank -%}
       <div class="weekly-drop__cta container">
-        <a href="{{ section.settings.cta_link | default: section.settings.collection.url }}" class="btn btn--secondary">
+        <a href="#box-selector" class="btn btn--secondary">
           {{ section.settings.cta_label }}
         </a>
       </div>
@@ -78,17 +78,12 @@
     },
     {
       "type": "header",
-      "content": "Products"
-    },
-    {
-      "type": "collection",
-      "id": "collection",
-      "label": "Collection"
+      "content": "Flavors"
     },
     {
       "type": "range",
-      "id": "product_limit",
-      "label": "Number of products",
+      "id": "flavor_limit",
+      "label": "Number of flavors to show",
       "min": 3,
       "max": 8,
       "step": 1,
@@ -102,13 +97,8 @@
       "type": "text",
       "id": "cta_label",
       "label": "Button label",
-      "default": "SEE ALL COOKIES"
-    },
-    {
-      "type": "url",
-      "id": "cta_link",
-      "label": "Button link",
-      "info": "Optional. Falls back to the collection page."
+      "default": "BUILD YOUR BOX",
+      "info": "Scrolls to the Box Selector section (#box-selector)."
     },
     {
       "type": "header",

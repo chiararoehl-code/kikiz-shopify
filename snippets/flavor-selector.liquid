@@ -1,0 +1,53 @@
+{%- comment -%}
+  Compact flavor picker used only inside the box builder modal. Optimized for
+  fast selection, not brand presentation — see cookie-card.liquid for that.
+  Accepts:
+    flavor (cookie_flavor metaobject, required)
+{%- endcomment -%}
+
+<div
+  class="flavor-selector"
+  data-flavor-select-item
+  data-flavor-key="{{ flavor.handle }}"
+  data-flavor-name="{{ flavor.name.value | escape }}"
+>
+  <button
+    type="button"
+    class="flavor-selector__pill"
+    data-flavor-add
+    aria-label="{{ 'box_builder.flavor.add_accessible' | t: flavor: flavor.name.value }}"
+  >
+    {%- if flavor.image.reference -%}
+      <span class="flavor-selector__thumb">
+        <img
+          src="{{ flavor.image.reference | image_url: width: 80 }}"
+          width="40"
+          height="40"
+          alt=""
+          loading="lazy"
+        >
+      </span>
+    {%- endif -%}
+    <span class="flavor-selector__name">{{ flavor.name.value }}</span>
+    {%- if flavor.badge.value != blank -%}
+      {%- render 'badge', text: flavor.badge.value, style: 'accent' -%}
+    {%- endif -%}
+  </button>
+
+  <div class="flavor-selector__stepper" data-flavor-stepper hidden>
+    <span class="flavor-selector__stepper-name">{{ flavor.name.value }}</span>
+    <button
+      type="button"
+      class="flavor-selector__step-btn"
+      data-flavor-minus
+      aria-label="{{ 'box_builder.flavor.remove_accessible' | t: flavor: flavor.name.value }}"
+    >&minus;</button>
+    <span class="flavor-selector__qty" data-flavor-qty aria-live="polite">0</span>
+    <button
+      type="button"
+      class="flavor-selector__step-btn"
+      data-flavor-plus
+      aria-label="{{ 'box_builder.flavor.add_more_accessible' | t: flavor: flavor.name.value }}"
+    >+</button>
+  </div>
+</div>

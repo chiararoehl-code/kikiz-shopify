@@ -25,23 +25,39 @@
       "copyright": "All rights reserved."
     },
     "weekly_drop": {
-      "placeholder": "Select a collection in the theme editor to show this week's drop.",
-      "empty": "No cookies available right now — check back soon."
+      "empty": "New flavors coming soon — check back shortly."
     }
   },
   "products": {
-    "product_card": {
-      "add_to_cart": "ADD TO BOX",
-      "added": "ADDED",
-      "error": "TRY AGAIN",
-      "sold_out": "SOLD OUT",
-      "choose_options": "CHOOSE OPTIONS",
-      "add_to_cart_accessible": "Add {{ product }} to box",
-      "choose_options_accessible": "Choose options for {{ product }}"
-    },
     "price": {
       "regular_price": "Regular price",
       "sale_price": "Sale price"
+    }
+  },
+  "box_builder": {
+    "build_a": "BUILD A {{ size }}",
+    "build_your": "BUILD YOUR __SIZE__",
+    "subtitle": "Choose your favorite flavors",
+    "counter": "__SELECTED__ / __TOTAL__ SELECTED",
+    "selected": "SELECTED",
+    "select_cookies": "SELECT __SIZE__ COOKIES",
+    "select_more": "SELECT __COUNT__ MORE",
+    "add_to_cart": "ADD BOX TO CART",
+    "adding": "ADDING...",
+    "added": "ADDED",
+    "error": "TRY AGAIN",
+    "error_message": "Something went wrong. Your selection has been kept — please try again.",
+    "close": "Close",
+    "choose_count": "{{ count }} cookies to choose.",
+    "empty_flavors": "New flavors coming soon — check back shortly.",
+    "coming_soon": "COMING SOON",
+    "sold_out": "SOLD OUT",
+    "placeholder_3": "Select a 3-cookie box product in the theme editor.",
+    "placeholder_6": "Select a 6-cookie box product in the theme editor.",
+    "flavor": {
+      "add_accessible": "Add {{ flavor }}",
+      "remove_accessible": "Remove one {{ flavor }}",
+      "add_more_accessible": "Add one more {{ flavor }}"
     }
   }
 }

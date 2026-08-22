@@ -1,0 +1,61 @@
+{%- comment -%}
+  One box-size option card on the Box Selector. Opens the shared builder
+  modal (box-builder.js) unless disabled.
+  Accepts:
+    product (Shopify product, required)
+    box_size (number, required) — 3 or 6
+    disabled (boolean, optional)
+    disabled_label (string, optional) — shown on the CTA when disabled
+{%- endcomment -%}
+
+{%- liquid
+  assign variant = product.selected_or_first_available_variant
+  assign cta_label = 'box_builder.build_a' | t: size: box_size
+-%}
+
+<div class="box-option">
+  <div class="box-option__media shape-rounded">
+    {%- if product.featured_image -%}
+      <img
+        src="{{ product.featured_image | image_url: width: 700 }}"
+        srcset="
+          {{ product.featured_image | image_url: width: 500 }} 500w,
+          {{ product.featured_image | image_url: width: 700 }} 700w,
+          {{ product.featured_image | image_url: width: 900 }} 900w
+        "
+        sizes="(min-width: 750px) 40vw, 88vw"
+        width="{{ product.featured_image.width }}"
+        height="{{ product.featured_image.height }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        loading="lazy"
+      >
+    {%- else -%}
+      <div class="box-option__media-placeholder" aria-hidden="true"></div>
+    {%- endif -%}
+  </div>
+
+  <div class="box-option__content">
+    <h3 class="box-option__title h3">{{ product.title }}</h3>
+    <p class="box-option__description text-small">
+      {{ 'box_builder.choose_count' | t: count: box_size }}
+    </p>
+    {%- render 'price', product: product, variant: variant -%}
+
+    {%- if disabled -%}
+      <button type="button" class="btn btn--secondary box-option__cta" disabled>
+        {{ disabled_label }}
+      </button>
+    {%- else -%}
+      <button
+        type="button"
+        class="btn btn--primary box-option__cta"
+        data-box-open
+        data-box-size="{{ box_size }}"
+        data-variant-id="{{ variant.id }}"
+        data-box-title="{{ product.title | escape }}"
+      >
+        {{ cta_label }}
+      </button>
+    {%- endif -%}
+  </div>
+</div>

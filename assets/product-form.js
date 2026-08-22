@@ -1,9 +1,12 @@
 /**
- * Progressive enhancement for `[data-product-form]` forms.
- * Without JS the form posts normally to routes.cart_add_url.
- * With JS, adds via the Ajax Cart API and dispatches `cart:updated`
- * so a future cart drawer (or any other listener) can react without
- * this file needing to know about it.
+ * Progressive enhancement for `[data-product-form]` forms — the shared Ajax
+ * add-to-cart transport used by the box builder (and any future consumer).
+ * Without JS the form posts normally to routes.cart_add_url. With JS, adds
+ * via the Ajax Cart API and dispatches `cart:updated` / `cart:add:error` so
+ * other scripts (box-builder.js, a future cart drawer) can react without
+ * this file knowing anything about them. Line item properties are picked up
+ * automatically from any `properties[Name]` hidden input already present in
+ * the form — no special-casing needed here.
  */
 (function () {
   var STATE_RESET_DELAY = 1800;
@@ -42,12 +45,14 @@
     event.preventDefault();
 
     var defaultLabel = button.dataset.defaultLabel || button.textContent.trim();
+    var loadingLabel = button.dataset.loadingLabel;
     var successLabel = button.dataset.successLabel || defaultLabel;
     var errorLabel = button.dataset.errorLabel || defaultLabel;
 
     button.disabled = true;
     button.classList.remove('is-added', 'has-error');
     button.classList.add('is-loading');
+    setButtonLabel(button, loadingLabel);
 
     fetch(getCartRoot() + 'cart/add.js', {
       method: 'POST',
@@ -83,6 +88,10 @@
         button.classList.add('has-error');
         setButtonLabel(button, errorLabel);
         button.disabled = false;
+
+        document.dispatchEvent(
+          new CustomEvent('cart:add:error', { detail: { error: error, form: form } })
+        );
 
         window.setTimeout(function () {
           resetButton(button, defaultLabel);
