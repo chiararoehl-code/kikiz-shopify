@@ -1,13 +1,14 @@
-<section class="weekly-drop color-scheme--{{ section.settings.color_scheme }}">
-  {%- liquid
-    assign all_flavors = shop.metaobjects.cookie_flavor.values | sort: 'sort_order'
-    assign flavor_count = 0
-    for flavor in all_flavors
-      if flavor.active.value and flavor.available_this_week.value
-        assign flavor_count = flavor_count | plus: 1
-      endif
-    endfor
-  -%}
+{%- liquid
+  assign all_flavors = shop.metaobjects.cookie_flavor.values | sort: 'sort_order'
+  assign flavor_count = 0
+  for flavor in all_flavors
+    if flavor.active.value and flavor.available_this_week.value
+      assign flavor_count = flavor_count | plus: 1
+    endif
+  endfor
+-%}
+
+<section class="weekly-drop color-scheme--{{ section.settings.color_scheme }}{% if flavor_count == 0 %} weekly-drop--empty{% endif %}">
 
   <div class="weekly-drop__header container">
     <div class="weekly-drop__heading-group">

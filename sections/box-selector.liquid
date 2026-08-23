@@ -28,7 +28,7 @@
   endif
 -%}
 
-<section class="box-selector color-scheme--{{ section.settings.color_scheme }}" id="box-selector">
+<section class="box-selector color-scheme--{{ section.settings.color_scheme }}{% if flavor_count == 0 %} box-selector--empty{% endif %}" id="box-selector">
   <div class="box-selector__header container">
     {%- if section.settings.eyebrow != blank -%}
       <p class="label">{{ section.settings.eyebrow }}</p>
