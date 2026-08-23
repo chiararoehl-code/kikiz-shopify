@@ -43,7 +43,10 @@
 
   {%- if flavor_count == 0 -%}
     <div class="box-selector__empty container">
-      <p>{{ 'box_builder.empty_flavors' | t }}</p>
+      <div class="box-selector__empty-card">
+        <span class="box-selector__empty-shape shape-circle" aria-hidden="true"></span>
+        <p class="h3">{{ 'box_builder.empty_flavors' | t }}</p>
+      </div>
     </div>
   {%- endif -%}
 
@@ -56,7 +59,10 @@
         disabled_label: box_3_disabled_label
       -%}
     {%- elsif request.design_mode -%}
-      <p class="box-selector__placeholder">{{ 'box_builder.placeholder_3' | t }}</p>
+      <div class="box-selector__placeholder">
+        <span class="box-selector__placeholder-shape shape-rounded" aria-hidden="true"></span>
+        <p>{{ 'box_builder.placeholder_3' | t }}</p>
+      </div>
     {%- endif -%}
 
     {%- if section.settings.box_product_6 != blank -%}
@@ -67,7 +73,10 @@
         disabled_label: box_6_disabled_label
       -%}
     {%- elsif request.design_mode -%}
-      <p class="box-selector__placeholder">{{ 'box_builder.placeholder_6' | t }}</p>
+      <div class="box-selector__placeholder">
+        <span class="box-selector__placeholder-shape shape-rounded" aria-hidden="true"></span>
+        <p>{{ 'box_builder.placeholder_6' | t }}</p>
+      </div>
     {%- endif -%}
   </div>
 

@@ -45,8 +45,8 @@
         --color-background: var(--color-off-white);
         --color-text: var(--color-green-dark);
 
-        --font-display: {{ settings.font_display.family }}, {{ settings.font_display.fallback_families }};
-        --font-body: {{ settings.font_body.family }}, {{ settings.font_body.fallback_families }};
+        --font-display: {{ settings.font_display.family | default: 'Helvetica Neue' }}, {{ settings.font_display.fallback_families | default: 'Arial, sans-serif' }}, sans-serif;
+        --font-body: {{ settings.font_body.family | default: 'Helvetica Neue' }}, {{ settings.font_body.fallback_families | default: 'Arial, sans-serif' }}, sans-serif;
         --page-width: {{ settings.page_width }}px;
       }
     {%- endstyle -%}

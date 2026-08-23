@@ -83,8 +83,8 @@
         "type": "font_picker",
         "id": "font_display",
         "label": "Display font",
-        "info": "Oversized, expressive, editorial. Used for hero, campaign and section headlines.",
-        "default": "assistant_n4"
+        "info": "Oversized, expressive, editorial. Used for hero, campaign and section headlines. Defaults to a genuine bold weight so headlines don't rely on the browser faking boldness.",
+        "default": "assistant_n7"
       },
       {
         "type": "header",

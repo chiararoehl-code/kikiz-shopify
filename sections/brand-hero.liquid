@@ -52,6 +52,9 @@
 
   <div class="hero__content text-align-{{ section.settings.text_alignment }}">
     <span class="hero__accent-shape shape-star" aria-hidden="true"></span>
+    {%- if section.settings.image == blank -%}
+      <span class="hero__fallback-shape shape-circle" aria-hidden="true"></span>
+    {%- endif -%}
 
     {%- if section.settings.eyebrow != blank -%}
       <p class="hero__eyebrow label">{{ section.settings.eyebrow }}</p>

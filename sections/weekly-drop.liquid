@@ -25,7 +25,11 @@
 
   {%- if flavor_count == 0 -%}
     <div class="weekly-drop__empty container">
-      <p>{{ 'sections.weekly_drop.empty' | t }}</p>
+      <div class="weekly-drop__empty-card">
+        <span class="weekly-drop__empty-shape shape-circle" aria-hidden="true"></span>
+        <span class="weekly-drop__empty-shape weekly-drop__empty-shape--star shape-star" aria-hidden="true"></span>
+        <p class="h3">{{ 'sections.weekly_drop.empty' | t }}</p>
+      </div>
     </div>
   {%- else -%}
     <ul class="product-rail container" role="list">
