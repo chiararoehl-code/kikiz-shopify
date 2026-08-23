@@ -1417,3 +1417,19 @@ input {
     justify-content: space-between;
   }
 }
+
+/* ==========================================================================
+   TEMPORARY RUNTIME DEBUG TEST — DO NOT KEEP
+   Zero custom properties, zero Shopify font system, !important so no
+   specificity elsewhere can hide it. If this doesn't show up on the live
+   site, this file (theme.css) is not the file the browser is loading —
+   look at asset caching / the connected theme / browser cache next, not
+   at more CSS. Remove this whole block once the test has answered that.
+   ========================================================================== */
+
+.hero {
+  background: #E8C9F4 !important;
+  color: #174F0C !important;
+  font-family: Arial, Helvetica, sans-serif !important;
+  border: 8px solid #237A0B !important;
+}

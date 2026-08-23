@@ -4,6 +4,32 @@
   assign position_h = position_parts[1]
 -%}
 
+{%- comment -%}
+  TEMPORARY RUNTIME DEBUG TEST — DO NOT KEEP.
+  Inline <style>, zero dependency on assets/theme.css. If this banner does
+  NOT show at all: this section isn't rendering the current commit at all
+  (wrong theme selected in Shopify, branch not synced, or hard browser
+  cache) — the external stylesheet isn't even the question yet. If it DOES
+  show but the hero below stays white/serif: this template IS current and
+  Liquid renders fine, so the bug is specifically theme.css not loading or
+  not applying. Remove this whole block once that's answered.
+{%- endcomment -%}
+<style>
+  #runtime-debug-banner {
+    background: #237A0B;
+    color: #FFFDF8;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 16px;
+    text-align: center;
+    border: 6px solid #E8C9F4;
+    font-weight: bold;
+  }
+</style>
+<div id="runtime-debug-banner">
+  DEBUG TEST — if you see this green banner, this is the current commit
+  rendering. Now check: is the hero below it lavender with a green border?
+</div>
+
 <section
   class="hero hero--{{ section.settings.layout }} hero--height-{{ section.settings.height }} color-scheme--{{ section.settings.color_scheme }}{% if section.settings.image == blank %} hero--no-media{% endif %}"
   data-position-v="{{ position_v }}"
