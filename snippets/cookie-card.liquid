@@ -4,9 +4,11 @@
   For the compact picker used inside the box builder, see flavor-selector.liquid.
   Accepts:
     flavor (cookie_flavor metaobject, required)
+    featured (boolean, optional) — larger, Mango-bordered treatment for the
+      weekly special. Same card, different frame — no second component.
 {%- endcomment -%}
 
-<article class="cookie-card">
+<article class="cookie-card{% if featured %} cookie-card--featured{% endif %}">
   <div class="cookie-card__media shape-rounded">
     {%- if flavor.image.reference -%}
       <img
@@ -24,7 +26,10 @@
         loading="lazy"
       >
     {%- else -%}
-      <div class="cookie-card__media-placeholder" aria-hidden="true"></div>
+      <div class="cookie-card__media-placeholder" aria-hidden="true">
+        <span class="cookie-card__placeholder-mark"></span>
+        <span class="cookie-card__placeholder-name">{{ flavor.name.value }}</span>
+      </div>
     {%- endif -%}
 
     {%- if flavor.badge.value != blank -%}

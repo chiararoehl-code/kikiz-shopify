@@ -27,7 +27,8 @@
       "copyright": "All rights reserved."
     },
     "weekly_drop": {
-      "empty": "New flavors coming soon — check back shortly."
+      "empty": "New flavors coming soon — check back shortly.",
+      "empty_editor": "Add cookie flavors under Settings → Custom data → Cookie flavor, then mark them active and available this week."
     }
   },
   "products": {

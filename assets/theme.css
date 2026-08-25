@@ -933,7 +933,29 @@ input {
 .cookie-card__media-placeholder {
   position: absolute;
   inset: 0;
-  background-color: var(--color-border, #E4DFD3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background-color: var(--color-background, #F5EFE1);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.cookie-card__placeholder-mark {
+  width: 36px;
+  height: 4px;
+  background-color: var(--color-brand-primary, #F2A900);
+}
+
+.cookie-card__placeholder-name {
+  font-family: var(--font-display, Helvetica, Arial, sans-serif);
+  font-weight: 700;
+  font-size: var(--text-h3);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--color-black, #17130F);
 }
 
 .cookie-card__image {
@@ -967,6 +989,49 @@ input {
   margin: 0;
   color: var(--color-muted, #8F887C);
   text-transform: none;
+}
+
+/* Featured (weekly special) — same card, larger and Mango-framed */
+
+.cookie-card--featured {
+  border: 2px solid var(--color-brand-primary, #F2A900);
+  border-radius: var(--radius-medium);
+  overflow: hidden;
+  background-color: var(--color-surface, #FFFFFF);
+}
+
+.cookie-card--featured .cookie-card__media {
+  border: 0;
+}
+
+.cookie-card--featured .cookie-card__content {
+  padding: var(--space-5);
+}
+
+@media screen and (min-width: 750px) {
+  .cookie-card--featured {
+    flex-direction: row;
+    min-height: 420px;
+  }
+
+  .cookie-card--featured .cookie-card__media {
+    flex: 0 0 68%;
+    aspect-ratio: auto;
+  }
+
+  .cookie-card--featured .cookie-card__content {
+    flex: 1;
+    justify-content: center;
+    padding: var(--space-7);
+  }
+
+  .cookie-card--featured .cookie-card__title {
+    font-size: var(--text-display-l);
+  }
+
+  .cookie-card--featured .cookie-card__description {
+    font-size: var(--text-body-lg);
+  }
 }
 
 /* ==========================================================================
@@ -1021,6 +1086,12 @@ input {
   .product-rail {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  /* Classics list is typically exactly 4 items — jump straight to 4
+     columns instead of 3, so it never wraps into a 3+1 orphan row. */
+  .product-rail--classics {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
 @media screen and (min-width: 1300px) {
@@ -1059,6 +1130,10 @@ input {
   max-width: 320px;
   margin: 0;
   text-transform: none;
+}
+
+.weekly-drop__special {
+  margin-bottom: var(--space-6);
 }
 
 .weekly-drop__empty {

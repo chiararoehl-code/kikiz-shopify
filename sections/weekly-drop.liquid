@@ -1,11 +1,28 @@
 {%- liquid
   assign all_flavors = shop.metaobjects.cookie_flavor.values | sort: 'sort_order'
   assign flavor_count = 0
+  assign special_count = 0
+  assign weekly_special = null
+
   for flavor in all_flavors
     if flavor.active.value and flavor.available_this_week.value
       assign flavor_count = flavor_count | plus: 1
+      if flavor.badge.value == 'WEEKLY SPECIAL'
+        assign special_count = special_count | plus: 1
+        assign weekly_special = flavor
+      endif
     endif
   endfor
+
+  assign show_special_separately = false
+  if special_count == 1
+    assign show_special_separately = true
+  endif
+
+  assign classics_limit = section.settings.flavor_limit
+  if show_special_separately
+    assign classics_limit = section.settings.flavor_limit | minus: 1
+  endif
 -%}
 
 <section id="weekly-drop" class="weekly-drop color-scheme--{{ section.settings.color_scheme }}{% if flavor_count == 0 %} weekly-drop--empty{% endif %}">
@@ -28,25 +45,37 @@
     <div class="weekly-drop__empty container">
       <div class="weekly-drop__empty-card">
         <span class="weekly-drop__empty-mark" aria-hidden="true"></span>
-        <p class="h3">{{ 'sections.weekly_drop.empty' | t }}</p>
+        {%- if request.design_mode -%}
+          <p class="h3">{{ 'sections.weekly_drop.empty_editor' | t }}</p>
+        {%- else -%}
+          <p class="h3">{{ 'sections.weekly_drop.empty' | t }}</p>
+        {%- endif -%}
       </div>
     </div>
   {%- else -%}
-    <ul class="product-rail container" role="list">
+    {%- if show_special_separately -%}
+      <div class="weekly-drop__special container">
+        {%- render 'cookie-card', flavor: weekly_special, featured: true -%}
+      </div>
+    {%- endif -%}
+
+    <ul class="product-rail product-rail--classics container" role="list">
       {%- assign shown = 0 -%}
       {%- for flavor in all_flavors -%}
-        {%- if flavor.active.value and flavor.available_this_week.value and shown < section.settings.flavor_limit -%}
-          <li class="product-rail__item">
-            {%- render 'cookie-card', flavor: flavor -%}
-          </li>
-          {%- assign shown = shown | plus: 1 -%}
+        {%- if flavor.active.value and flavor.available_this_week.value and shown < classics_limit -%}
+          {%- unless show_special_separately and flavor.handle == weekly_special.handle -%}
+            <li class="product-rail__item">
+              {%- render 'cookie-card', flavor: flavor -%}
+            </li>
+            {%- assign shown = shown | plus: 1 -%}
+          {%- endunless -%}
         {%- endif -%}
       {%- endfor -%}
     </ul>
 
     {%- if section.settings.cta_label != blank -%}
       <div class="weekly-drop__cta container">
-        <a href="#box-selector" class="btn btn--secondary">
+        <a href="#box-selector" class="btn btn--primary">
           {{ section.settings.cta_label }}
         </a>
       </div>
@@ -72,13 +101,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "THIS WEEK'S DROP"
+      "default": "THIS WEEK AT CHUNKIES"
     },
     {
       "type": "text",
       "id": "supporting_text",
       "label": "Supporting text",
-      "default": "New flavors. Limited time."
+      "default": "4 classics. 1 weekly special."
     },
     {
       "type": "header",
@@ -91,7 +120,8 @@
       "min": 3,
       "max": 8,
       "step": 1,
-      "default": 6
+      "default": 5,
+      "info": "Includes the weekly special, when one is set (badge = \"WEEKLY SPECIAL\")."
     },
     {
       "type": "header",
