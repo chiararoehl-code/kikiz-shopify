@@ -1,5 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
-  "current": "Default",
+  "current": {
+    "color_mango": "#F2A900",
+    "color_mango_deep": "#C98A00",
+    "color_cream": "#F5EFE1",
+    "color_black": "#17130F",
+    "color_surface": "#FFFFFF",
+    "color_concrete": "#8F887C",
+    "color_concrete_light": "#E4DFD3",
+    "font_display": "assistant_n7",
+    "font_body": "assistant_n4",
+    "page_width": 1280,
+    "social_instagram_url": "",
+    "social_tiktok_url": ""
+  },
   "presets": {
     "Default": {
       "color_mango": "#F2A900",

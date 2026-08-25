@@ -1,21 +1,69 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "announcement-bar": {
       "type": "announcement-bar",
-      "settings": {}
+      "settings": {
+        "enable": true,
+        "text": "THIS WEEK'S DROP IS LIVE",
+        "link": "",
+        "color_scheme": "mango"
+      }
     },
     "hero": {
       "type": "brand-hero",
-      "settings": {}
+      "settings": {
+        "eyebrow": "FRESH THIS WEEK",
+        "heading": "MEET YOUR NEW OBSESSION.",
+        "body": "<p>Big cookies. New flavors. Every week.</p>",
+        "primary_cta_label": "ORDER NOW",
+        "primary_cta_link": "",
+        "secondary_cta_label": "SEE THIS WEEK",
+        "secondary_cta_link": "",
+        "enable_overlay": false,
+        "overlay_opacity": 40,
+        "layout": "split",
+        "content_position": "middle-left",
+        "text_alignment": "left",
+        "height": "large",
+        "color_scheme": "cream"
+      }
     },
     "weekly-drop": {
       "type": "weekly-drop",
-      "settings": {}
+      "settings": {
+        "eyebrow": "FRESH THIS WEEK",
+        "heading": "THIS WEEK AT CHUNKIES",
+        "supporting_text": "4 classics. 1 weekly special.",
+        "flavor_limit": 5,
+        "cta_label": "BUILD YOUR BOX",
+        "color_scheme": "cream"
+      }
     },
     "box-selector": {
       "type": "box-selector",
-      "settings": {}
+      "settings": {
+        "eyebrow": "PICK YOUR SIZE",
+        "heading": "BUILD YOUR BOX",
+        "supporting_text": "Choose 3 or 6. Then fill it with your favorites.",
+        "box_product_3": "",
+        "box_product_6": "",
+        "color_scheme": "cream"
+      }
     }
   },
-  "order": ["announcement-bar", "hero", "weekly-drop", "box-selector"]
+  "order": [
+    "announcement-bar",
+    "hero",
+    "weekly-drop",
+    "box-selector"
+  ]
 }
