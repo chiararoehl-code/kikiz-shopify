@@ -27,6 +27,8 @@
           loading="lazy"
         >
       </span>
+    {%- else -%}
+      <span class="flavor-selector__thumb flavor-selector__thumb--placeholder" aria-hidden="true"></span>
     {%- endif -%}
     <span class="flavor-selector__name">{{ flavor.name.value }}</span>
     {%- if flavor.badge.value != blank -%}

@@ -26,6 +26,7 @@
 
   var tplBuildYour = modal.dataset.tplBuildYour || 'BUILD YOUR __SIZE__';
   var tplCounter = modal.dataset.tplCounter || '__SELECTED__ / __TOTAL__ SELECTED';
+  var tplBoxReady = modal.dataset.tplBoxReady || 'BOX READY';
   var tplSelectCookies = modal.dataset.tplSelectCookies || 'SELECT __SIZE__ COOKIES';
   var tplSelectMore = modal.dataset.tplSelectMore || 'SELECT __COUNT__ MORE';
   var labelAddToCart = submitButton.dataset.defaultLabel || 'ADD BOX TO CART';
@@ -81,10 +82,14 @@
 
   function renderCounter() {
     if (!counterEl) return;
-    counterEl.textContent = fillTemplate(tplCounter, {
-      __SELECTED__: state.selectedCount,
-      __TOTAL__: state.boxSize
-    });
+    var isFull = state.boxSize > 0 && state.selectedCount >= state.boxSize;
+    counterEl.classList.toggle('box-builder__counter--full', isFull);
+    counterEl.textContent = isFull
+      ? tplBoxReady
+      : fillTemplate(tplCounter, {
+          __SELECTED__: state.selectedCount,
+          __TOTAL__: state.boxSize
+        });
   }
 
   function renderSubmitState() {
