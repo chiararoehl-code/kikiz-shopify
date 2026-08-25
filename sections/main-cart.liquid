@@ -5,7 +5,13 @@
   box stays exactly one Shopify cart line — Shopify's own variant +
   line-item-property matching is what keeps identical boxes merged and
   different flavor configurations separate; nothing here re-implements that.
+
+  Fulfillment (Pickup/Delivery) is a cart-level Shopify attribute, not a
+  line item property — it applies to the whole order, not to one box, so it
+  is rendered once here rather than per line (see snippets/cart-line-item).
 {%- endcomment -%}
+
+{%- assign fulfillment_method = cart.attributes['Fulfillment method'] -%}
 
 <section class="cart-page color-scheme--{{ section.settings.color_scheme }}" id="MainCart">
   <div class="cart-page__header container">
@@ -40,6 +46,53 @@
         </div>
 
         <div class="cart-page__summary">
+          <div class="fulfillment-summary">
+            <p class="fulfillment-summary__label label">{{ 'sections.cart.fulfillment_label' | t }}</p>
+            <div class="fulfillment-summary__row">
+              <span
+                class="fulfillment-summary__value"
+                data-fulfillment-summary
+                data-fulfillment-empty-label="{{ 'sections.cart.fulfillment_not_selected' | t }}"
+              >
+                {%- if fulfillment_method != blank -%}
+                  {{ fulfillment_method }}
+                {%- else -%}
+                  {{ 'sections.cart.fulfillment_not_selected' | t }}
+                {%- endif -%}
+              </span>
+              <button
+                type="button"
+                class="btn btn--secondary fulfillment-summary__action"
+                data-fulfillment-open
+                data-fulfillment-choose-label="{{ 'sections.cart.fulfillment_choose' | t }}"
+                data-fulfillment-change-label="{{ 'sections.cart.fulfillment_change' | t }}"
+              >
+                {%- if fulfillment_method != blank -%}
+                  {{ 'sections.cart.fulfillment_change' | t }}
+                {%- else -%}
+                  {{ 'sections.cart.fulfillment_choose' | t }}
+                {%- endif -%}
+              </button>
+            </div>
+
+            <noscript>
+              <div class="fulfillment-summary__nojs">
+                <form action="{{ routes.cart_url }}" method="post">
+                  <input type="hidden" name="attributes[Fulfillment method]" value="Pickup">
+                  <button type="submit" class="btn btn--secondary">
+                    {{ 'sections.cart.fulfillment_set_pickup' | t }}
+                  </button>
+                </form>
+                <form action="{{ routes.cart_url }}" method="post">
+                  <input type="hidden" name="attributes[Fulfillment method]" value="Delivery">
+                  <button type="submit" class="btn btn--secondary">
+                    {{ 'sections.cart.fulfillment_set_delivery' | t }}
+                  </button>
+                </form>
+              </div>
+            </noscript>
+          </div>
+
           <div class="cart-summary">
             <button type="submit" name="update" class="btn btn--secondary cart-summary__update">
               {{ 'sections.cart.update_cart' | t }}
@@ -51,7 +104,12 @@
             </div>
             <p class="cart-summary__note text-small">{{ 'sections.cart.taxes_note' | t }}</p>
 
-            <button type="submit" name="checkout" class="btn btn--primary cart-summary__checkout">
+            <button
+              type="submit"
+              name="checkout"
+              class="btn btn--primary cart-summary__checkout"
+              data-cart-checkout
+            >
               {{ 'sections.cart.checkout' | t }}
             </button>
             <a href="{{ routes.root_url }}#box-selector" class="btn btn--secondary cart-summary__continue">

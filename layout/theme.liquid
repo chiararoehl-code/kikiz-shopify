@@ -64,7 +64,7 @@
     {{ content_for_header }}
   </head>
 
-  <body>
+  <body data-fulfillment-method="{{ cart.attributes['Fulfillment method'] | escape }}">
     <a class="visually-hidden skip-to-content-link" href="#MainContent">
       {{ 'general.accessibility.skip_to_content' | t }}
     </a>
@@ -77,8 +77,12 @@
 
     {% section 'footer' %}
 
+    {%- render 'fulfillment-chooser' -%}
+
     {{ 'theme.js' | asset_url | script_tag }}
     {{ 'product-form.js' | asset_url | script_tag }}
     {{ 'box-builder.js' | asset_url | script_tag }}
+    {{ 'post-add-flow.js' | asset_url | script_tag }}
+    {{ 'fulfillment.js' | asset_url | script_tag }}
   </body>
 </html>

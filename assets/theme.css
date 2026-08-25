@@ -1813,6 +1813,12 @@ input {
   width: 100%;
 }
 
+.cart-page__summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
 .cart-lines {
   display: flex;
   flex-direction: column;
@@ -2013,4 +2019,186 @@ input {
 .cart-summary__continue,
 .cart-summary__update {
   width: 100%;
+}
+
+/* ==========================================================================
+   Fulfillment summary (cart page)
+   Cart-level, not per-line — one card, above totals.
+   ========================================================================== */
+
+.fulfillment-summary {
+  padding: var(--space-4) var(--space-5);
+  border: 2px solid var(--color-black, #17130F);
+  border-radius: var(--radius-medium);
+  background-color: var(--color-surface, #FFFFFF);
+  color: var(--color-text, #17130F);
+}
+
+.fulfillment-summary__label {
+  margin: 0 0 var(--space-2);
+  color: var(--color-muted, #8F887C);
+}
+
+.fulfillment-summary__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.fulfillment-summary__value {
+  font-family: var(--font-display, Helvetica, Arial, sans-serif);
+  font-weight: 700;
+  font-size: var(--text-body-lg);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.fulfillment-summary__nojs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+/* ==========================================================================
+   Fulfillment chooser
+   A quick decision step, not a configurator — Cream panel, Mango selected
+   state, one thin Chrome divider. Same centered-panel width on every
+   breakpoint; deliberately never fullscreen like the Box Builder.
+   ========================================================================== */
+
+.fulfillment-chooser[hidden] {
+  display: none;
+}
+
+.fulfillment-chooser__overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(23, 19, 15, 0.55);
+  z-index: 210;
+}
+
+.fulfillment-chooser__frame {
+  position: fixed;
+  inset: 0;
+  z-index: 211;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  pointer-events: none;
+}
+
+.fulfillment-chooser__panel {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: calc(100vh - var(--space-8));
+  overflow-y: auto;
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  border-radius: var(--radius-medium);
+  background-color: var(--color-background, #F5EFE1);
+  color: var(--color-text, #17130F);
+  border-top: 4px solid var(--color-brand-primary, #F2A900);
+  box-shadow: 0 24px 60px rgba(23, 19, 15, 0.35);
+  pointer-events: auto;
+}
+
+.fulfillment-chooser__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  padding: var(--space-2);
+}
+
+.fulfillment-chooser__close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.fulfillment-chooser__title {
+  margin: 0 var(--space-7) 0 0;
+}
+
+.fulfillment-chooser__divider {
+  display: block;
+  height: 3px;
+  margin: var(--space-3) 0 var(--space-5);
+  background: linear-gradient(
+    90deg,
+    var(--metal-2, #C9C6BB) 0%,
+    var(--metal-4, #AFAB9F) 50%,
+    var(--metal-2, #C9C6BB) 100%
+  );
+}
+
+.fulfillment-chooser__error {
+  margin: 0 0 var(--space-4);
+  padding: var(--space-3);
+  border-radius: var(--radius-small);
+  background-color: var(--color-black, #17130F);
+  color: var(--color-cream, #F5EFE1);
+  font-size: var(--text-small);
+}
+
+.fulfillment-chooser__options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media screen and (min-width: 480px) {
+  .fulfillment-chooser__options {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.fulfillment-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: var(--space-4);
+  border: 2px solid var(--color-black, #17130F);
+  border-radius: var(--radius-small);
+  background-color: var(--color-surface, #FFFFFF);
+  color: var(--color-black, #17130F);
+  text-align: left;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.fulfillment-option:hover {
+  border-color: var(--color-brand-primary, #F2A900);
+}
+
+.fulfillment-option.is-selected {
+  background-color: var(--color-brand-primary, #F2A900);
+  border-color: var(--color-black, #17130F);
+  color: var(--color-black, #17130F);
+}
+
+.fulfillment-option:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.fulfillment-option__label {
+  font-family: var(--font-display, Helvetica, Arial, sans-serif);
+  font-weight: 700;
+  font-size: var(--text-h3);
+  text-transform: uppercase;
+  letter-spacing: -0.015em;
+}
+
+.fulfillment-option__description {
+  font-size: var(--text-small);
+  color: var(--color-muted, #8F887C);
+  text-transform: none;
+}
+
+.fulfillment-option.is-selected .fulfillment-option__description {
+  color: var(--color-black, #17130F);
+  opacity: 0.75;
 }

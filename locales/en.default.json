@@ -41,8 +41,23 @@
       "add_another": "Add another box",
       "empty_heading": "YOUR BOX IS EMPTY",
       "empty_supporting": "Let's fix that.",
-      "build_box_cta": "BUILD YOUR BOX"
+      "build_box_cta": "BUILD YOUR BOX",
+      "fulfillment_label": "FULFILLMENT",
+      "fulfillment_not_selected": "NOT SELECTED",
+      "fulfillment_choose": "CHOOSE",
+      "fulfillment_change": "CHANGE",
+      "fulfillment_set_pickup": "Set to Pickup",
+      "fulfillment_set_delivery": "Set to Delivery"
     }
+  },
+  "fulfillment": {
+    "heading": "HOW DO YOU WANT YOUR CHUNKIES?",
+    "pickup_label": "PICKUP",
+    "pickup_description": "Pick them up fresh.",
+    "delivery_label": "DELIVERY",
+    "delivery_description": "Availability confirmed at checkout.",
+    "close": "Close",
+    "error_message": "Something went wrong. Please try again."
   },
   "products": {
     "price": {

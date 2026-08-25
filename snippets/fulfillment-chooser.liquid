@@ -1,0 +1,61 @@
+{%- comment -%}
+  Global Pickup/Delivery decision step. Included once from layout/theme.liquid
+  so it is reachable after a successful add from any page, and reusable from
+  the cart page's CHANGE/CHOOSE control — one chooser, one cart attribute,
+  never two separate fulfillment systems. Opened only via assets/fulfillment.js,
+  either in response to a `fulfillment:request` event dispatched by
+  assets/post-add-flow.js (never listens to cart:updated directly), or by a
+  [data-fulfillment-open] trigger elsewhere on the page.
+  Writes the Shopify-native cart attribute `Fulfillment method` (values:
+  "Pickup" / "Delivery") — never a line item property, never localStorage.
+{%- endcomment -%}
+
+<div class="fulfillment-chooser" data-fulfillment-chooser hidden>
+  <div class="fulfillment-chooser__overlay" data-fulfillment-close></div>
+
+  <div class="fulfillment-chooser__frame">
+    <div
+      class="fulfillment-chooser__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="FulfillmentChooserTitle"
+    >
+      <button type="button" class="fulfillment-chooser__close" data-fulfillment-close>
+        <span class="visually-hidden">{{ 'fulfillment.close' | t }}</span>
+        {%- render 'icons', icon: 'close' -%}
+      </button>
+
+      <h2 id="FulfillmentChooserTitle" class="fulfillment-chooser__title h2">
+        {{ 'fulfillment.heading' | t }}
+      </h2>
+      <span class="fulfillment-chooser__divider" aria-hidden="true"></span>
+
+      <p class="fulfillment-chooser__error" data-fulfillment-error hidden>
+        {{ 'fulfillment.error_message' | t }}
+      </p>
+
+      <div class="fulfillment-chooser__options">
+        <button
+          type="button"
+          class="fulfillment-option"
+          data-fulfillment-option
+          data-fulfillment-value="Pickup"
+          aria-pressed="false"
+        >
+          <span class="fulfillment-option__label">{{ 'fulfillment.pickup_label' | t }}</span>
+          <span class="fulfillment-option__description">{{ 'fulfillment.pickup_description' | t }}</span>
+        </button>
+        <button
+          type="button"
+          class="fulfillment-option"
+          data-fulfillment-option
+          data-fulfillment-value="Delivery"
+          aria-pressed="false"
+        >
+          <span class="fulfillment-option__label">{{ 'fulfillment.delivery_label' | t }}</span>
+          <span class="fulfillment-option__description">{{ 'fulfillment.delivery_description' | t }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
