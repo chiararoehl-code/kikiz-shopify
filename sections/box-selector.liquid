@@ -44,7 +44,6 @@
   {%- if flavor_count == 0 -%}
     <div class="box-selector__empty container">
       <div class="box-selector__empty-card">
-        <span class="box-selector__empty-shape shape-circle" aria-hidden="true"></span>
         <p class="h3">{{ 'box_builder.empty_flavors' | t }}</p>
       </div>
     </div>
@@ -60,7 +59,6 @@
       -%}
     {%- elsif request.design_mode -%}
       <div class="box-selector__placeholder">
-        <span class="box-selector__placeholder-shape shape-rounded" aria-hidden="true"></span>
         <p>{{ 'box_builder.placeholder_3' | t }}</p>
       </div>
     {%- endif -%}
@@ -74,7 +72,6 @@
       -%}
     {%- elsif request.design_mode -%}
       <div class="box-selector__placeholder">
-        <span class="box-selector__placeholder-shape shape-rounded" aria-hidden="true"></span>
         <p>{{ 'box_builder.placeholder_6' | t }}</p>
       </div>
     {%- endif -%}
@@ -193,12 +190,12 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "options": [
-        { "value": "lavender", "label": "Lavender / Deep green text" },
-        { "value": "off-white", "label": "Off white / Deep green text" },
-        { "value": "green", "label": "Green / Lavender text" },
-        { "value": "green-dark", "label": "Deep green / Lavender text" }
+        { "value": "chrome", "label": "Chrome / Near black text" },
+        { "value": "mango", "label": "Mango / Near black text" },
+        { "value": "cream", "label": "Cream / Near black text" },
+        { "value": "black", "label": "Near black / Cream text" }
       ],
-      "default": "lavender"
+      "default": "chrome"
     }
   ],
   "presets": [

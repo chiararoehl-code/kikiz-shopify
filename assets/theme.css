@@ -18,10 +18,10 @@
   --space-9: 96px;
   --space-10: 128px;
 
-  /* Shape language: soft rounded rectangle (primary), pill (buttons/badges), circle (accents) */
-  --radius-small: 6px;
-  --radius-medium: 14px;
-  --radius-large: 28px;
+  /* Shape language: mostly rectangular, moderate/small radii, no pills */
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --radius-large: 14px;
   --radius-pill: 999px;
 
   /* Type scale */
@@ -54,8 +54,8 @@ html {
 
 body {
   margin: 0;
-  background-color: var(--color-background, #FFFDF8);
-  color: var(--color-text, #174F0C);
+  background-color: var(--color-background, #F5EFE1);
+  color: var(--color-text, #17130F);
   font-family: var(--font-body, Helvetica, Arial, sans-serif);
   font-size: var(--text-body);
   line-height: 1.5;
@@ -127,8 +127,8 @@ input {
   top: -100%;
   left: var(--space-4);
   z-index: 1000;
-  background-color: var(--color-brand-secondary, #237A0B);
-  color: var(--color-off-white, #FFFDF8);
+  background-color: var(--color-brand-primary, #F2A900);
+  color: var(--color-black, #17130F);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-small);
 }
@@ -138,7 +138,7 @@ input {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-brand-secondary, #237A0B);
+  outline: 2px solid var(--color-black, #17130F);
   outline-offset: 2px;
 }
 
@@ -148,6 +148,8 @@ input {
 
 /* ==========================================================================
    Typography
+   Bold, condensed-feeling, packaging/menu-board headlines. Body stays
+   plain and highly legible — condensing is reserved for display type.
    ========================================================================== */
 
 .display-xl,
@@ -157,8 +159,9 @@ input {
 .h3 {
   font-family: var(--font-display, Helvetica, Arial, sans-serif);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.01em;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
   margin: 0;
 }
 
@@ -174,13 +177,14 @@ input {
 
 .label {
   font-size: var(--text-label);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
 }
 
 /* ==========================================================================
    Buttons
+   Rectangular, bold, packaging-label confident. No pill shapes.
    ========================================================================== */
 
 .btn {
@@ -190,12 +194,14 @@ input {
   gap: var(--space-2);
   min-height: 44px;
   padding: var(--space-3) var(--space-5);
-  border-radius: var(--radius-pill);
-  font-weight: 600;
-  font-size: var(--text-body);
+  border-radius: var(--radius-small);
+  font-weight: 700;
+  font-size: var(--text-small);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   text-decoration: none;
   border: 2px solid transparent;
-  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
 }
 
 .btn:hover {
@@ -203,32 +209,33 @@ input {
 }
 
 .btn--primary {
-  background-color: var(--color-brand-secondary, #237A0B);
-  color: var(--color-off-white, #FFFDF8);
+  background-color: var(--color-brand-primary, #F2A900);
+  color: var(--color-black, #17130F);
 }
 
 .btn--primary:hover {
-  background-color: var(--color-brand-dark, #174F0C);
+  background-color: var(--color-brand-dark, #C98A00);
 }
 
 .btn--secondary {
   background-color: transparent;
-  border-color: var(--color-brand-secondary, #237A0B);
-  color: var(--color-brand-secondary, #237A0B);
+  border-color: var(--color-black, #17130F);
+  color: var(--color-black, #17130F);
 }
 
 .btn--secondary:hover {
-  background-color: var(--color-brand-secondary, #237A0B);
-  color: var(--color-off-white, #FFFDF8);
+  background-color: var(--color-black, #17130F);
+  color: var(--color-cream, #F5EFE1);
 }
 
 .btn--campaign {
-  background-color: var(--color-brand-primary, #E8C9F4);
-  color: var(--color-brand-dark, #174F0C);
+  background-color: var(--color-black, #17130F);
+  color: var(--color-cream, #F5EFE1);
 }
 
 .btn--campaign:hover {
-  background-color: var(--color-off-white, #FFFDF8);
+  background-color: var(--color-brand-dark, #C98A00);
+  color: var(--color-black, #17130F);
 }
 
 .btn--text {
@@ -241,49 +248,58 @@ input {
 /* ==========================================================================
    Color scheme system
    Every content section picks one of these instead of setting its own
-   background/text colors. Keeps the Lavender x Green x Off White rhythm
-   consistent instead of inventing new tones per section.
+   background/text colors. Keeps Mango x Chrome x Cream x Black deliberate
+   instead of every section drifting toward the same neutral.
    ========================================================================== */
 
-.color-scheme--lavender {
-  background-color: var(--color-brand-primary, #E8C9F4);
-  color: var(--color-brand-dark, #174F0C);
+.color-scheme--mango {
+  background-color: var(--color-brand-primary, #F2A900);
+  color: var(--color-black, #17130F);
 }
 
-.color-scheme--green {
-  background-color: var(--color-brand-secondary, #237A0B);
-  color: var(--color-brand-primary, #E8C9F4);
+.color-scheme--cream {
+  background-color: var(--color-background, #F5EFE1);
+  color: var(--color-text, #17130F);
 }
 
-.color-scheme--green-dark {
-  background-color: var(--color-brand-dark, #174F0C);
-  color: var(--color-brand-primary, #E8C9F4);
+.color-scheme--black {
+  background-color: var(--color-black, #17130F);
+  color: var(--color-background, #F5EFE1);
 }
 
-.color-scheme--off-white {
-  background-color: var(--color-background, #FFFDF8);
-  color: var(--color-text, #174F0C);
+.color-scheme--chrome {
+  background: linear-gradient(
+    155deg,
+    var(--metal-1, #EEEBE3) 0%,
+    var(--metal-2, #C9C6BB) 22%,
+    var(--metal-3, #DEDBD1) 38%,
+    var(--metal-4, #AFAB9F) 58%,
+    var(--metal-5, #E3E0D6) 78%,
+    var(--metal-2, #C9C6BB) 100%
+  );
+  color: var(--color-black, #17130F);
 }
 
 /* ==========================================================================
    Shape language
-   Primary: soft rounded rectangle. Secondary: circle. Accent: 8-point star.
-   Defined centrally, used sparingly — not every section needs a sticker.
+   Rectangular blocks and thin rules, packaging-inspired. No stars, no
+   circles, no soft decorative blobs.
    ========================================================================== */
 
 .shape-rounded {
   border-radius: var(--radius-large);
 }
 
-.shape-circle {
-  border-radius: 50%;
+.block-accent {
+  background-color: var(--color-brand-primary, #F2A900);
 }
 
-.shape-star {
-  clip-path: polygon(
-    50% 0%, 58% 31%, 85% 15%, 69% 42%, 100% 50%, 69% 58%, 85% 85%, 58% 69%,
-    50% 100%, 42% 69%, 15% 85%, 31% 58%, 0% 50%, 31% 42%, 15% 15%, 42% 31%
-  );
+.block-accent--black {
+  background-color: var(--color-black, #17130F);
+}
+
+.rule {
+  background-color: var(--color-black, #17130F);
 }
 
 /* ==========================================================================
@@ -300,7 +316,7 @@ input {
   font-size: var(--text-small);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
 }
 
 .announcement-bar__link {
@@ -317,8 +333,8 @@ input {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: color-mix(in srgb, var(--color-brand-primary, #E8C9F4) 24%, var(--color-off-white, #FFFDF8));
-  border-bottom: 1px solid var(--color-border, #E4DEE6);
+  background-color: var(--color-surface, #FFFFFF);
+  border-bottom: 2px solid var(--color-black, #17130F);
 }
 
 .site-header__inner {
@@ -338,6 +354,7 @@ input {
   font-weight: 700;
   font-size: var(--text-h3);
   letter-spacing: -0.01em;
+  text-transform: uppercase;
 }
 
 .header-toggle {
@@ -362,15 +379,15 @@ input {
 
 .site-nav__link {
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--text-small);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   transition: color 0.15s ease;
 }
 
 .site-nav__link:hover {
-  color: var(--color-brand-secondary, #237A0B);
+  color: var(--color-brand-dark, #C98A00);
 }
 
 .site-header__utility {
@@ -383,8 +400,8 @@ input {
   display: none;
   align-items: center;
   gap: var(--space-2);
-  background-color: var(--color-surface, #FFFFFF);
-  border-radius: var(--radius-pill);
+  background-color: var(--color-background, #F5EFE1);
+  border-radius: var(--radius-small);
   padding-inline: var(--space-3);
 }
 
@@ -412,7 +429,7 @@ input {
 }
 
 .header-icon-link:hover {
-  color: var(--color-brand-secondary, #237A0B);
+  color: var(--color-brand-dark, #C98A00);
 }
 
 .header-icon-link svg {
@@ -427,9 +444,9 @@ input {
   min-width: 16px;
   height: 16px;
   padding-inline: 3px;
-  border-radius: var(--radius-pill);
-  background-color: var(--color-brand-secondary, #237A0B);
-  color: var(--color-off-white, #FFFDF8);
+  border-radius: var(--radius-small);
+  background-color: var(--color-brand-primary, #F2A900);
+  color: var(--color-black, #17130F);
   font-size: 10px;
   font-weight: 700;
   display: flex;
@@ -442,7 +459,7 @@ input {
 .mobile-nav-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(23, 19, 15, 0.5);
   z-index: 150;
 }
 
@@ -474,7 +491,7 @@ input {
 }
 
 .mobile-nav__item {
-  border-bottom: 1px solid var(--color-border, #E4DEE6);
+  border-bottom: 1px solid var(--color-border, #E4DFD3);
 }
 
 .mobile-nav__link {
@@ -483,6 +500,7 @@ input {
   text-decoration: none;
   font-family: var(--font-display, Helvetica, Arial, sans-serif);
   font-size: var(--text-h3);
+  text-transform: uppercase;
 }
 
 @media screen and (min-width: 990px) {
@@ -534,7 +552,7 @@ input {
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background-color: var(--color-ink, #171717);
+  background-color: var(--color-black, #17130F);
   opacity: var(--hero-overlay-opacity, 0.4);
   pointer-events: none;
 }
@@ -546,32 +564,21 @@ input {
   flex-direction: column;
 }
 
-.hero__accent-shape {
-  position: absolute;
-  top: var(--space-6);
-  right: var(--space-6);
-  width: 56px;
-  height: 56px;
-  background-color: var(--color-brand-dark, #174F0C);
-  opacity: 0.9;
-  animation: hero-spin 24s linear infinite;
-  z-index: 1;
-}
-
-.hero__fallback-shape {
-  position: absolute;
-  bottom: -12%;
-  right: -8%;
-  width: 55%;
-  aspect-ratio: 1 / 1;
-  max-width: 480px;
-  background-color: var(--color-brand-secondary, #237A0B);
-  opacity: 0.14;
-  z-index: 0;
-}
-
 .hero__eyebrow {
+  position: relative;
   margin: 0 0 var(--space-3);
+  padding-left: var(--space-3);
+  animation: hero-fade-up 0.6s ease both;
+}
+
+.hero__eyebrow::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  bottom: 0.2em;
+  width: 3px;
+  background-color: currentColor;
 }
 
 .hero__heading {
@@ -579,10 +586,6 @@ input {
   text-wrap: balance;
   animation: hero-fade-up 0.6s ease both;
   animation-delay: 0.05s;
-}
-
-.hero__eyebrow {
-  animation: hero-fade-up 0.6s ease both;
 }
 
 .hero__body {
@@ -619,9 +622,17 @@ input {
   justify-content: center;
 }
 
-.text-align-center .hero__accent-shape {
+.text-align-center .hero__eyebrow {
+  padding-left: 0;
+  padding-top: var(--space-3);
+}
+
+.text-align-center .hero__eyebrow::before {
   left: 50%;
-  right: auto;
+  top: 0;
+  bottom: auto;
+  width: 32px;
+  height: 3px;
   transform: translateX(-50%);
 }
 
@@ -645,11 +656,6 @@ input {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-@keyframes hero-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }
 
 /* Full-bleed layout: media fills the section, content overlays it */
@@ -694,7 +700,7 @@ input {
 .hero--split .hero__content {
   flex: 1 1 50%;
   justify-content: center;
-  padding: var(--space-7) var(--space-6);
+  padding: var(--space-7) var(--space-8);
 }
 
 .hero--split[data-position-h="right"] {
@@ -706,6 +712,42 @@ input {
 
 .hero--no-media .hero__content {
   flex: 1 1 100%;
+  position: relative;
+}
+
+/* No-image fallback: an architectural Mango panel + thin rule grid instead
+   of a soft decorative blob, so the hero still reads as intentional. */
+
+.hero__fallback-panel {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.hero__fallback-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 42%;
+  background-color: var(--color-brand-primary, #F2A900);
+}
+
+.hero__fallback-panel::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 42%;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--color-black, #17130F);
+}
+
+.hero--no-media.text-align-center .hero__fallback-panel::before,
+.hero--no-media.text-align-center .hero__fallback-panel::after {
+  display: none;
 }
 
 @media screen and (max-width: 749px) {
@@ -727,41 +769,54 @@ input {
     padding: var(--space-6) var(--space-4);
   }
 
-  .hero__accent-shape {
-    width: 24px;
-    height: 24px;
+  .hero__fallback-panel::before {
+    width: 100%;
+    height: 30%;
+    top: auto;
+    bottom: 0;
+    left: 0;
+  }
+
+  .hero__fallback-panel::after {
+    right: 0;
+    bottom: 30%;
+    top: auto;
+    left: 0;
+    width: 100%;
+    height: 2px;
   }
 }
 
 /* ==========================================================================
    Badge
+   Small printed-label tag rather than a pill+icon.
    ========================================================================== */
 
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: 5px 10px 5px 6px;
-  border-radius: var(--radius-pill);
-  background-color: var(--color-brand-secondary, #237A0B);
-  color: var(--color-off-white, #FFFDF8);
+  padding: 3px 8px;
+  border: 1.5px solid currentColor;
+  border-radius: var(--radius-small);
+  background-color: var(--color-surface, #FFFFFF);
+  color: var(--color-black, #17130F);
   font-size: var(--text-label);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
   white-space: nowrap;
 }
 
-.badge__shape {
-  width: 10px;
-  height: 10px;
-  flex-shrink: 0;
-  background-color: currentColor;
+.badge--accent {
+  background-color: var(--color-brand-primary, #F2A900);
+  border-color: var(--color-black, #17130F);
+  color: var(--color-black, #17130F);
 }
 
 .badge--sold-out {
-  background-color: var(--color-ink, #171717);
-  padding-inline-start: 10px;
+  background-color: var(--color-black, #17130F);
+  border-color: var(--color-black, #17130F);
+  color: var(--color-cream, #F5EFE1);
 }
 
 /* ==========================================================================
@@ -778,16 +833,18 @@ input {
 .price--on-sale .price__compare-at {
   font-weight: 400;
   font-size: var(--text-small);
-  color: var(--color-muted, #6E6E68);
+  color: var(--color-muted, #8F887C);
   text-decoration: line-through;
 }
 
 .price--on-sale .price__sale {
-  color: var(--color-brand-secondary, #237A0B);
+  color: var(--color-brand-dark, #C98A00);
 }
 
 /* ==========================================================================
    Cookie card (display-only — Weekly Drop discovery/brand presentation)
+   Menu-board / packaging presentation: image dominant, thin border, no
+   soft SaaS card shadow.
    ========================================================================== */
 
 .cookie-card {
@@ -801,12 +858,13 @@ input {
   aspect-ratio: 1 / 1;
   overflow: hidden;
   background-color: var(--color-surface, #FFFFFF);
+  border: 1px solid var(--color-border, #E4DFD3);
 }
 
 .cookie-card__media-placeholder {
   position: absolute;
   inset: 0;
-  background-color: var(--color-border, #E4DEE6);
+  background-color: var(--color-border, #E4DFD3);
 }
 
 .cookie-card__image {
@@ -838,7 +896,8 @@ input {
 
 .cookie-card__description {
   margin: 0;
-  color: var(--color-muted, #6E6E68);
+  color: var(--color-muted, #8F887C);
+  text-transform: none;
 }
 
 /* ==========================================================================
@@ -853,7 +912,7 @@ input {
   -webkit-overflow-scrolling: touch;
   padding-bottom: var(--space-3);
   scrollbar-width: thin;
-  scrollbar-color: var(--color-border, #E4DEE6) transparent;
+  scrollbar-color: var(--color-border, #E4DFD3) transparent;
 }
 
 .product-rail::-webkit-scrollbar {
@@ -865,8 +924,8 @@ input {
 }
 
 .product-rail::-webkit-scrollbar-thumb {
-  background-color: var(--color-border, #E4DEE6);
-  border-radius: var(--radius-pill);
+  background-color: var(--color-border, #E4DFD3);
+  border-radius: var(--radius-small);
 }
 
 .product-rail__item {
@@ -930,6 +989,7 @@ input {
 .weekly-drop__supporting {
   max-width: 320px;
   margin: 0;
+  text-transform: none;
 }
 
 .weekly-drop__empty {
@@ -942,9 +1002,10 @@ input {
   width: 100%;
   max-width: 420px;
   padding: var(--space-7) var(--space-6);
-  border-radius: var(--radius-large);
-  background-color: var(--color-brand-primary, #E8C9F4);
-  color: var(--color-brand-dark, #174F0C);
+  border: 2px solid var(--color-black, #17130F);
+  border-radius: var(--radius-medium);
+  background-color: var(--color-brand-primary, #F2A900);
+  color: var(--color-black, #17130F);
   text-align: center;
   overflow: hidden;
 }
@@ -955,25 +1016,13 @@ input {
   margin: 0;
 }
 
-.weekly-drop__empty-shape {
+.weekly-drop__empty-mark {
   position: absolute;
-  background-color: var(--color-brand-secondary, #237A0B);
-  opacity: 0.18;
-}
-
-.weekly-drop__empty-shape.shape-circle {
-  top: -50px;
-  right: -50px;
-  width: 150px;
-  height: 150px;
-}
-
-.weekly-drop__empty-shape--star {
-  bottom: -20px;
-  left: -20px;
-  width: 70px;
-  height: 70px;
-  opacity: 0.25;
+  top: var(--space-3);
+  right: var(--space-3);
+  width: 28px;
+  height: 3px;
+  background-color: var(--color-black, #17130F);
 }
 
 .weekly-drop__cta {
@@ -1022,6 +1071,7 @@ input {
 .box-selector__supporting {
   margin: var(--space-3) 0 0;
   max-width: 480px;
+  text-transform: none;
 }
 
 .box-selector__empty {
@@ -1035,51 +1085,31 @@ input {
   width: 100%;
   max-width: 480px;
   padding: var(--space-6);
-  border-radius: var(--radius-large);
+  border: 2px solid var(--color-black, #17130F);
+  border-radius: var(--radius-medium);
   background-color: var(--color-surface, #FFFFFF);
-  color: var(--color-text, #174F0C);
+  color: var(--color-text, #17130F);
   text-align: center;
   overflow: hidden;
-  box-shadow: 0 12px 30px rgba(23, 48, 18, 0.08);
 }
 
 .box-selector__empty-card p {
-  position: relative;
-  z-index: 1;
   margin: 0;
-}
-
-.box-selector__empty-shape {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 120px;
-  height: 120px;
-  background-color: var(--color-brand-primary, #E8C9F4);
-  opacity: 0.5;
 }
 
 .box-selector__placeholder {
   position: relative;
   padding: var(--space-5);
-  border-radius: var(--radius-large);
-  background-color: var(--color-background, #FFFDF8);
-  color: var(--color-text, #174F0C);
+  border: 2px dashed var(--color-black, #17130F);
+  border-radius: var(--radius-medium);
+  background-color: var(--color-background, #F5EFE1);
+  color: var(--color-text, #17130F);
   text-align: center;
-  overflow: hidden;
 }
 
 .box-selector__placeholder p {
-  position: relative;
-  z-index: 1;
   margin: 0;
-}
-
-.box-selector__placeholder-shape {
-  position: absolute;
-  inset: var(--space-4);
-  border: 2px dashed var(--color-border, #E4DEE6);
-  border-radius: var(--radius-medium);
+  text-transform: none;
 }
 
 .box-selector__options {
@@ -1097,6 +1127,7 @@ input {
 
 /* ==========================================================================
    Box option card
+   Substantial, tactile — a stainless counter tile, not a pricing card.
    ========================================================================== */
 
 .box-option {
@@ -1104,39 +1135,44 @@ input {
   flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-5);
-  border-radius: var(--radius-large);
+  border: 2px solid var(--color-black, #17130F);
+  border-radius: var(--radius-medium);
   background-color: var(--color-surface, #FFFFFF);
-  color: var(--color-text, #174F0C);
-  box-shadow: 0 16px 40px rgba(23, 48, 18, 0.1);
+  color: var(--color-text, #17130F);
 }
 
 .box-option__media {
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background-color: var(--color-background, #FFFDF8);
-}
-
-.box-option__shape {
-  position: absolute;
-  top: var(--space-3);
-  right: var(--space-3);
-  width: 34px;
-  height: 34px;
-  background-color: var(--color-brand-primary, #E8C9F4);
-  z-index: 2;
-}
-
-.box-option__media-placeholder {
-  position: absolute;
-  inset: 0;
-  background-color: var(--color-border, #E4DEE6);
+  background-color: var(--color-background, #F5EFE1);
+  border: 1px solid var(--color-border, #E4DFD3);
 }
 
 .box-option__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.box-option__media-placeholder {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-border, #E4DFD3);
+}
+
+.box-option__tag {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 2;
+  padding: 3px 8px;
+  background-color: var(--color-black, #17130F);
+  color: var(--color-cream, #F5EFE1);
+  font-size: var(--text-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .box-option__content {
@@ -1151,7 +1187,8 @@ input {
 
 .box-option__description {
   margin: 0;
-  color: var(--color-muted, #6E6E68);
+  color: var(--color-muted, #8F887C);
+  text-transform: none;
 }
 
 .box-option__cta {
@@ -1161,6 +1198,7 @@ input {
 
 /* ==========================================================================
    Box builder modal
+   Chrome shell accent, Cream content, Mango action.
    ========================================================================== */
 
 .box-builder[hidden] {
@@ -1170,7 +1208,7 @@ input {
 .box-builder__overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(23, 19, 15, 0.55);
   z-index: 200;
 }
 
@@ -1178,8 +1216,8 @@ input {
   position: fixed;
   inset: 0;
   z-index: 201;
-  background-color: var(--color-background, #FFFDF8);
-  color: var(--color-text, #174F0C);
+  background-color: var(--color-background, #F5EFE1);
+  color: var(--color-text, #17130F);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1193,8 +1231,8 @@ input {
     transform: translate(-50%, -50%);
     width: min(90vw, 700px);
     max-height: 85vh;
-    border-radius: var(--radius-large);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+    border-radius: var(--radius-medium);
+    box-shadow: 0 24px 60px rgba(23, 19, 15, 0.35);
   }
 }
 
@@ -1202,7 +1240,13 @@ input {
   position: relative;
   flex-shrink: 0;
   padding: var(--space-6) var(--space-5) var(--space-4);
-  border-bottom: 1px solid var(--color-border, #E4DEE6);
+  border-bottom: 2px solid var(--color-black, #17130F);
+  background: linear-gradient(
+    155deg,
+    var(--metal-1, #EEEBE3) 0%,
+    var(--metal-3, #DEDBD1) 45%,
+    var(--metal-2, #C9C6BB) 100%
+  );
 }
 
 .box-builder__close {
@@ -1224,7 +1268,8 @@ input {
 
 .box-builder__subtitle {
   margin: var(--space-2) 0 0;
-  color: var(--color-muted, #6E6E68);
+  color: var(--color-black, #17130F);
+  opacity: 0.7;
 }
 
 .box-builder__flavors {
@@ -1247,7 +1292,7 @@ input {
 .box-builder__footer {
   flex-shrink: 0;
   padding: var(--space-4) var(--space-5);
-  border-top: 1px solid var(--color-border, #E4DEE6);
+  border-top: 2px solid var(--color-black, #17130F);
   background-color: var(--color-surface, #FFFFFF);
 }
 
@@ -1255,14 +1300,15 @@ input {
   margin: 0 0 var(--space-3);
   padding: var(--space-3);
   border-radius: var(--radius-small);
-  background-color: var(--color-ink, #171717);
-  color: var(--color-off-white, #FFFDF8);
+  background-color: var(--color-black, #17130F);
+  color: var(--color-cream, #F5EFE1);
   font-size: var(--text-small);
 }
 
 .box-builder__counter {
   margin: 0 0 var(--space-3);
   font-weight: 700;
+  text-transform: uppercase;
   letter-spacing: 0.02em;
 }
 
@@ -1272,6 +1318,7 @@ input {
 
 /* ==========================================================================
    Flavor selector (compact — box builder only)
+   Rectangular controls, Mango as the strongest selected state.
    ========================================================================== */
 
 .flavor-selector__pill,
@@ -1282,10 +1329,10 @@ input {
   width: 100%;
   min-height: 44px;
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-pill);
-  border: 2px solid var(--color-brand-dark, #174F0C);
-  background-color: transparent;
-  color: var(--color-text, #174F0C);
+  border-radius: var(--radius-small);
+  border: 2px solid var(--color-black, #17130F);
+  background-color: var(--color-surface, #FFFFFF);
+  color: var(--color-text, #17130F);
 }
 
 .flavor-selector__pill {
@@ -1297,7 +1344,7 @@ input {
   flex-shrink: 0;
   width: 28px;
   height: 28px;
-  border-radius: 50%;
+  border-radius: var(--radius-small);
   overflow: hidden;
 }
 
@@ -1309,10 +1356,10 @@ input {
 
 .flavor-selector__name,
 .flavor-selector__stepper-name {
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--text-small);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 .flavor-selector__pill .badge {
@@ -1324,11 +1371,11 @@ input {
   cursor: not-allowed;
 }
 
-/* Selected state: deep green background, lavender text — our CI, no new colors */
+/* Selected state: Mango background, Near Black text and border */
 .flavor-selector__stepper {
-  background-color: var(--color-brand-dark, #174F0C);
-  border-color: var(--color-brand-dark, #174F0C);
-  color: var(--color-brand-primary, #E8C9F4);
+  background-color: var(--color-brand-primary, #F2A900);
+  border-color: var(--color-black, #17130F);
+  color: var(--color-black, #17130F);
   justify-content: space-between;
 }
 
@@ -1340,12 +1387,12 @@ input {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 32px;
+  height: 32px;
   flex-shrink: 0;
-  border-radius: 50%;
-  background-color: var(--color-off-white, #FFFDF8);
-  color: var(--color-brand-dark, #174F0C);
+  border-radius: var(--radius-small);
+  background-color: var(--color-black, #17130F);
+  color: var(--color-cream, #F5EFE1);
   font-weight: 700;
   font-size: var(--text-body-lg);
 }
@@ -1363,13 +1410,15 @@ input {
 
 /* ==========================================================================
    Footer
+   Near-black industrial ending, Cream type, Mango accents.
    ========================================================================== */
 
 .site-footer {
-  background-color: var(--color-brand-dark, #174F0C);
-  color: var(--color-off-white, #FFFDF8);
+  background-color: var(--color-black, #17130F);
+  color: var(--color-background, #F5EFE1);
   margin-top: var(--space-9);
   padding-block: var(--space-9);
+  border-top: 4px solid var(--color-brand-primary, #F2A900);
 }
 
 .site-footer__inner {
@@ -1379,14 +1428,15 @@ input {
 }
 
 .site-footer__brand-name {
-  color: var(--color-brand-primary, #E8C9F4);
+  color: var(--color-brand-primary, #F2A900);
   text-wrap: balance;
 }
 
 .site-footer__text {
-  color: color-mix(in srgb, var(--color-off-white, #FFFDF8) 75%, transparent);
+  color: color-mix(in srgb, var(--color-background, #F5EFE1) 75%, transparent);
   margin-top: var(--space-3);
   max-width: 32ch;
+  text-transform: none;
 }
 
 .site-footer__social {
@@ -1396,7 +1446,7 @@ input {
 }
 
 .site-footer__social .header-icon-link:hover {
-  color: var(--color-brand-primary, #E8C9F4);
+  color: var(--color-brand-primary, #F2A900);
 }
 
 .site-footer__list {
@@ -1407,19 +1457,23 @@ input {
 
 .site-footer__list a {
   text-decoration: none;
-  color: color-mix(in srgb, var(--color-off-white, #FFFDF8) 75%, transparent);
+  color: color-mix(in srgb, var(--color-background, #F5EFE1) 80%, transparent);
+  font-size: var(--text-small);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   transition: color 0.15s ease;
 }
 
 .site-footer__list a:hover {
-  color: var(--color-brand-primary, #E8C9F4);
+  color: var(--color-brand-primary, #F2A900);
 }
 
 .site-footer__bottom {
   margin-top: var(--space-6);
   padding-top: var(--space-5);
-  border-top: 1px solid color-mix(in srgb, var(--color-off-white, #FFFDF8) 20%, transparent);
-  color: color-mix(in srgb, var(--color-off-white, #FFFDF8) 65%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--color-background, #F5EFE1) 20%, transparent);
+  color: color-mix(in srgb, var(--color-background, #F5EFE1) 65%, transparent);
   font-size: var(--text-small);
 }
 

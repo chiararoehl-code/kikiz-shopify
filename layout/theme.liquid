@@ -28,22 +28,30 @@
       {{ settings.font_body | font_face: font_display: 'swap' }}
 
       :root {
-        /* Raw brand swatches — Lavender x Deep Green x Off White */
-        --color-lavender: {{ settings.color_lavender }};
-        --color-green: {{ settings.color_green }};
-        --color-green-dark: {{ settings.color_green_dark }};
-        --color-off-white: {{ settings.color_off_white }};
-        --color-ink: {{ settings.color_ink }};
+        /* Raw brand swatches — Mango x Chrome x Cream x Near Black */
+        --color-mango: {{ settings.color_mango }};
+        --color-mango-deep: {{ settings.color_mango_deep }};
+        --color-cream: {{ settings.color_cream }};
+        --color-black: {{ settings.color_black }};
         --color-surface: {{ settings.color_surface }};
-        --color-muted: {{ settings.color_muted }};
-        --color-border: {{ settings.color_border }};
+        --color-concrete: {{ settings.color_concrete }};
+        --color-concrete-light: {{ settings.color_concrete_light }};
 
         /* Semantic roles, derived centrally so no section invents its own hex */
-        --color-brand-primary: var(--color-lavender);
-        --color-brand-secondary: var(--color-green);
-        --color-brand-dark: var(--color-green-dark);
-        --color-background: var(--color-off-white);
-        --color-text: var(--color-green-dark);
+        --color-brand-primary: var(--color-mango);
+        --color-brand-dark: var(--color-mango-deep);
+        --color-ink: var(--color-black);
+        --color-background: var(--color-cream);
+        --color-text: var(--color-black);
+        --color-muted: var(--color-concrete);
+        --color-border: var(--color-concrete-light);
+
+        /* Restrained brushed-steel gradient — warm greys, no blue/holographic cast */
+        --metal-1: #EEEBE3;
+        --metal-2: #C9C6BB;
+        --metal-3: #DEDBD1;
+        --metal-4: #AFAB9F;
+        --metal-5: #E3E0D6;
 
         --font-display: {{ settings.font_display.family | default: 'Helvetica Neue' }}, {{ settings.font_display.fallback_families | default: 'Arial, sans-serif' }}, sans-serif;
         --font-body: {{ settings.font_body.family | default: 'Helvetica Neue' }}, {{ settings.font_body.fallback_families | default: 'Arial, sans-serif' }}, sans-serif;

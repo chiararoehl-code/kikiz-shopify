@@ -51,9 +51,8 @@
   {%- endif -%}
 
   <div class="hero__content text-align-{{ section.settings.text_alignment }}">
-    <span class="hero__accent-shape shape-star" aria-hidden="true"></span>
     {%- if section.settings.image == blank -%}
-      <span class="hero__fallback-shape shape-circle" aria-hidden="true"></span>
+      <div class="hero__fallback-panel" aria-hidden="true"></div>
     {%- endif -%}
 
     {%- if section.settings.eyebrow != blank -%}
@@ -231,12 +230,12 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "options": [
-        { "value": "lavender", "label": "Lavender / Deep green text" },
-        { "value": "green", "label": "Green / Lavender text" },
-        { "value": "green-dark", "label": "Deep green / Lavender text" },
-        { "value": "off-white", "label": "Off white / Deep green text" }
+        { "value": "cream", "label": "Cream / Near black text" },
+        { "value": "mango", "label": "Mango / Near black text" },
+        { "value": "black", "label": "Near black / Cream text" },
+        { "value": "chrome", "label": "Chrome / Near black text" }
       ],
-      "default": "lavender"
+      "default": "cream"
     }
   ],
   "presets": [

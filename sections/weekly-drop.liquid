@@ -27,8 +27,7 @@
   {%- if flavor_count == 0 -%}
     <div class="weekly-drop__empty container">
       <div class="weekly-drop__empty-card">
-        <span class="weekly-drop__empty-shape shape-circle" aria-hidden="true"></span>
-        <span class="weekly-drop__empty-shape weekly-drop__empty-shape--star shape-star" aria-hidden="true"></span>
+        <span class="weekly-drop__empty-mark" aria-hidden="true"></span>
         <p class="h3">{{ 'sections.weekly_drop.empty' | t }}</p>
       </div>
     </div>
@@ -114,12 +113,12 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "options": [
-        { "value": "off-white", "label": "Off white / Deep green text" },
-        { "value": "lavender", "label": "Lavender / Deep green text" },
-        { "value": "green", "label": "Green / Lavender text" },
-        { "value": "green-dark", "label": "Deep green / Lavender text" }
+        { "value": "cream", "label": "Cream / Near black text" },
+        { "value": "mango", "label": "Mango / Near black text" },
+        { "value": "black", "label": "Near black / Cream text" },
+        { "value": "chrome", "label": "Chrome / Near black text" }
       ],
-      "default": "off-white"
+      "default": "cream"
     }
   ],
   "presets": [
