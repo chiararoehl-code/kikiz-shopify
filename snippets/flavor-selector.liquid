@@ -3,10 +3,14 @@
   fast selection, not brand presentation — see cookie-card.liquid for that.
   Accepts:
     flavor (cookie_flavor metaobject, required)
+
+  See cookie-card.liquid for why this reads .reference.image, not .reference:
+  .reference on a file_reference field is a MediaImage wrapper, not an
+  Image, and only MediaImage.image pipes into image_url.
 {%- endcomment -%}
 
 {%- liquid
-  assign flavor_image_url = flavor.image.reference | image_url: width: 80
+  assign flavor_image_url = flavor.image.reference.image | image_url: width: 80
 -%}
 
 <div

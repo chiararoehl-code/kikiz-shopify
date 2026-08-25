@@ -7,16 +7,17 @@
     featured (boolean, optional) — larger, Mango-bordered treatment for the
       weekly special. Same card, different frame — no second component.
 
-  `image` is a file_reference field — .reference resolves the referenced
-  file, image_url renders it. The URL (not just object presence) is what we
-  branch on: a file_reference can resolve to a non-image file, which is a
-  real object but yields a blank image_url, and would otherwise render a
-  broken <img>. Falling through to the placeholder in that case is a display
-  fix only — it does not correct a misconfigured field in Shopify.
+  `image` is a file_reference field. .reference resolves it to a
+  MediaImage object — MediaImage is a wrapper, not itself an Image, so it
+  cannot be piped into image_url directly (that always yields a blank URL,
+  confirmed against a real metaobject entry with a saved file). The actual
+  Image lives on MediaImage.image; that is what image_url needs:
+  flavor.image.reference.image, not flavor.image.reference.
 {%- endcomment -%}
 
 {%- liquid
-  assign flavor_image_url = flavor.image.reference | image_url: width: 800
+  assign flavor_image = flavor.image.reference.image
+  assign flavor_image_url = flavor_image | image_url: width: 800
 -%}
 
 <article class="cookie-card{% if featured %} cookie-card--featured{% endif %}">
@@ -26,14 +27,14 @@
         class="cookie-card__image"
         src="{{ flavor_image_url }}"
         srcset="
-          {{ flavor.image.reference | image_url: width: 500 }} 500w,
-          {{ flavor.image.reference | image_url: width: 800 }} 800w,
-          {{ flavor.image.reference | image_url: width: 1100 }} 1100w
+          {{ flavor_image | image_url: width: 500 }} 500w,
+          {{ flavor_image | image_url: width: 800 }} 800w,
+          {{ flavor_image | image_url: width: 1100 }} 1100w
         "
         sizes="(min-width: 990px) 30vw, (min-width: 750px) 46vw, 82vw"
-        width="{{ flavor.image.reference.width }}"
-        height="{{ flavor.image.reference.height }}"
-        alt="{{ flavor.image.reference.alt | default: flavor.name.value | escape }}"
+        width="{{ flavor_image.width }}"
+        height="{{ flavor_image.height }}"
+        alt="{{ flavor_image.alt | default: flavor.name.value | escape }}"
         loading="lazy"
       >
     {%- else -%}
