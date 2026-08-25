@@ -30,12 +30,19 @@
         loading="lazy"
       >
     {%- else -%}
-      <div class="box-option__media-placeholder" aria-hidden="true"></div>
+      <div class="box-option__media-placeholder" aria-hidden="true">
+        <span class="box-option__placeholder-number">{{ box_size }}</span>
+        <span class="box-option__placeholder-chrome"></span>
+      </div>
     {%- endif -%}
     <span class="box-option__tag">{{ box_size }}-PACK</span>
   </div>
 
   <div class="box-option__content">
+    <div class="box-option__size" aria-hidden="true">
+      <span class="box-option__number">{{ box_size }}</span>
+      <span class="box-option__number-label">{{ 'box_builder.cookie_box_label' | t }}</span>
+    </div>
     <h3 class="box-option__title h3">{{ product.title }}</h3>
     <p class="box-option__description text-small">
       {{ 'box_builder.choose_count' | t: count: box_size }}

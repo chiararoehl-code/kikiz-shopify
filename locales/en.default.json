@@ -39,6 +39,7 @@
   },
   "box_builder": {
     "build_a": "BUILD A {{ size }}",
+    "cookie_box_label": "COOKIE BOX",
     "build_your": "BUILD YOUR __SIZE__",
     "subtitle": "Choose your favorite flavors",
     "counter": "__SELECTED__ / __TOTAL__ SELECTED",

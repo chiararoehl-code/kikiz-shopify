@@ -30,6 +30,7 @@
 
 <section class="box-selector color-scheme--{{ section.settings.color_scheme }}{% if flavor_count == 0 %} box-selector--empty{% endif %}" id="box-selector">
   <div class="box-selector__header container">
+    <span class="box-selector__rule rule" aria-hidden="true"></span>
     {%- if section.settings.eyebrow != blank -%}
       <p class="label">{{ section.settings.eyebrow }}</p>
     {%- endif -%}
@@ -59,6 +60,7 @@
       -%}
     {%- elsif request.design_mode -%}
       <div class="box-selector__placeholder">
+        <span class="box-selector__placeholder-mark" aria-hidden="true"></span>
         <p>{{ 'box_builder.placeholder_3' | t }}</p>
       </div>
     {%- endif -%}
@@ -72,6 +74,7 @@
       -%}
     {%- elsif request.design_mode -%}
       <div class="box-selector__placeholder">
+        <span class="box-selector__placeholder-mark" aria-hidden="true"></span>
         <p>{{ 'box_builder.placeholder_6' | t }}</p>
       </div>
     {%- endif -%}
@@ -153,7 +156,7 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow",
-      "default": "PICK YOUR BOX"
+      "default": "PICK YOUR SIZE"
     },
     {
       "type": "text",
@@ -165,7 +168,7 @@
       "type": "text",
       "id": "supporting_text",
       "label": "Supporting text",
-      "default": "Mix and match your favorite flavors."
+      "default": "Choose 3 or 6. Then fill it with your favorites."
     },
     {
       "type": "header",
