@@ -39,6 +39,10 @@
     </nav>
 
     <div class="site-header__utility">
+      <a href="#box-selector" class="btn btn--primary site-header__order-now">
+        {{ 'sections.header.order_now' | t }}
+      </a>
+
       <form action="{{ routes.search_url }}" method="get" role="search" class="header-search">
         <label class="visually-hidden" for="Header-Search">{{ 'sections.header.search' | t }}</label>
         <input
@@ -89,6 +93,17 @@
     </ul>
   </div>
 </header>
+
+<div class="mobile-commerce-bar" data-mobile-commerce>
+  <a href="#box-selector" class="mobile-commerce-bar__order">
+    {{ 'sections.header.order_now' | t }}
+  </a>
+  <a href="{{ routes.cart_url }}" class="mobile-commerce-bar__bag">
+    <span class="visually-hidden">{{ 'sections.header.cart' | t }}</span>
+    <span aria-hidden="true">{{ 'sections.header.bag' | t }}</span>
+    <span data-cart-count>{{ cart.item_count }}</span>
+  </a>
+</div>
 
 {% schema %}
 {

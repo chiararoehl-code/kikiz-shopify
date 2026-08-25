@@ -14,6 +14,8 @@
       "search": "Search",
       "account": "Account",
       "cart": "Cart",
+      "order_now": "Order now",
+      "bag": "Bag",
       "cart_count": {
         "one": "{{ count }} item in cart",
         "other": "{{ count }} items in cart"

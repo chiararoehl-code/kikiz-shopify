@@ -70,12 +70,12 @@
     {%- if section.settings.primary_cta_label != blank or section.settings.secondary_cta_label != blank -%}
       <div class="hero__actions">
         {%- if section.settings.primary_cta_label != blank -%}
-          <a href="{{ section.settings.primary_cta_link | default: '#' }}" class="btn btn--primary">
+          <a href="{{ section.settings.primary_cta_link | default: '#box-selector' }}" class="btn btn--primary">
             {{ section.settings.primary_cta_label }}
           </a>
         {%- endif -%}
         {%- if section.settings.secondary_cta_label != blank -%}
-          <a href="{{ section.settings.secondary_cta_link | default: '#' }}" class="btn btn--secondary">
+          <a href="{{ section.settings.secondary_cta_link | default: '#weekly-drop' }}" class="btn btn--secondary">
             {{ section.settings.secondary_cta_label }}
           </a>
         {%- endif -%}
@@ -118,23 +118,25 @@
       "type": "text",
       "id": "primary_cta_label",
       "label": "Primary button label",
-      "default": "SHOP THE DROP"
+      "default": "ORDER NOW"
     },
     {
       "type": "url",
       "id": "primary_cta_link",
-      "label": "Primary button link"
+      "label": "Primary button link",
+      "info": "Defaults to the Box Selector (#box-selector) when left empty."
     },
     {
       "type": "text",
       "id": "secondary_cta_label",
       "label": "Secondary button label",
-      "default": "SEE ALL COOKIES"
+      "default": "SEE THIS WEEK"
     },
     {
       "type": "url",
       "id": "secondary_cta_link",
-      "label": "Secondary button link"
+      "label": "Secondary button link",
+      "info": "Defaults to Weekly Drop (#weekly-drop) when left empty."
     },
     {
       "type": "header",

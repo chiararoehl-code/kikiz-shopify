@@ -36,6 +36,7 @@
   --text-label: 0.75rem;
 
   --header-height: 64px;
+  --mobile-commerce-height: 52px;
 }
 
 /* ==========================================================================
@@ -50,6 +51,8 @@
 
 html {
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--header-height, 64px);
 }
 
 body {
@@ -59,6 +62,12 @@ body {
   font-family: var(--font-body, Helvetica, Arial, sans-serif);
   font-size: var(--text-body);
   line-height: 1.5;
+}
+
+@media screen and (max-width: 989px) {
+  body {
+    padding-bottom: calc(var(--mobile-commerce-height, 52px) + env(safe-area-inset-bottom, 0px));
+  }
 }
 
 img {
@@ -454,6 +463,62 @@ input {
   justify-content: center;
 }
 
+.site-header__order-now {
+  display: none;
+  min-height: 36px;
+  padding: var(--space-2) var(--space-4);
+}
+
+/* ==========================================================================
+   Mobile sticky commerce bar
+   Persistent ordering + cart access on small screens, below the 990px
+   breakpoint where the desktop header's Order Now button and cart icon
+   take over instead.
+   ========================================================================== */
+
+.mobile-commerce-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 140;
+  display: flex;
+  border-top: 2px solid var(--color-black, #17130F);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.mobile-commerce-bar__order,
+.mobile-commerce-bar__bag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--mobile-commerce-height, 52px);
+  font-weight: 700;
+  font-size: var(--text-small);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+}
+
+.mobile-commerce-bar__order {
+  flex: 1 1 66%;
+  background-color: var(--color-brand-primary, #F2A900);
+  color: var(--color-black, #17130F);
+}
+
+.mobile-commerce-bar__bag {
+  flex: 1 1 34%;
+  background-color: var(--color-black, #17130F);
+  color: var(--color-cream, #F5EFE1);
+}
+
+@media screen and (min-width: 990px) {
+  .mobile-commerce-bar {
+    display: none;
+  }
+}
+
 /* Mobile nav drawer */
 
 .mobile-nav-overlay {
@@ -510,6 +575,10 @@ input {
 
   .site-nav {
     display: block;
+  }
+
+  .site-header__order-now {
+    display: inline-flex;
   }
 
   .header-search {
