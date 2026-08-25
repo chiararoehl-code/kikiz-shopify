@@ -29,6 +29,19 @@
     "weekly_drop": {
       "empty": "New flavors coming soon — check back shortly.",
       "empty_editor": "Add cookie flavors under Settings → Custom data → Cookie flavor, then mark them active and available this week."
+    },
+    "cart": {
+      "your_cookies": "YOUR COOKIES",
+      "quantity": "Quantity",
+      "remove": "Remove",
+      "update_cart": "Update cart",
+      "subtotal": "Subtotal",
+      "taxes_note": "Taxes and shipping calculated at checkout.",
+      "checkout": "Checkout",
+      "add_another": "Add another box",
+      "empty_heading": "YOUR BOX IS EMPTY",
+      "empty_supporting": "Let's fix that.",
+      "build_box_cta": "BUILD YOUR BOX"
     }
   },
   "products": {

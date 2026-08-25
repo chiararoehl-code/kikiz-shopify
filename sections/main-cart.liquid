@@ -1,0 +1,105 @@
+{%- comment -%}
+  Cart page. Progressive-enhancement safe: a plain form posting to
+  routes.cart_url updates quantities (updates[line.key]) and checks out
+  (submit name="checkout") with zero JavaScript required. Each configured
+  box stays exactly one Shopify cart line — Shopify's own variant +
+  line-item-property matching is what keeps identical boxes merged and
+  different flavor configurations separate; nothing here re-implements that.
+{%- endcomment -%}
+
+<section class="cart-page color-scheme--{{ section.settings.color_scheme }}" id="MainCart">
+  <div class="cart-page__header container">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="label">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1 class="cart-page__heading display-l">{{ section.settings.heading }}</h1>
+  </div>
+
+  {%- if cart.item_count == 0 -%}
+    <div class="cart-page__empty container">
+      <div class="cart-page__empty-card">
+        <span class="cart-page__empty-mark" aria-hidden="true"></span>
+        <h2 class="h2">{{ 'sections.cart.empty_heading' | t }}</h2>
+        <p class="body">{{ 'sections.cart.empty_supporting' | t }}</p>
+        <a href="{{ routes.root_url }}#box-selector" class="btn btn--primary">
+          {{ 'sections.cart.build_box_cta' | t }}
+        </a>
+      </div>
+    </div>
+  {%- else -%}
+    <form action="{{ routes.cart_url }}" method="post" class="cart-page__form" id="CartForm">
+      <div class="cart-page__layout container">
+        <div class="cart-page__lines">
+          <ul class="cart-lines" role="list">
+            {%- for item in cart.items -%}
+              <li class="cart-line">
+                {%- render 'cart-line-item', item: item -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+
+        <div class="cart-page__summary">
+          <div class="cart-summary">
+            <button type="submit" name="update" class="btn btn--secondary cart-summary__update">
+              {{ 'sections.cart.update_cart' | t }}
+            </button>
+
+            <div class="cart-summary__row cart-summary__row--total">
+              <span>{{ 'sections.cart.subtotal' | t }}</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+            <p class="cart-summary__note text-small">{{ 'sections.cart.taxes_note' | t }}</p>
+
+            <button type="submit" name="checkout" class="btn btn--primary cart-summary__checkout">
+              {{ 'sections.cart.checkout' | t }}
+            </button>
+            <a href="{{ routes.root_url }}#box-selector" class="btn btn--secondary cart-summary__continue">
+              {{ 'sections.cart.add_another' | t }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </form>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Main cart",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "REVIEW YOUR ORDER"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "YOUR BAG"
+    },
+    {
+      "type": "header",
+      "content": "Color"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "options": [
+        { "value": "cream", "label": "Cream / Near black text" },
+        { "value": "mango", "label": "Mango / Near black text" },
+        { "value": "black", "label": "Near black / Cream text" },
+        { "value": "chrome", "label": "Chrome / Near black text" }
+      ],
+      "default": "cream"
+    }
+  ]
+}
+{% endschema %}

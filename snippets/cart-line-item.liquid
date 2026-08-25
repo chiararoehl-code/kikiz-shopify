@@ -1,0 +1,92 @@
+{%- comment -%}
+  One configured box in the cart — order-ticket presentation of a single
+  Shopify cart line. The flavor breakdown is read straight from the line
+  item's own properties (set by box-builder.js as properties[Flavor] = qty);
+  this snippet only renders them, it never recalculates or merges them.
+  Keys starting with "_" are treated as private and skipped.
+  Accepts:
+    item (cart line item, required)
+{%- endcomment -%}
+
+{%- liquid
+  assign has_visible_properties = false
+  for property in item.properties
+    assign key_first_char = property.first | slice: 0
+    if property.last != blank and key_first_char != '_'
+      assign has_visible_properties = true
+    endif
+  endfor
+-%}
+
+<div class="cart-line__item">
+  <div class="cart-line__media shape-rounded">
+    {%- if item.image -%}
+      <img
+        src="{{ item.image | image_url: width: 300 }}"
+        srcset="
+          {{ item.image | image_url: width: 160 }} 160w,
+          {{ item.image | image_url: width: 300 }} 300w,
+          {{ item.image | image_url: width: 400 }} 400w
+        "
+        sizes="(min-width: 750px) 140px, 96px"
+        width="{{ item.image.width }}"
+        height="{{ item.image.height }}"
+        alt="{{ item.image.alt | default: item.product.title | escape }}"
+        loading="lazy"
+      >
+    {%- else -%}
+      <div class="cart-line__media-placeholder" aria-hidden="true">
+        <span class="cart-line__placeholder-mark"></span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="cart-line__content">
+    <div class="cart-line__head">
+      <h2 class="cart-line__title h3">
+        <a href="{{ item.url }}">{{ item.product.title }}</a>
+      </h2>
+      {%- if item.variant.title != blank and item.variant.title != 'Default Title' -%}
+        <p class="cart-line__variant text-small">{{ item.variant.title }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- if has_visible_properties -%}
+      <div class="cart-line__config">
+        <p class="cart-line__config-label label">{{ 'sections.cart.your_cookies' | t }}</p>
+        <ul class="cart-line__config-list" role="list">
+          {%- for property in item.properties -%}
+            {%- assign key_first_char = property.first | slice: 0 -%}
+            {%- if property.last != blank and key_first_char != '_' -%}
+              <li class="cart-line__config-row">
+                <span class="cart-line__config-name">{{ property.first }}</span>
+                <span class="cart-line__config-qty">&times; {{ property.last }}</span>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    <div class="cart-line__footer">
+      <div class="cart-line__qty-group">
+        <label class="visually-hidden" for="Quantity-{{ item.key }}">
+          {{ 'sections.cart.quantity' | t }}
+        </label>
+        <input
+          type="number"
+          id="Quantity-{{ item.key }}"
+          class="cart-line__qty-input"
+          name="updates[{{ item.key }}]"
+          value="{{ item.quantity }}"
+          min="0"
+          inputmode="numeric"
+        >
+        <a href="{{ item.url_to_remove }}" class="cart-line__remove text-small">
+          {{ 'sections.cart.remove' | t }}
+        </a>
+      </div>
+      <div class="cart-line__price">{{ item.final_line_price | money }}</div>
+    </div>
+  </div>
+</div>
