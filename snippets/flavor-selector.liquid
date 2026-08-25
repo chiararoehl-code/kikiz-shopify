@@ -5,6 +5,10 @@
     flavor (cookie_flavor metaobject, required)
 {%- endcomment -%}
 
+{%- liquid
+  assign flavor_image_url = flavor.image.reference | image_url: width: 80
+-%}
+
 <div
   class="flavor-selector"
   data-flavor-select-item
@@ -17,10 +21,10 @@
     data-flavor-add
     aria-label="{{ 'box_builder.flavor.add_accessible' | t: flavor: flavor.name.value }}"
   >
-    {%- if flavor.image.reference -%}
+    {%- if flavor_image_url != blank -%}
       <span class="flavor-selector__thumb">
         <img
-          src="{{ flavor.image.reference | image_url: width: 80 }}"
+          src="{{ flavor_image_url }}"
           width="40"
           height="40"
           alt=""

@@ -6,14 +6,25 @@
     flavor (cookie_flavor metaobject, required)
     featured (boolean, optional) — larger, Mango-bordered treatment for the
       weekly special. Same card, different frame — no second component.
+
+  `image` is a file_reference field — .reference resolves the referenced
+  file, image_url renders it. The URL (not just object presence) is what we
+  branch on: a file_reference can resolve to a non-image file, which is a
+  real object but yields a blank image_url, and would otherwise render a
+  broken <img>. Falling through to the placeholder in that case is a display
+  fix only — it does not correct a misconfigured field in Shopify.
 {%- endcomment -%}
+
+{%- liquid
+  assign flavor_image_url = flavor.image.reference | image_url: width: 800
+-%}
 
 <article class="cookie-card{% if featured %} cookie-card--featured{% endif %}">
   <div class="cookie-card__media shape-rounded">
-    {%- if flavor.image.reference -%}
+    {%- if flavor_image_url != blank -%}
       <img
         class="cookie-card__image"
-        src="{{ flavor.image.reference | image_url: width: 800 }}"
+        src="{{ flavor_image_url }}"
         srcset="
           {{ flavor.image.reference | image_url: width: 500 }} 500w,
           {{ flavor.image.reference | image_url: width: 800 }} 800w,
@@ -28,7 +39,6 @@
     {%- else -%}
       <div class="cookie-card__media-placeholder" aria-hidden="true">
         <span class="cookie-card__placeholder-mark"></span>
-        <span class="cookie-card__placeholder-name">{{ flavor.name.value }}</span>
       </div>
     {%- endif -%}
 

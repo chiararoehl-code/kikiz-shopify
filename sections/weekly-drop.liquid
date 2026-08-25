@@ -7,7 +7,8 @@
   for flavor in all_flavors
     if flavor.active.value and flavor.available_this_week.value
       assign flavor_count = flavor_count | plus: 1
-      if flavor.badge.value == 'WEEKLY SPECIAL'
+      assign badge_normalized = flavor.badge.value | strip | upcase
+      if badge_normalized == 'WEEKLY SPECIAL'
         assign special_count = special_count | plus: 1
         assign weekly_special = flavor
       endif
