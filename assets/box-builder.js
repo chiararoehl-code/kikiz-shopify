@@ -56,6 +56,13 @@
     var stepper = item.querySelector('[data-flavor-stepper]');
     var qtyEl = item.querySelector('[data-flavor-qty]');
 
+    // TEMPORARY DEBUG — remove before final commit.
+    console.log('[CHUNKIES DEBUG] renderFlavorItem', {
+      name: item.dataset.flavorName,
+      key: key,
+      qty: qty
+    });
+
     if (qty > 0) {
       if (addButton) addButton.hidden = true;
       if (stepper) stepper.hidden = false;
@@ -140,6 +147,16 @@
     resetState(boxSize, variantId);
     clearError();
     isSubmitting = false;
+
+    // TEMPORARY DEBUG — remove before final commit.
+    console.log('[CHUNKIES DEBUG] FLAVOR ROWS', flavorItems.map(function (item, index) {
+      return {
+        name: item.dataset.flavorName,
+        key: item.dataset.flavorKey,
+        handle: item.dataset.flavorHandle || null,
+        index: index
+      };
+    }));
 
     if (titleEl) titleEl.textContent = fillTemplate(tplBuildYour, { __SIZE__: boxSize });
     variantInput.value = variantId;
@@ -226,7 +243,20 @@
     var plusButton = event.target.closest('[data-flavor-plus], [data-flavor-add]');
     if (plusButton && modal.contains(plusButton)) {
       var plusItem = plusButton.closest('[data-flavor-select-item]');
-      if (plusItem) handlePlus(plusItem.dataset.flavorKey);
+      if (plusItem) {
+        // TEMPORARY DEBUG — remove before final commit.
+        console.log('[CHUNKIES DEBUG] PLUS CLICK', {
+          name: plusItem.dataset.flavorName,
+          key: plusItem.dataset.flavorKey,
+          selectionsBefore: JSON.parse(JSON.stringify(state.selections))
+        });
+        handlePlus(plusItem.dataset.flavorKey);
+        console.log('[CHUNKIES DEBUG] PLUS RESULT', {
+          selectionsAfter: JSON.parse(JSON.stringify(state.selections)),
+          selectedCount: state.selectedCount,
+          allRowKeys: flavorItems.map(function (i) { return i.dataset.flavorKey; })
+        });
+      }
       return;
     }
 
