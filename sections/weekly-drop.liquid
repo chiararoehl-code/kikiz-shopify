@@ -42,6 +42,31 @@
     {%- endif -%}
   </div>
 
+  {%- if request.design_mode -%}
+    {%- assign debug_flavor = all_flavors.first -%}
+    {%- if debug_flavor -%}
+      <div class="weekly-drop__debug container" style="background:#fff; color:#000; border:2px dashed red; padding:1em; margin:1em 0; font-family:monospace; font-size:12px; white-space:pre-wrap; word-break:break-all;">
+        <strong>TEMPORARY DEBUG (Theme Editor only) — flavor.image inspection</strong>
+        <br>flavor.name.value: {{ debug_flavor.name.value }}
+        <br>flavor.image.type: {{ debug_flavor.image.type }}
+        <br>flavor.image.value: {{ debug_flavor.image.value }}
+        <br>flavor.image.value.media_type: {{ debug_flavor.image.value.media_type }}
+        <br>flavor.image.value.alt: {{ debug_flavor.image.value.alt }}
+        <br>flavor.image.value.preview_image: {{ debug_flavor.image.value.preview_image }}
+        <br>flavor.image.reference: {{ debug_flavor.image.reference }}
+        <br>flavor.image.reference.media_type: {{ debug_flavor.image.reference.media_type }}
+        <br>
+        <br>Candidate A — flavor.image.value | image_url: {{ debug_flavor.image.value | image_url: width: 300 }}
+        <br>Candidate B — flavor.image.value.preview_image | image_url: {{ debug_flavor.image.value.preview_image | image_url: width: 300 }}
+        <br>Candidate C — flavor.image.reference | image_url: {{ debug_flavor.image.reference | image_url: width: 300 }}
+        <br>Candidate D — flavor.image.reference.preview_image | image_url: {{ debug_flavor.image.reference.preview_image | image_url: width: 300 }}
+        <br>Candidate E — flavor.image.reference.image | image_url: {{ debug_flavor.image.reference.image | image_url: width: 300 }}
+        <br>
+        <br>metafield_tag: {{ debug_flavor.image | metafield_tag }}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
   {%- if flavor_count == 0 -%}
     <div class="weekly-drop__empty container">
       <div class="weekly-drop__empty-card">
