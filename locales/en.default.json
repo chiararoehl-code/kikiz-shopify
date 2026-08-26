@@ -77,10 +77,10 @@
   "box_builder": {
     "build_a": "PICK YOUR COOKIES",
     "cookie_box_label": "COOKIE BOX",
-    "build_your": "BUILD YOUR __SIZE__",
+    "build_your": "PICK YOUR COOKIES",
     "subtitle": "Choose your flavors.",
-    "counter": "__SELECTED__ / __TOTAL__ COOKIES",
-    "box_ready": "__SELECTED__ / __TOTAL__ COOKIES · BOX READY",
+    "counter": "__TOTAL__ COOKIES · __SELECTED__/__TOTAL__ SELECTED",
+    "box_ready": "__TOTAL__ COOKIES · BOX READY",
     "selected": "COOKIES",
     "select_cookies": "CHOOSE __SIZE__ COOKIES",
     "select_more": "CHOOSE __COUNT__ MORE",
