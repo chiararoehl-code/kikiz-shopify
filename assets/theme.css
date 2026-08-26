@@ -1203,6 +1203,7 @@ input {
   width: 40px;
   height: 4px;
   margin-bottom: var(--space-3);
+  background-color: var(--color-brand-primary, #F2A900);
 }
 
 .box-selector__heading {
