@@ -7,6 +7,12 @@
   See cookie-card.liquid for why this reads .value, not .reference:
   runtime debug confirmed flavor.image.reference is blank/invalid on this
   theme, while flavor.image.value resolves directly to the Image.
+
+  data-flavor-key must be unique per row — box-builder.js keys its
+  selections state on it. flavor.handle rendered the same value for every
+  row in this runtime (confirmed: one click bumped every flavor's display
+  to the same quantity), so this uses flavor.id, which is always present
+  and unique for any Liquid object, instead.
 {%- endcomment -%}
 
 {%- liquid
@@ -16,7 +22,7 @@
 <div
   class="flavor-selector"
   data-flavor-select-item
-  data-flavor-key="{{ flavor.handle }}"
+  data-flavor-key="{{ flavor.id }}"
   data-flavor-name="{{ flavor.name.value | escape }}"
 >
   <button
