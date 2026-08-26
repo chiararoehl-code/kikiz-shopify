@@ -75,7 +75,7 @@
     }
   },
   "box_builder": {
-    "build_a": "BUILD A {{ size }}",
+    "build_a": "PICK YOUR COOKIES",
     "cookie_box_label": "COOKIE BOX",
     "build_your": "BUILD YOUR __SIZE__",
     "subtitle": "Choose your flavors.",
