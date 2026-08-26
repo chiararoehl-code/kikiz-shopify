@@ -94,16 +94,24 @@
   </div>
 </header>
 
-<div class="mobile-commerce-bar" data-mobile-commerce>
-  <a href="#box-selector" class="mobile-commerce-bar__order">
-    {{ 'sections.header.order_now' | t }}
-  </a>
-  <a href="{{ routes.cart_url }}" class="mobile-commerce-bar__bag">
-    <span class="visually-hidden">{{ 'sections.header.cart' | t }}</span>
-    <span aria-hidden="true">{{ 'sections.header.bag' | t }}</span>
-    <span data-cart-count>{{ cart.item_count }}</span>
-  </a>
-</div>
+{%- comment -%}
+  Hidden on the cart page: it competes with the in-page Checkout CTA
+  there, and "Order now" scrolling to #box-selector doesn't resolve
+  outside the homepage anyway. Elsewhere it's the persistent
+  browsing-mode entry point into ordering and the bag.
+{%- endcomment -%}
+{%- unless template == 'cart' -%}
+  <div class="mobile-commerce-bar" data-mobile-commerce>
+    <a href="#box-selector" class="mobile-commerce-bar__order">
+      {{ 'sections.header.order_now' | t }}
+    </a>
+    <a href="{{ routes.cart_url }}" class="mobile-commerce-bar__bag">
+      <span class="visually-hidden">{{ 'sections.header.cart' | t }}</span>
+      <span aria-hidden="true">{{ 'sections.header.bag' | t }}</span>
+      <span data-cart-count>{{ cart.item_count }}</span>
+    </a>
+  </div>
+{%- endunless -%}
 
 {% schema %}
 {

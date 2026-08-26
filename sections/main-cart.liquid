@@ -108,7 +108,7 @@
               <span>{{ 'sections.cart.delivery' | t }}</span>
               <span>
                 {%- if fulfillment_method == 'Pickup' -%}
-                  {{ 'sections.cart.delivery_free_pickup' | t }}
+                  {{ 'sections.cart.delivery_pickup' | t }}
                 {%- else -%}
                   {{ 'sections.cart.calculated_at_checkout' | t }}
                 {%- endif -%}
@@ -128,6 +128,7 @@
               <span>{{ 'sections.cart.estimated_total' | t }}</span>
               <span>{{ cart.total_price | money }}</span>
             </div>
+            <p class="cart-summary__total-note text-small">{{ 'sections.cart.total_note' | t }}</p>
 
             <button
               type="submit"
@@ -137,6 +138,14 @@
             >
               {{ 'sections.cart.checkout' | t }}
             </button>
+
+            {%- if additional_checkout_buttons -%}
+              <p class="cart-summary__accelerated-label text-small">{{ 'sections.cart.pay_faster' | t }}</p>
+              <div class="cart-summary__accelerated-buttons">
+                {{ content_for_additional_checkout_buttons }}
+              </div>
+            {%- endif -%}
+
             <p class="cart-summary__trust text-small">{{ 'sections.cart.trust_note' | t }}</p>
           </div>
 

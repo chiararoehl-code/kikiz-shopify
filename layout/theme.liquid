@@ -64,7 +64,7 @@
     {{ content_for_header }}
   </head>
 
-  <body data-fulfillment-method="{{ cart.attributes['Fulfillment method'] | escape }}">
+  <body class="template-{{ template.name }}" data-fulfillment-method="{{ cart.attributes['Fulfillment method'] | escape }}">
     <a class="visually-hidden skip-to-content-link" href="#MainContent">
       {{ 'general.accessibility.skip_to_content' | t }}
     </a>
