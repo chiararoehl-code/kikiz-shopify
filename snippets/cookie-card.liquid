@@ -7,16 +7,14 @@
     featured (boolean, optional) — larger, Mango-bordered treatment for the
       weekly special. Same card, different frame — no second component.
 
-  `image` is a file_reference field. .reference resolves it to a
-  MediaImage object — MediaImage is a wrapper, not itself an Image, so it
-  cannot be piped into image_url directly (that always yields a blank URL,
-  confirmed against a real metaobject entry with a saved file). The actual
-  Image lives on MediaImage.image; that is what image_url needs:
-  flavor.image.reference.image, not flavor.image.reference.
+  `image` is a file_reference field. Runtime debug against a real
+  metaobject entry confirmed flavor.image.reference is blank/invalid on
+  this theme, while flavor.image.value resolves directly to the Image
+  and pipes into image_url correctly. Use .value, not .reference.
 {%- endcomment -%}
 
 {%- liquid
-  assign flavor_image = flavor.image.reference.image
+  assign flavor_image = flavor.image.value
   assign flavor_image_url = flavor_image | image_url: width: 800
 -%}
 

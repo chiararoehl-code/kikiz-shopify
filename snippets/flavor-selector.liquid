@@ -4,13 +4,13 @@
   Accepts:
     flavor (cookie_flavor metaobject, required)
 
-  See cookie-card.liquid for why this reads .reference.image, not .reference:
-  .reference on a file_reference field is a MediaImage wrapper, not an
-  Image, and only MediaImage.image pipes into image_url.
+  See cookie-card.liquid for why this reads .value, not .reference:
+  runtime debug confirmed flavor.image.reference is blank/invalid on this
+  theme, while flavor.image.value resolves directly to the Image.
 {%- endcomment -%}
 
 {%- liquid
-  assign flavor_image_url = flavor.image.reference.image | image_url: width: 80
+  assign flavor_image_url = flavor.image.value | image_url: width: 80
 -%}
 
 <div
