@@ -1518,27 +1518,33 @@ input {
   font-size: var(--text-small);
 }
 
-.box-builder__counter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.box-builder__progress {
+  height: 4px;
   margin: 0 0 var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border: 2px solid var(--color-black, #17130F);
-  border-radius: var(--radius-small);
-  background-color: var(--color-background, #F5EFE1);
+  border-radius: 2px;
+  background-color: var(--color-border, #E4DFD3);
+  overflow: hidden;
+}
+
+.box-builder__progress-fill {
+  width: 0%;
+  height: 100%;
+  background-color: var(--color-brand-primary, #F2A900);
+  transition: width 0.2s ease;
+}
+
+.box-builder__counter {
+  margin: 0 0 var(--space-3);
   color: var(--color-black, #17130F);
-  font-size: var(--text-body-lg);
+  font-size: var(--text-small);
   font-weight: 700;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
 .box-builder__counter--full {
-  background-color: var(--color-brand-primary, #F2A900);
-  color: var(--color-black, #17130F);
+  color: var(--color-brand-dark, #C98A00);
 }
 
 .box-builder__submit {
@@ -1546,45 +1552,63 @@ input {
 }
 
 /* ==========================================================================
-   Flavor selector (compact — box builder only)
-   Rectangular controls, Mango as the strongest selected state.
+   Flavor row (compact — box builder only)
+   One row per flavor: thumbnail + name stay put, only the trailing
+   control swaps between the add button and the stepper. Mango marks
+   selection via border/tint, never a full-bleed block.
    ========================================================================== */
 
-.flavor-selector__pill,
-.flavor-selector__stepper {
+.flavor-row {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  gap: var(--space-3);
   width: 100%;
-  min-height: 44px;
+  min-height: 72px;
   padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-small);
-  border: 2px solid var(--color-black, #17130F);
+  border-radius: var(--radius-medium);
+  border: 1px solid var(--color-border, #E4DFD3);
   background-color: var(--color-surface, #FFFFFF);
   color: var(--color-text, #17130F);
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.flavor-selector__pill {
-  justify-content: flex-start;
-  text-align: left;
+.flavor-row:has([data-flavor-stepper]:not([hidden])) {
+  border: 2px solid var(--color-brand-primary, #F2A900);
+  background-color: color-mix(in srgb, var(--color-brand-primary, #F2A900) 10%, var(--color-surface, #FFFFFF));
 }
 
-.flavor-selector__thumb {
+.flavor-row__thumb {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 64px;
+  height: 64px;
   border-radius: var(--radius-small);
   overflow: hidden;
+  background-color: var(--color-background, #F5EFE1);
 }
 
-.flavor-selector__thumb img {
+@media screen and (min-width: 750px) {
+  .flavor-row__thumb {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+.flavor-row__thumb img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.flavor-selector__name,
-.flavor-selector__stepper-name {
+.flavor-row__thumb-placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-brand-primary, #F2A900);
+}
+
+.flavor-row__name {
+  flex: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1595,37 +1619,37 @@ input {
   letter-spacing: 0.01em;
 }
 
-.flavor-selector__name {
-  flex: 1;
-}
-
-.flavor-selector__pill .badge {
+.flavor-row .badge {
   flex-shrink: 0;
-  margin-inline-start: auto;
 }
 
-.flavor-selector__thumb--placeholder {
-  background-color: var(--color-brand-primary, #F2A900);
+.flavor-row__add {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-small);
+  background-color: var(--color-black, #17130F);
+  color: var(--color-cream, #F5EFE1);
+  font-weight: 700;
+  font-size: var(--text-body-lg);
 }
 
-.flavor-selector__pill:disabled {
+.flavor-row__add:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-/* Selected state: Mango background, Near Black text and border */
-.flavor-selector__stepper {
-  background-color: var(--color-brand-primary, #F2A900);
-  border-color: var(--color-black, #17130F);
-  color: var(--color-black, #17130F);
-  justify-content: space-between;
+.flavor-row__stepper {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--space-2);
 }
 
-.flavor-selector__stepper-name {
-  flex: 1;
-}
-
-.flavor-selector__step-btn {
+.flavor-row__step-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1639,15 +1663,17 @@ input {
   font-size: var(--text-body-lg);
 }
 
-.flavor-selector__step-btn:disabled {
+.flavor-row__step-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.flavor-selector__qty {
+.flavor-row__qty {
   min-width: 1.5em;
   text-align: center;
   font-weight: 700;
+  font-size: var(--text-body-lg);
+  color: var(--color-black, #17130F);
 }
 
 /* ==========================================================================

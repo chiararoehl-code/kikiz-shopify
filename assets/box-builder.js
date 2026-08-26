@@ -13,6 +13,7 @@
   var panel = modal.querySelector('.box-builder__panel');
   var titleEl = modal.querySelector('[data-box-builder-title]');
   var counterEl = modal.querySelector('[data-box-builder-counter]');
+  var progressFillEl = modal.querySelector('[data-box-builder-progress-fill]');
   var errorEl = modal.querySelector('[data-box-builder-error]');
   var submitButton = modal.querySelector('[data-box-builder-submit]');
   var form = modal.querySelector('[data-product-form]');
@@ -83,13 +84,14 @@
   function renderCounter() {
     if (!counterEl) return;
     var isFull = state.boxSize > 0 && state.selectedCount >= state.boxSize;
+    var replacements = { __SELECTED__: state.selectedCount, __TOTAL__: state.boxSize };
     counterEl.classList.toggle('box-builder__counter--full', isFull);
-    counterEl.textContent = isFull
-      ? tplBoxReady
-      : fillTemplate(tplCounter, {
-          __SELECTED__: state.selectedCount,
-          __TOTAL__: state.boxSize
-        });
+    counterEl.textContent = fillTemplate(isFull ? tplBoxReady : tplCounter, replacements);
+
+    if (progressFillEl) {
+      var progress = state.boxSize > 0 ? Math.min(100, (state.selectedCount / state.boxSize) * 100) : 0;
+      progressFillEl.style.width = progress + '%';
+    }
   }
 
   function renderSubmitState() {

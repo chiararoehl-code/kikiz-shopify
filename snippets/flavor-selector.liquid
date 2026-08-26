@@ -14,10 +14,18 @@
   flavor.system.handle, the Metaobject system's own stable per-entry
   handle. flavor.name.value | handleize is a defensive fallback only, in
   case system.handle is ever unexpectedly blank.
+
+  One visual row per flavor: the thumbnail and name stay in place, and only
+  the trailing control swaps between the add button and the stepper — both
+  still toggled via the same [data-flavor-add]/[data-flavor-stepper] hidden
+  attributes box-builder.js already sets, so box-builder.js needs no change
+  for this layout. Selected styling (border/background) is driven by CSS
+  :has() against [data-flavor-stepper]:not([hidden]), not by a JS-added
+  class.
 {%- endcomment -%}
 
 {%- liquid
-  assign flavor_image_url = flavor.image.value | image_url: width: 80
+  assign flavor_image_url = flavor.image.value | image_url: width: 160
   assign flavor_key = flavor.system.handle
   if flavor_key == blank
     assign flavor_key = flavor.name.value | handleize
@@ -25,48 +33,49 @@
 -%}
 
 <div
-  class="flavor-selector"
+  class="flavor-row"
   data-flavor-select-item
   data-flavor-key="{{ flavor_key | escape }}"
   data-flavor-name="{{ flavor.name.value | escape }}"
 >
+  <span class="flavor-row__thumb">
+    {%- if flavor_image_url != blank -%}
+      <img
+        src="{{ flavor_image_url }}"
+        width="72"
+        height="72"
+        alt=""
+        loading="lazy"
+      >
+    {%- else -%}
+      <span class="flavor-row__thumb-placeholder" aria-hidden="true"></span>
+    {%- endif -%}
+  </span>
+
+  <span class="flavor-row__name">{{ flavor.name.value }}</span>
+
+  {%- if flavor.badge.value != blank -%}
+    {%- render 'badge', text: flavor.badge.value, style: 'accent' -%}
+  {%- endif -%}
+
   <button
     type="button"
-    class="flavor-selector__pill"
+    class="flavor-row__add"
     data-flavor-add
     aria-label="{{ 'box_builder.flavor.add_accessible' | t: flavor: flavor.name.value }}"
-  >
-    {%- if flavor_image_url != blank -%}
-      <span class="flavor-selector__thumb">
-        <img
-          src="{{ flavor_image_url }}"
-          width="40"
-          height="40"
-          alt=""
-          loading="lazy"
-        >
-      </span>
-    {%- else -%}
-      <span class="flavor-selector__thumb flavor-selector__thumb--placeholder" aria-hidden="true"></span>
-    {%- endif -%}
-    <span class="flavor-selector__name">{{ flavor.name.value }}</span>
-    {%- if flavor.badge.value != blank -%}
-      {%- render 'badge', text: flavor.badge.value, style: 'accent' -%}
-    {%- endif -%}
-  </button>
+  >+</button>
 
-  <div class="flavor-selector__stepper" data-flavor-stepper hidden>
-    <span class="flavor-selector__stepper-name">{{ flavor.name.value }}</span>
+  <div class="flavor-row__stepper" data-flavor-stepper hidden>
     <button
       type="button"
-      class="flavor-selector__step-btn"
+      class="flavor-row__step-btn"
       data-flavor-minus
       aria-label="{{ 'box_builder.flavor.remove_accessible' | t: flavor: flavor.name.value }}"
     >&minus;</button>
-    <span class="flavor-selector__qty" data-flavor-qty aria-live="polite">0</span>
+    <span class="flavor-row__qty" data-flavor-qty aria-live="polite">0</span>
     <button
       type="button"
-      class="flavor-selector__step-btn"
+      class="flavor-row__step-btn"
       data-flavor-plus
       aria-label="{{ 'box_builder.flavor.add_more_accessible' | t: flavor: flavor.name.value }}"
     >+</button>
