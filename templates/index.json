@@ -54,8 +54,8 @@
         "eyebrow": "PICK YOUR SIZE",
         "heading": "BUILD YOUR BOX",
         "supporting_text": "Choose 3 or 6. Then fill it with your favorites.",
-        "box_product_3": "",
-        "box_product_6": "",
+        "box_product_3": "3er-cookie-box",
+        "box_product_6": "6er-cookie-box",
         "color_scheme": "cream"
       }
     }
