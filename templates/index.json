@@ -21,39 +21,30 @@
     "hero": {
       "type": "brand-hero",
       "settings": {
-        "eyebrow": "FRESH THIS WEEK",
-        "heading": "MEET YOUR NEW OBSESSION.",
-        "body": "<p>Big cookies. New flavors. Every week.</p>",
-        "primary_cta_label": "ORDER NOW",
+        "eyebrow": "FRESHLY BAKED IN BASEL",
+        "heading": "",
+        "primary_cta_label": "JETZT BESTELLEN",
         "primary_cta_link": "",
-        "secondary_cta_label": "SEE THIS WEEK",
-        "secondary_cta_link": "",
-        "enable_overlay": false,
-        "overlay_opacity": 40,
-        "layout": "split",
-        "content_position": "middle-left",
-        "text_alignment": "left",
-        "height": "large",
-        "color_scheme": "cream"
+        "color_scheme": "black"
       }
     },
     "weekly-drop": {
       "type": "weekly-drop",
       "settings": {
-        "eyebrow": "FRESH THIS WEEK",
-        "heading": "THIS WEEK AT CHUNKIES",
-        "supporting_text": "4 classics. 1 weekly special.",
+        "eyebrow": "",
+        "heading": "THIS WEEK'S DROP",
+        "supporting_text": "Nur diese Woche.",
         "flavor_limit": 5,
-        "cta_label": "BUILD YOUR BOX",
+        "cta_label": "BOX BAUEN",
         "color_scheme": "cream"
       }
     },
     "box-selector": {
       "type": "box-selector",
       "settings": {
-        "eyebrow": "PICK YOUR SIZE",
-        "heading": "BUILD YOUR BOX",
-        "supporting_text": "Choose 3 or 6. Then fill it with your favorites.",
+        "eyebrow": "",
+        "heading": "WÄHLE DEINE BOX",
+        "supporting_text": "Wähle 3 oder 6 Cookies für deine Box.",
         "box_product_3": "3er-cookie-box",
         "box_product_6": "6er-cookie-box",
         "color_scheme": "cream"

@@ -347,15 +347,16 @@ input {
 }
 
 .site-header__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: var(--space-4);
   min-height: var(--header-height);
 }
 
 .site-header__logo {
+  justify-self: center;
   text-decoration: none;
-  margin-inline-end: auto;
 }
 
 .site-header__logo-text {
@@ -367,7 +368,10 @@ input {
 }
 
 .header-toggle {
+  justify-self: start;
   display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   padding: var(--space-2);
   border-radius: var(--radius-small);
 }
@@ -377,57 +381,18 @@ input {
   height: 24px;
 }
 
-.site-nav {
-  display: none;
-}
-
-.site-nav__list {
-  display: flex;
-  gap: var(--space-5);
-}
-
-.site-nav__link {
-  text-decoration: none;
+.header-toggle__label {
   font-weight: 700;
   font-size: var(--text-small);
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  transition: color 0.15s ease;
-}
-
-.site-nav__link:hover {
-  color: var(--color-brand-dark, #C98A00);
 }
 
 .site-header__utility {
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: var(--space-3);
-}
-
-.header-search {
-  display: none;
-  align-items: center;
-  gap: var(--space-2);
-  background-color: var(--color-background, #F5EFE1);
-  border-radius: var(--radius-small);
-  padding-inline: var(--space-3);
-}
-
-.header-search__input {
-  border: 0;
-  background: none;
-  padding-block: var(--space-2);
-  width: 140px;
-}
-
-.header-search__input:focus {
-  outline: none;
-}
-
-.header-search__submit svg {
-  width: 18px;
-  height: 18px;
 }
 
 .header-icon-link {
@@ -569,25 +534,8 @@ input {
 }
 
 @media screen and (min-width: 990px) {
-  .header-toggle {
-    display: none;
-  }
-
-  .site-nav {
-    display: block;
-  }
-
   .site-header__order-now {
     display: inline-flex;
-  }
-
-  .header-search {
-    display: flex;
-  }
-
-  .mobile-nav,
-  .mobile-nav-overlay {
-    display: none;
   }
 }
 
@@ -595,265 +543,103 @@ input {
    Hero
    ========================================================================== */
 
-.hero {
+.hero-video {
   position: relative;
   display: flex;
+  align-items: flex-end;
   overflow: hidden;
-  min-height: var(--hero-min-height, 70vh);
+  min-height: 70vh;
+  color: var(--color-cream, #F5EFE1);
 }
 
-.hero--height-small { --hero-min-height: 50vh; }
-.hero--height-medium { --hero-min-height: 70vh; }
-.hero--height-large { --hero-min-height: 85vh; }
-.hero--height-fullscreen { --hero-min-height: 100svh; }
-
-.hero__media {
-  overflow: hidden;
+@media screen and (min-width: 750px) {
+  .hero-video {
+    min-height: 85vh;
+  }
 }
 
-.hero__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: hero-image-reveal 0.8s ease both;
-}
-
-.hero__overlay {
+.hero-video__media {
   position: absolute;
   inset: 0;
-  background-color: var(--color-black, #17130F);
-  opacity: var(--hero-overlay-opacity, 0.4);
-  pointer-events: none;
-}
-
-.hero__content {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-}
-
-.hero__eyebrow {
-  position: relative;
-  margin: 0 0 var(--space-3);
-  padding-left: var(--space-3);
-  animation: hero-fade-up 0.6s ease both;
-}
-
-.hero__eyebrow::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.2em;
-  bottom: 0.2em;
-  width: 3px;
-  background-color: currentColor;
-}
-
-.hero__heading {
-  margin: 0 0 var(--space-4);
-  text-wrap: balance;
-  animation: hero-fade-up 0.6s ease both;
-  animation-delay: 0.05s;
-}
-
-.hero__body {
-  margin: 0 0 var(--space-5);
-  animation: hero-fade-up 0.6s ease both;
-  animation-delay: 0.1s;
-}
-
-.hero__body p {
-  margin: 0 0 var(--space-3);
-}
-
-.hero__body p:last-child {
-  margin-bottom: 0;
-}
-
-.hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-  animation: hero-fade-up 0.6s ease both;
-  animation-delay: 0.15s;
-}
-
-.text-align-left {
-  text-align: left;
-}
-
-.text-align-center {
-  text-align: center;
-}
-
-.text-align-center .hero__actions {
-  justify-content: center;
-}
-
-.text-align-center .hero__eyebrow {
-  padding-left: 0;
-  padding-top: var(--space-3);
-}
-
-.text-align-center .hero__eyebrow::before {
-  left: 50%;
-  top: 0;
-  bottom: auto;
-  width: 32px;
-  height: 3px;
-  transform: translateX(-50%);
-}
-
-@keyframes hero-image-reveal {
-  from {
-    opacity: 0;
-    transform: scale(1.03);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes hero-fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Full-bleed layout: media fills the section, content overlays it */
-
-.hero--full-bleed .hero__media {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.hero--full-bleed .hero__content {
-  width: 100%;
-  padding: var(--space-6);
-  justify-content: center;
-}
-
-.hero--full-bleed[data-position-v="top"] .hero__content { justify-content: flex-start; }
-.hero--full-bleed[data-position-v="middle"] .hero__content { justify-content: center; }
-.hero--full-bleed[data-position-v="bottom"] .hero__content { justify-content: flex-end; }
-
-.hero--full-bleed[data-position-h="left"] .hero__content { align-items: flex-start; }
-.hero--full-bleed[data-position-h="center"] .hero__content { align-items: center; }
-.hero--full-bleed[data-position-h="right"] .hero__content { align-items: flex-end; }
-
-.hero--full-bleed .hero__content > * {
-  max-width: 640px;
-}
-
-/* Split layout: text panel + image side by side */
-
-.hero--split {
-  flex-direction: row;
-  align-items: stretch;
-}
-
-.hero--split .hero__media {
-  flex: 1 1 50%;
-  min-height: 320px;
-}
-
-.hero--split .hero__content {
-  flex: 1 1 50%;
-  justify-content: center;
-  padding: var(--space-7) var(--space-8);
-}
-
-.hero--split[data-position-h="right"] {
-  flex-direction: row-reverse;
-}
-
-.hero--split[data-position-v="top"] .hero__content { justify-content: flex-start; }
-.hero--split[data-position-v="bottom"] .hero__content { justify-content: flex-end; }
-
-.hero--no-media .hero__content {
-  flex: 1 1 100%;
-  position: relative;
-}
-
-/* No-image fallback: an architectural Mango panel + thin rule grid instead
-   of a soft decorative blob, so the hero still reads as intentional. */
-
-.hero__fallback-panel {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-}
-
-.hero__fallback-panel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 42%;
-  background-color: var(--color-brand-primary, #F2A900);
-}
-
-.hero__fallback-panel::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 42%;
-  bottom: 0;
-  width: 2px;
+  z-index: 0;
   background-color: var(--color-black, #17130F);
 }
 
-.hero--no-media.text-align-center .hero__fallback-panel::before,
-.hero--no-media.text-align-center .hero__fallback-panel::after {
+.hero-video__player {
+  position: absolute;
+  inset: 0;
   display: none;
 }
 
-@media screen and (max-width: 749px) {
-  .hero--split {
-    flex-direction: column;
+.hero-video__player--mobile {
+  display: block;
+}
+
+@media screen and (min-width: 750px) {
+  .hero-video__player--mobile {
+    display: none;
   }
 
-  .hero--split .hero__media,
-  .hero--split .hero__content {
-    flex: none;
-    width: 100%;
+  .hero-video__player--desktop {
+    display: block;
   }
+}
 
-  .hero--split .hero__media {
-    min-height: 260px;
-  }
+/* Only one video configured: it has no sibling to toggle against, so show
+   it at every breakpoint rather than only on the side its class implies. */
+.hero-video__player:only-child {
+  display: block;
+}
 
-  .hero--split .hero__content {
-    padding: var(--space-6) var(--space-4);
-  }
+.hero-video__el {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .hero__fallback-panel::before {
-    width: 100%;
-    height: 30%;
-    top: auto;
-    bottom: 0;
-    left: 0;
-  }
+.hero-video__fallback-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-  .hero__fallback-panel::after {
-    right: 0;
-    bottom: 30%;
-    top: auto;
-    left: 0;
-    width: 100%;
-    height: 2px;
+.hero-video__fallback-panel {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-black, #17130F);
+}
+
+.hero-video__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: var(--space-6);
+  background: linear-gradient(
+    to top,
+    rgba(23, 19, 15, 0.8) 0%,
+    rgba(23, 19, 15, 0.4) 55%,
+    transparent 100%
+  );
+}
+
+@media screen and (min-width: 750px) {
+  .hero-video__content {
+    padding: var(--space-8);
   }
+}
+
+.hero-video__eyebrow {
+  margin: 0 0 var(--space-3);
+  color: var(--color-cream, #F5EFE1);
+}
+
+.hero-video__heading {
+  margin: 0 0 var(--space-4);
+  max-width: 640px;
+  color: var(--color-cream, #F5EFE1);
+  text-wrap: balance;
 }
 
 /* ==========================================================================
@@ -927,7 +713,6 @@ input {
   aspect-ratio: 1 / 1;
   overflow: hidden;
   background-color: var(--color-surface, #FFFFFF);
-  border: 1px solid var(--color-border, #E4DFD3);
 }
 
 .cookie-card__media-placeholder {
@@ -973,7 +758,23 @@ input {
 }
 
 .cookie-card__title {
+  display: inline-block;
   margin: 0;
+  margin-left: -0.4em;
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-small);
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Mango marks the interaction — only the name gets the accent block, never
+   the whole card. :focus-within is a no-cost forward compatibility hook:
+   this card has no interactive element today (pure display, no PDP to
+   link to), so there's nothing for keyboard focus to land on yet, but the
+   rule is ready the moment one is added. */
+.cookie-card:hover .cookie-card__title,
+.cookie-card:focus-within .cookie-card__title {
+  background-color: var(--color-brand-primary, #F2A900);
+  color: var(--color-black, #17130F);
 }
 
 .cookie-card__description {
@@ -1031,7 +832,7 @@ input {
 
 .product-rail {
   display: flex;
-  gap: var(--space-4);
+  gap: var(--space-5);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -1081,12 +882,6 @@ input {
   /* Classics list is typically exactly 4 items — jump straight to 4
      columns instead of 3, so it never wraps into a 3+1 orphan row. */
   .product-rail--classics {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media screen and (min-width: 1300px) {
-  .product-rail {
     grid-template-columns: repeat(4, 1fr);
   }
 }

@@ -18,13 +18,13 @@
       "label": "Announcement"
     },
     "header": {
-      "open_menu": "Open menu",
-      "close_menu": "Close menu",
-      "search": "Search",
-      "account": "Account",
-      "cart": "Cart",
-      "order_now": "Order now",
-      "bag": "Bag",
+      "open_menu": "MENÜ",
+      "close_menu": "Schliessen",
+      "cart": "Warenkorb",
+      "order_now": "BESTELLEN",
+      "bag": "WARENKORB",
+      "nav_this_week": "THIS WEEK",
+      "nav_build_box": "BOX BAUEN",
       "cart_count": {
         "one": "{{ count }} item in cart",
         "other": "{{ count }} items in cart"
@@ -36,7 +36,7 @@
       "copyright": "All rights reserved."
     },
     "weekly_drop": {
-      "empty": "New flavors coming soon — check back shortly.",
+      "empty": "Neue Sorten kommen bald — schau bald wieder vorbei.",
       "empty_editor": "Add cookie flavors under Settings → Custom data → Cookie flavor, then mark them active and available this week."
     },
     "cart": {
@@ -70,13 +70,13 @@
     }
   },
   "fulfillment": {
-    "heading": "HOW DO YOU WANT YOUR CHUNKIES?",
-    "pickup_label": "PICKUP",
-    "pickup_description": "Pick them up fresh.",
-    "delivery_label": "DELIVERY",
-    "delivery_description": "Availability confirmed at checkout.",
-    "close": "Close",
-    "error_message": "Something went wrong. Please try again."
+    "heading": "WIE MÖCHTEST DU DEINE CHUNKIES?",
+    "pickup_label": "ABHOLUNG",
+    "pickup_description": "Frisch abholen.",
+    "delivery_label": "LIEFERUNG",
+    "delivery_description": "Verfügbarkeit wird beim Checkout bestätigt.",
+    "close": "Schliessen",
+    "error_message": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
   },
   "products": {
     "price": {
@@ -85,32 +85,32 @@
     }
   },
   "box_builder": {
-    "build_a": "PICK YOUR COOKIES",
-    "cookie_box_label": "COOKIE BOX",
-    "build_your": "PICK YOUR COOKIES",
+    "build_a": "COOKIES WÄHLEN",
+    "cookie_box_label": "BOX",
+    "build_your": "DEINE COOKIES",
     "header_box_label": "COOKIE BOX",
-    "subtitle": "Choose __SIZE__ cookies to fill your box.",
-    "counter": "__TOTAL__ COOKIES · __SELECTED__/__TOTAL__ SELECTED",
-    "box_ready": "__TOTAL__ COOKIES · BOX READY",
+    "subtitle": "Wähle __SIZE__ Cookies für deine Box.",
+    "counter": "__TOTAL__ COOKIES · __SELECTED__/__TOTAL__ AUSGEWÄHLT",
+    "box_ready": "__TOTAL__ COOKIES · BOX KOMPLETT",
     "selected": "COOKIES",
-    "select_cookies": "CHOOSE __SIZE__ COOKIES",
-    "select_more": "CHOOSE __COUNT__ MORE",
-    "add_to_cart": "ADD TO BAG",
-    "adding": "ADDING...",
-    "added": "ADDED",
-    "error": "TRY AGAIN",
-    "error_message": "Something went wrong. Your selection has been kept — please try again.",
-    "close": "Close",
-    "choose_count": "{{ count }} cookies to choose.",
-    "empty_flavors": "New flavors coming soon — check back shortly.",
-    "coming_soon": "COMING SOON",
-    "sold_out": "SOLD OUT",
+    "select_cookies": "WÄHLE __SIZE__ COOKIES",
+    "select_more": "NOCH __COUNT__ WÄHLEN",
+    "add_to_cart": "IN DEN WARENKORB",
+    "adding": "WIRD HINZUGEFÜGT…",
+    "added": "HINZUGEFÜGT",
+    "error": "NOCHMAL VERSUCHEN",
+    "error_message": "Etwas ist schiefgelaufen. Deine Auswahl bleibt erhalten — bitte versuche es erneut.",
+    "close": "Schliessen",
+    "choose_count": "{{ count }} Cookies zur Auswahl.",
+    "empty_flavors": "Neue Sorten kommen bald — schau bald wieder vorbei.",
+    "coming_soon": "BALD VERFÜGBAR",
+    "sold_out": "AUSVERKAUFT",
     "placeholder_3": "Select a 3-cookie box product in the theme editor.",
     "placeholder_6": "Select a 6-cookie box product in the theme editor.",
     "flavor": {
-      "add_accessible": "Add {{ flavor }}",
-      "remove_accessible": "Remove one {{ flavor }}",
-      "add_more_accessible": "Add one more {{ flavor }}"
+      "add_accessible": "{{ flavor }} hinzufügen",
+      "remove_accessible": "Eine {{ flavor }} entfernen",
+      "add_more_accessible": "Eine weitere {{ flavor }} hinzufügen"
     }
   }
 }

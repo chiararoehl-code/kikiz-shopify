@@ -7,8 +7,8 @@
       aria-expanded="false"
       aria-controls="MobileNav"
     >
-      <span class="visually-hidden">{{ 'sections.header.open_menu' | t }}</span>
       {% render 'icons', icon: 'menu' %}
+      <span class="header-toggle__label">{{ 'sections.header.open_menu' | t }}</span>
     </button>
 
     <a href="{{ routes.root_url }}" class="site-header__logo">
@@ -26,42 +26,9 @@
       {%- endif -%}
     </a>
 
-    <nav class="site-nav" aria-label="{{ 'sections.header.open_menu' | t }}">
-      <ul class="site-nav__list">
-        {%- for link in linklists.main-menu.links -%}
-          <li class="site-nav__item">
-            <a href="{{ link.url }}" class="site-nav__link"{% if link.active %} aria-current="page"{% endif %}>
-              {{ link.title }}
-            </a>
-          </li>
-        {%- endfor -%}
-      </ul>
-    </nav>
-
     <div class="site-header__utility">
       <a href="#box-selector" class="btn btn--primary site-header__order-now">
         {{ 'sections.header.order_now' | t }}
-      </a>
-
-      <form action="{{ routes.search_url }}" method="get" role="search" class="header-search">
-        <label class="visually-hidden" for="Header-Search">{{ 'sections.header.search' | t }}</label>
-        <input
-          type="search"
-          name="q"
-          id="Header-Search"
-          class="header-search__input"
-          placeholder="{{ 'sections.header.search' | t }}"
-          value="{{ search.terms | escape }}"
-        >
-        <button type="submit" class="header-search__submit">
-          <span class="visually-hidden">{{ 'sections.header.search' | t }}</span>
-          {% render 'icons', icon: 'search' %}
-        </button>
-      </form>
-
-      <a href="{{ routes.account_url }}" class="header-icon-link">
-        <span class="visually-hidden">{{ 'sections.header.account' | t }}</span>
-        {% render 'icons', icon: 'account' %}
       </a>
 
       <a href="{{ routes.cart_url }}" class="header-icon-link header-cart-link">
@@ -84,12 +51,20 @@
         {% render 'icons', icon: 'close' %}
       </button>
     </div>
+    {%- comment -%}
+      Fixed, theme-owned anchors on this same page — not the Shopify
+      main-menu linklist. CLASSICS is left out until the Cookie Flavor
+      metaobject has a reliable classic/permanent field (see the Phase
+      report); FÜR UNTERNEHMEN is left out until the Business page exists,
+      so this drawer never links to a destination that doesn't exist yet.
+    {%- endcomment -%}
     <ul class="mobile-nav__list">
-      {%- for link in linklists.main-menu.links -%}
-        <li class="mobile-nav__item">
-          <a href="{{ link.url }}" class="mobile-nav__link">{{ link.title }}</a>
-        </li>
-      {%- endfor -%}
+      <li class="mobile-nav__item">
+        <a href="#weekly-drop" class="mobile-nav__link">{{ 'sections.header.nav_this_week' | t }}</a>
+      </li>
+      <li class="mobile-nav__item">
+        <a href="#box-selector" class="mobile-nav__link">{{ 'sections.header.nav_build_box' | t }}</a>
+      </li>
     </ul>
   </div>
 </header>
