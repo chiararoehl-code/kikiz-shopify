@@ -9,20 +9,25 @@
   theme, while flavor.image.value resolves directly to the Image.
 
   data-flavor-key must be unique per row — box-builder.js keys its
-  selections state on it. flavor.handle rendered the same value for every
-  row in this runtime (confirmed: one click bumped every flavor's display
-  to the same quantity), so this uses flavor.id, which is always present
-  and unique for any Liquid object, instead.
+  selections state on it. Runtime debug confirmed both flavor.handle and
+  flavor.id render blank for this metaobject in this theme, so this uses
+  flavor.system.handle, the Metaobject system's own stable per-entry
+  handle. flavor.name.value | handleize is a defensive fallback only, in
+  case system.handle is ever unexpectedly blank.
 {%- endcomment -%}
 
 {%- liquid
   assign flavor_image_url = flavor.image.value | image_url: width: 80
+  assign flavor_key = flavor.system.handle
+  if flavor_key == blank
+    assign flavor_key = flavor.name.value | handleize
+  endif
 -%}
 
 <div
   class="flavor-selector"
   data-flavor-select-item
-  data-flavor-key="{{ flavor.id }}"
+  data-flavor-key="{{ flavor_key | escape }}"
   data-flavor-name="{{ flavor.name.value | escape }}"
 >
   <button
