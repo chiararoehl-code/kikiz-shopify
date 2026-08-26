@@ -86,6 +86,8 @@
       data-box-builder
       hidden
       data-tpl-build-your="{{ 'box_builder.build_your' | t }}"
+      data-tpl-box-label="{{ 'box_builder.header_box_label' | t }}"
+      data-tpl-subtitle="{{ 'box_builder.subtitle' | t }}"
       data-tpl-counter="{{ 'box_builder.counter' | t }}"
       data-tpl-box-ready="{{ 'box_builder.box_ready' | t }}"
       data-tpl-select-cookies="{{ 'box_builder.select_cookies' | t }}"
@@ -99,11 +101,11 @@
             <span class="visually-hidden">{{ 'box_builder.close' | t }}</span>
             {%- render 'icons', icon: 'close' -%}
           </button>
-          <p class="label">{{ section.settings.eyebrow }}</p>
+          <p class="label" data-box-builder-box-label></p>
           <h2 id="BoxBuilderTitle" class="box-builder__title h2" data-box-builder-title>
             {{ 'box_builder.build_your' | t }}
           </h2>
-          <p class="box-builder__subtitle body">{{ 'box_builder.subtitle' | t }}</p>
+          <p class="box-builder__subtitle body" data-box-builder-subtitle></p>
         </header>
 
         <div class="box-builder__flavors" data-box-builder-flavors>

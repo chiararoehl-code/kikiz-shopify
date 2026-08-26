@@ -12,6 +12,8 @@
 
   var panel = modal.querySelector('.box-builder__panel');
   var titleEl = modal.querySelector('[data-box-builder-title]');
+  var boxLabelEl = modal.querySelector('[data-box-builder-box-label]');
+  var subtitleEl = modal.querySelector('[data-box-builder-subtitle]');
   var counterEl = modal.querySelector('[data-box-builder-counter]');
   var progressFillEl = modal.querySelector('[data-box-builder-progress-fill]');
   var errorEl = modal.querySelector('[data-box-builder-error]');
@@ -26,6 +28,8 @@
   if (!panel || !form || !submitButton || !variantInput || !propertiesContainer) return;
 
   var tplBuildYour = modal.dataset.tplBuildYour || 'BUILD YOUR __SIZE__';
+  var tplBoxLabel = modal.dataset.tplBoxLabel || '__SIZE__ COOKIE BOX';
+  var tplSubtitle = modal.dataset.tplSubtitle || 'Choose __SIZE__ cookies to fill your box.';
   var tplCounter = modal.dataset.tplCounter || '__SELECTED__ / __TOTAL__ SELECTED';
   var tplBoxReady = modal.dataset.tplBoxReady || 'BOX READY';
   var tplSelectCookies = modal.dataset.tplSelectCookies || 'SELECT __SIZE__ COOKIES';
@@ -144,6 +148,8 @@
     isSubmitting = false;
 
     if (titleEl) titleEl.textContent = fillTemplate(tplBuildYour, { __SIZE__: boxSize });
+    if (boxLabelEl) boxLabelEl.textContent = fillTemplate(tplBoxLabel, { __SIZE__: boxSize });
+    if (subtitleEl) subtitleEl.textContent = fillTemplate(tplSubtitle, { __SIZE__: boxSize });
     variantInput.value = variantId;
 
     renderAll();
