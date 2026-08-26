@@ -36,6 +36,7 @@
     <form action="{{ routes.cart_url }}" method="post" class="cart-page__form" id="CartForm">
       <div class="cart-page__layout container">
         <div class="cart-page__lines">
+          <p class="cart-page__lines-heading label">{{ 'sections.cart.your_cookie_box' | t }}</p>
           <ul class="cart-lines" role="list">
             {%- for item in cart.items -%}
               <li class="cart-line">
@@ -43,6 +44,9 @@
               </li>
             {%- endfor -%}
           </ul>
+          <button type="submit" name="update" class="btn btn--secondary cart-page__update">
+            {{ 'sections.cart.update_cart' | t }}
+          </button>
         </div>
 
         <div class="cart-page__summary">
@@ -94,15 +98,36 @@
           </div>
 
           <div class="cart-summary">
-            <button type="submit" name="update" class="btn btn--secondary cart-summary__update">
-              {{ 'sections.cart.update_cart' | t }}
-            </button>
+            <p class="cart-summary__heading label">{{ 'sections.cart.order_summary' | t }}</p>
 
-            <div class="cart-summary__row cart-summary__row--total">
+            <div class="cart-summary__row">
               <span>{{ 'sections.cart.subtotal' | t }}</span>
               <span>{{ cart.total_price | money }}</span>
             </div>
-            <p class="cart-summary__note text-small">{{ 'sections.cart.taxes_note' | t }}</p>
+            <div class="cart-summary__row">
+              <span>{{ 'sections.cart.delivery' | t }}</span>
+              <span>
+                {%- if fulfillment_method == 'Pickup' -%}
+                  {{ 'sections.cart.delivery_free_pickup' | t }}
+                {%- else -%}
+                  {{ 'sections.cart.calculated_at_checkout' | t }}
+                {%- endif -%}
+              </span>
+            </div>
+            <div class="cart-summary__row">
+              <span>{{ 'sections.cart.taxes' | t }}</span>
+              <span>
+                {%- if cart.taxes_included -%}
+                  {{ 'sections.cart.taxes_included' | t }}
+                {%- else -%}
+                  {{ 'sections.cart.calculated_at_checkout' | t }}
+                {%- endif -%}
+              </span>
+            </div>
+            <div class="cart-summary__row cart-summary__row--total">
+              <span>{{ 'sections.cart.estimated_total' | t }}</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
 
             <button
               type="submit"
@@ -112,10 +137,12 @@
             >
               {{ 'sections.cart.checkout' | t }}
             </button>
-            <a href="{{ routes.root_url }}#box-selector" class="btn btn--secondary cart-summary__continue">
-              {{ 'sections.cart.add_another' | t }}
-            </a>
+            <p class="cart-summary__trust text-small">{{ 'sections.cart.trust_note' | t }}</p>
           </div>
+
+          <a href="{{ routes.root_url }}#box-selector" class="btn btn--text cart-page__continue">
+            {{ 'sections.cart.add_another' | t }}
+          </a>
         </div>
       </div>
     </form>
