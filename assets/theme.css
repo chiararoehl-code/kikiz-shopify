@@ -1487,19 +1487,12 @@ input {
 
 .box-builder__flavors {
   flex: 1;
+  overflow-x: hidden;
   overflow-y: auto;
   padding: var(--space-5);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-}
-
-@media screen and (min-width: 750px) {
-  .box-builder__flavors {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    align-content: start;
-  }
 }
 
 .box-builder__footer {
@@ -1563,6 +1556,8 @@ input {
   align-items: center;
   gap: var(--space-3);
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
   min-height: 72px;
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-medium);
@@ -1579,8 +1574,8 @@ input {
 
 .flavor-row__thumb {
   flex-shrink: 0;
-  width: 64px;
-  height: 64px;
+  width: 56px;
+  height: 56px;
   border-radius: var(--radius-small);
   overflow: hidden;
   background-color: var(--color-background, #F5EFE1);
@@ -1647,6 +1642,16 @@ input {
   flex-shrink: 0;
   align-items: center;
   gap: var(--space-2);
+}
+
+/* [hidden] has the same specificity as the class selectors above, and
+   author styles win cascade ties over the user-agent's [hidden] rule —
+   so declaring `display` directly on .flavor-row__add/__stepper silently
+   defeats box-builder.js's `element.hidden = true/false` toggling unless
+   [hidden] is re-asserted here with matching specificity. */
+.flavor-row__add[hidden],
+.flavor-row__stepper[hidden] {
+  display: none;
 }
 
 .flavor-row__step-btn {
