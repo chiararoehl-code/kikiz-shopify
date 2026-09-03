@@ -9,16 +9,13 @@
   this theme, while flavor.image.value resolves directly to the Image
   and pipes into image_url correctly. Use .value, not .reference.
 
-  Links to the flavor's own profile page at /pages/{flavor_key} — see
-  sections/flavor-profile.liquid for exactly why that's a plain Shopify
-  Page (not Shopify's native metaobject-storefront-page feature) and
-  what flavor_key has to match on the Page side for this to resolve.
-
-  The whole module is one <a> — safe because it wraps no other
-  interactive element (no buttons, no nested links), and its accessible
-  name is deliberately shortened via aria-label so screen readers
-  announce "Name – Mehr erfahren" instead of reading the full
-  description as part of the link.
+  Links to the flavor's own native metaobject web page via
+  flavor.system.url — Shopify-generated, never hand-built. That's
+  populated once the Cookie Flavor metaobject definition has Renderable +
+  Online Store access enabled in Admin (see sections/flavor-profile.liquid
+  for the full routing story). If it's ever blank — capability not
+  enabled yet, or this entry isn't published — the module still renders
+  for discovery, just without a dead MEHR ERFAHREN link.
 
   Accepts:
     flavor (cookie_flavor metaobject, required)
@@ -29,55 +26,91 @@
 {%- liquid
   assign flavor_image = flavor.image.value
   assign flavor_image_url = flavor_image | image_url: width: 1200
-  assign flavor_key = flavor.system.handle
-  if flavor_key == blank
-    assign flavor_key = flavor.name.value | handleize
-  endif
+  assign flavor_url = flavor.system.url
   assign align = align | default: 'left'
   assign learn_more = 'sections.weekly_drop.learn_more' | t
 -%}
 
-<a
-  href="{{ routes.root_url }}pages/{{ flavor_key }}"
-  class="cookie-card cookie-card--align-{{ align }}"
-  aria-label="{{ flavor.name.value }} – {{ learn_more }}"
->
-  <div class="cookie-card__media shape-rounded">
-    {%- if flavor_image_url != blank -%}
-      <img
-        class="cookie-card__image"
-        src="{{ flavor_image_url }}"
-        srcset="
-          {{ flavor_image | image_url: width: 600 }} 600w,
-          {{ flavor_image | image_url: width: 900 }} 900w,
-          {{ flavor_image | image_url: width: 1200 }} 1200w,
-          {{ flavor_image | image_url: width: 1600 }} 1600w
-        "
-        sizes="(min-width: 990px) 46vw, 100vw"
-        width="{{ flavor_image.width }}"
-        height="{{ flavor_image.height }}"
-        alt=""
-        loading="lazy"
-      >
-    {%- else -%}
-      <div class="cookie-card__media-placeholder" aria-hidden="true">
-        <span class="cookie-card__placeholder-mark"></span>
-      </div>
-    {%- endif -%}
+{%- if flavor_url != blank -%}
+  <a
+    href="{{ flavor_url }}"
+    class="cookie-card cookie-card--align-{{ align }}"
+    aria-label="{{ flavor.name.value }} – {{ learn_more }}"
+  >
+    <div class="cookie-card__media shape-rounded">
+      {%- if flavor_image_url != blank -%}
+        <img
+          class="cookie-card__image"
+          src="{{ flavor_image_url }}"
+          srcset="
+            {{ flavor_image | image_url: width: 600 }} 600w,
+            {{ flavor_image | image_url: width: 900 }} 900w,
+            {{ flavor_image | image_url: width: 1200 }} 1200w,
+            {{ flavor_image | image_url: width: 1600 }} 1600w
+          "
+          sizes="(min-width: 990px) 46vw, 100vw"
+          width="{{ flavor_image.width }}"
+          height="{{ flavor_image.height }}"
+          alt=""
+          loading="lazy"
+        >
+      {%- else -%}
+        <div class="cookie-card__media-placeholder" aria-hidden="true">
+          <span class="cookie-card__placeholder-mark"></span>
+        </div>
+      {%- endif -%}
 
-    {%- if flavor.badge.value != blank -%}
-      {%- render 'badge', text: flavor.badge.value, style: 'accent' -%}
-    {%- endif -%}
-  </div>
+      {%- if flavor.badge.value != blank -%}
+        {%- render 'badge', text: flavor.badge.value, style: 'accent' -%}
+      {%- endif -%}
+    </div>
 
-  <div class="cookie-card__content">
-    <h3 class="cookie-card__title display-l" aria-hidden="true">{{ flavor.name.value }}</h3>
-    {%- if flavor.short_description.value != blank -%}
-      <p class="cookie-card__description body-lg" aria-hidden="true">{{ flavor.short_description.value }}</p>
-    {%- endif -%}
-    <span class="cookie-card__link" aria-hidden="true">
-      {{ learn_more }}
-      <span class="cookie-card__link-arrow">→</span>
-    </span>
+    <div class="cookie-card__content">
+      <h3 class="cookie-card__title display-l" aria-hidden="true">{{ flavor.name.value }}</h3>
+      {%- if flavor.short_description.value != blank -%}
+        <p class="cookie-card__description body-lg" aria-hidden="true">{{ flavor.short_description.value }}</p>
+      {%- endif -%}
+      <span class="cookie-card__link" aria-hidden="true">
+        {{ learn_more }}
+        <span class="cookie-card__link-arrow">→</span>
+      </span>
+    </div>
+  </a>
+{%- else -%}
+  <div class="cookie-card cookie-card--align-{{ align }}">
+    <div class="cookie-card__media shape-rounded">
+      {%- if flavor_image_url != blank -%}
+        <img
+          class="cookie-card__image"
+          src="{{ flavor_image_url }}"
+          srcset="
+            {{ flavor_image | image_url: width: 600 }} 600w,
+            {{ flavor_image | image_url: width: 900 }} 900w,
+            {{ flavor_image | image_url: width: 1200 }} 1200w,
+            {{ flavor_image | image_url: width: 1600 }} 1600w
+          "
+          sizes="(min-width: 990px) 46vw, 100vw"
+          width="{{ flavor_image.width }}"
+          height="{{ flavor_image.height }}"
+          alt="{{ flavor_image.alt | default: flavor.name.value | escape }}"
+          loading="lazy"
+        >
+      {%- else -%}
+        <div class="cookie-card__media-placeholder" aria-hidden="true">
+          <span class="cookie-card__placeholder-mark"></span>
+        </div>
+      {%- endif -%}
+
+      {%- if flavor.badge.value != blank -%}
+        {%- render 'badge', text: flavor.badge.value, style: 'accent' -%}
+      {%- endif -%}
+    </div>
+
+    <div class="cookie-card__content">
+      <h3 class="cookie-card__title display-l">{{ flavor.name.value }}</h3>
+      {%- if flavor.short_description.value != blank -%}
+        <p class="cookie-card__description body-lg">{{ flavor.short_description.value }}</p>
+      {%- endif -%}
+    </div>
   </div>
-</a>
+{%- endif -%}
