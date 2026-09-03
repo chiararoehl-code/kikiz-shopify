@@ -1,187 +1,439 @@
-{% comment %} Flavor Banners Section — alternating image/text layout with hover color effect {% endcomment %}
+{% assign flavor = metaobject %}
 
-<div class="flavor-banners">
-  {% for block in section.blocks %}
-    {% assign is_even = forloop.index0 | modulo: 2 %}
-    {% assign banner_class = 'flavor-banner--img-left' %}
-    {% if is_even == 0 %}{% assign banner_class = 'flavor-banner--img-right' %}{% endif %}
-    <div class="flavor-banner {{ banner_class }}"
-         style="--flavor-bg: {{ block.settings.bg_color }}; --flavor-text: {{ block.settings.text_color }};"
-         {{ block.shopify_attributes }}>
+{% comment %} --- PREV / NEXT LOGIC --- {% endcomment %}
+{% assign all_flavors = shop.metaobjects.cookie_flavor.values %}
+{% assign active_flavors = '' | split: '' %}
+{% for f in all_flavors %}
+  {% if f.active.value == true %}
+    {% assign active_flavors = active_flavors | concat: f %}
+  {% endif %}
+{% endfor %}
+{% assign active_flavors = active_flavors | sort: 'sort_order.value' %}
+{% assign current_index = nil %}
+{% for f in active_flavors %}
+  {% if f.system.handle == flavor.system.handle %}
+    {% assign current_index = forloop.index0 %}
+  {% endif %}
+{% endfor %}
+{% assign prev_index = current_index | minus: 1 %}
+{% assign next_index = current_index | plus: 1 %}
+{% assign prev_flavor = nil %}
+{% assign next_flavor = nil %}
+{% if prev_index >= 0 %}
+  {% assign prev_flavor = active_flavors[prev_index] %}
+{% endif %}
+{% if next_index < active_flavors.size %}
+  {% assign next_flavor = active_flavors[next_index] %}
+{% endif %}
 
-      <div class="flavor-banner__content">
-        <h2 class="flavor-banner__title">
-          {{ block.settings.title }}
-        </h2>
-        <p class="flavor-banner__desc">
-          {{ block.settings.description }}
-        </p>
-        <div class="flavor-banner__buttons">
-          {% if block.settings.btn1_label != blank %}
-            <a href="{{ block.settings.btn1_url }}" class="flavor-banner__btn flavor-banner__btn--outline">
-              {{ block.settings.btn1_label }}
-            </a>
+{% comment %} --- HERO --- {% endcomment %}
+<section class="fp-hero">
+  <div class="fp-hero__image-panel">
+    {% if flavor.image.value != blank %}
+      {{ flavor.image.value | image_url: width: 900 | image_tag: class: 'fp-hero__image', loading: 'eager', alt: flavor.name.value }}
+    {% endif %}
+  </div>
+  <div class="fp-hero__content-panel">
+    <div class="fp-hero__content-inner">
+      {% if flavor.available_this_week.value == true %}
+        <span class="fp-badge fp-badge--week">THIS WEEK ONLY</span>
+      {% endif %}
+      <h1 class="fp-hero__name">{{ flavor.name.value }}</h1>
+      {% if flavor.short_description.value != blank %}
+        <p class="fp-hero__desc">{{ flavor.short_description.value }}</p>
+      {% endif %}
+      {% assign show_dietary = false %}
+      {% if flavor.dietary_vegan.value == true or flavor.dietary_vegetarian.value == true %}
+        {% assign show_dietary = true %}
+      {% endif %}
+      {% if show_dietary %}
+        <div class="fp-dietary">
+          {% if flavor.dietary_vegan.value == true %}
+            <span class="fp-dietary__badge">VEGAN</span>
           {% endif %}
-          {% if block.settings.btn2_label != blank %}
-            <a href="#shopify-section-template--30037460779343__box-selector" class="flavor-banner__btn flavor-banner__btn--filled">
-              {{ block.settings.btn2_label }}
-            </a>
+          {% if flavor.dietary_vegetarian.value == true %}
+            <span class="fp-dietary__badge">VEGETARISCH</span>
+          {% endif %}
+        </div>
+      {% endif %}
+      <a href="/#shopify-section-template--30037460779343__box-selector" class="fp-btn fp-btn--primary">
+        BOX ZUSAMMENSTELLEN
+      </a>
+      <a href="/#shopify-section-template--30037460779343__flavor_banners_yrUV9Y" class="fp-back-link">
+        ← ZURÜCK ZU DEN FLAVORS
+      </a>
+    </div>
+  </div>
+</section>
+
+{% comment %} --- STORY --- {% endcomment %}
+{% if flavor.story.value != blank %}
+  <section class="fp-story">
+    <div class="fp-story__inner">
+      <h2 class="fp-story__heading">WHY THIS COOKIE HITS DIFFERENT.</h2>
+      <div class="fp-story__body">{{ flavor.story.value }}</div>
+    </div>
+  </section>
+{% endif %}
+
+{% comment %} --- PREMIUM INGREDIENTS --- {% endcomment %}
+{% if flavor.premium_ingredients.value != blank and flavor.premium_ingredients.value.size > 0 %}
+  <section class="fp-ingredients">
+    {% for ingredient in flavor.premium_ingredients.value %}
+      {% assign ing_even = forloop.index0 | modulo: 2 %}
+      {% assign ing_class = 'fp-ingredient--img-right' %}
+      {% if ing_even == 0 %}{% assign ing_class = 'fp-ingredient--img-left' %}{% endif %}
+      <div class="fp-ingredient {{ ing_class }}">
+        {% if ingredient.image.value != blank %}
+          <div class="fp-ingredient__image-wrap">
+            {{ ingredient.image.value | image_url: width: 800 | image_tag: class: 'fp-ingredient__image', loading: 'lazy', alt: ingredient.name.value }}
+          </div>
+        {% endif %}
+        <div class="fp-ingredient__content">
+          <h3 class="fp-ingredient__name">{{ ingredient.name.value }}</h3>
+          {% if ingredient.story.value != blank %}
+            <p class="fp-ingredient__story">{{ ingredient.story.value }}</p>
           {% endif %}
         </div>
       </div>
+    {% endfor %}
+  </section>
+{% endif %}
 
-      {% if block.settings.image != blank %}
-        <div class="flavor-banner__image-wrap">
-          {{ block.settings.image | image_url: width: 600 | image_tag: class: 'flavor-banner__image', loading: 'lazy' }}
-        </div>
+{% comment %} --- FACTS ACCORDIONS --- {% endcomment %}
+{% assign has_facts = false %}
+{% if flavor.ingredients.value != blank or flavor.allergens.value != blank or flavor.nutrition.value != blank %}
+  {% assign has_facts = true %}
+{% endif %}
+{% if has_facts %}
+  <section class="fp-facts">
+    <div class="fp-facts__inner">
+      {% if flavor.ingredients.value != blank %}
+        <details class="fp-accordion">
+          <summary class="fp-accordion__summary">ZUTATEN +</summary>
+          <div class="fp-accordion__body">{{ flavor.ingredients.value }}</div>
+        </details>
       {% endif %}
-
+      {% if flavor.allergens.value != blank %}
+        <details class="fp-accordion">
+          <summary class="fp-accordion__summary">ALLERGENE +</summary>
+          <div class="fp-accordion__body">{{ flavor.allergens.value }}</div>
+        </details>
+      {% endif %}
+      {% if flavor.nutrition.value != blank %}
+        <details class="fp-accordion">
+          <summary class="fp-accordion__summary">NÄHRWERTE +</summary>
+          <div class="fp-accordion__body">{{ flavor.nutrition.value }}</div>
+        </details>
+      {% endif %}
     </div>
-  {% endfor %}
-</div>
+  </section>
+{% endif %}
+
+{% comment %} --- BOTTOM CTA --- {% endcomment %}
+<section class="fp-bottom-cta">
+  <a href="/#shopify-section-template--30037460779343__box-selector" class="fp-btn fp-btn--primary">
+    BOX ZUSAMMENSTELLEN
+  </a>
+</section>
+
+{% comment %} --- PREV / NEXT --- {% endcomment %}
+{% if prev_flavor != nil or next_flavor != nil %}
+  <nav class="fp-nav">
+    <div class="fp-nav__inner">
+      {% if prev_flavor != nil %}
+        <a href="{{ prev_flavor.system.url }}" class="fp-nav__link fp-nav__link--prev">
+          ← {{ prev_flavor.name.value }}
+        </a>
+      {% else %}
+        <span></span>
+      {% endif %}
+      {% if next_flavor != nil %}
+        <a href="{{ next_flavor.system.url }}" class="fp-nav__link fp-nav__link--next">
+          {{ next_flavor.name.value }} →
+        </a>
+      {% endif %}
+    </div>
+  </nav>
+{% endif %}
 
 <style>
-  .flavor-banners {
+  /* ---- HERO ---- */
+  .fp-hero {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 2rem 1rem;
-    max-width: 1100px;
-    margin: 0 auto;
+    min-height: 80vh;
+    width: 100%;
   }
-
-  .flavor-banner {
+  .fp-hero__image-panel {
+    flex: 1;
+    background: #FFFFFF;
     display: flex;
     align-items: center;
-    border-radius: 24px;
-    overflow: visible;
-    padding: 3rem 3.5rem;
-    position: relative;
-    gap: 2rem;
-    min-height: 260px;
-    background-color: #FFFFFF;
-    color: #1A1A1A;
-    transition: background-color 0.25s ease, color 0.25s ease;
-    cursor: default;
-  }
-
-  .flavor-banner:hover {
-    background-color: var(--flavor-bg);
-    color: var(--flavor-text);
-  }
-
-  .flavor-banner--img-right { flex-direction: row; }
-  .flavor-banner--img-left  { flex-direction: row-reverse; }
-
-  .flavor-banner__content {
-    flex: 1;
-  }
-
-  .flavor-banner__title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 900;
-    margin: 0 0 0.5rem;
-    line-height: 1.1;
-    color: inherit;
-    transition: color 0.25s ease;
-  }
-
-  .flavor-banner__desc {
-    font-size: 1rem;
-    margin: 0 0 1.5rem;
-    max-width: 480px;
-    opacity: 0.9;
-    color: inherit;
-    transition: color 0.25s ease;
-  }
-
-  .flavor-banner__buttons {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .flavor-banner__btn {
-    padding: 0.65rem 1.4rem;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    text-decoration: none;
-    transition: opacity 0.2s;
-  }
-
-  .flavor-banner__btn:hover { opacity: 0.8; }
-
-  .flavor-banner__btn--outline {
-    border: 2px solid currentColor;
-    background: transparent;
-    color: inherit;
-  }
-
-  .flavor-banner__btn--filled {
-    background-color: #1A1A1A;
-    color: #FFFFFF;
-    border: 2px solid #1A1A1A;
-  }
-
-  .flavor-banner:hover .flavor-banner__btn--filled {
-    background-color: var(--flavor-text);
-    color: var(--flavor-bg);
-    border-color: var(--flavor-text);
-  }
-
-  .flavor-banner__image-wrap {
-    flex: 0 0 280px;
-    display: flex;
-    align-items: flex-end;
     justify-content: center;
-    margin-top: -2rem;
-    margin-bottom: -2rem;
+    padding: 3rem;
   }
-
-  .flavor-banner__image {
-    width: 280px;
-    height: 280px;
-    object-fit: cover;
-    border-radius: 50%;
+  .fp-hero__image {
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    object-fit: contain;
     display: block;
   }
+  .fp-hero__content-panel {
+    flex: 1;
+    background: #FAF7F2;
+    display: flex;
+    align-items: center;
+    padding: 4rem;
+  }
+  .fp-hero__content-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 480px;
+  }
+  .fp-badge--week {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    background: #1A1A1A;
+    color: #FFFFFF;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    width: fit-content;
+  }
+  .fp-hero__name {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900;
+    color: #1A1A1A;
+    line-height: 1;
+    margin: 0;
+  }
+  .fp-hero__desc {
+    font-size: 1.1rem;
+    color: #1A1A1A;
+    margin: 0;
+    opacity: 0.85;
+    max-width: 420px;
+  }
+  .fp-dietary {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .fp-dietary__badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    border: 1.5px solid #1A1A1A;
+    color: #1A1A1A;
+    padding: 0.25rem 0.7rem;
+    border-radius: 999px;
+  }
+  .fp-btn--primary {
+    display: inline-block;
+    background: #1A1A1A;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    padding: 1rem 2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    width: fit-content;
+    transition: background 0.2s ease;
+  }
+  .fp-btn--primary:hover { background: #FFA500; color: #1A1A1A; }
+  .fp-back-link {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1A1A1A;
+    text-decoration: none;
+    opacity: 0.6;
+    letter-spacing: 0.05em;
+    width: fit-content;
+  }
+  .fp-back-link:hover { opacity: 1; }
 
-  @media (max-width: 700px) {
-    .flavor-banner,
-    .flavor-banner--img-left {
+  /* ---- STORY ---- */
+  .fp-story {
+    background: #FFFFFF;
+    padding: 6rem 2rem;
+  }
+  .fp-story__inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .fp-story__heading {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 900;
+    color: #1A1A1A;
+    margin: 0 0 1.5rem;
+  }
+  .fp-story__body {
+    font-size: 1.1rem;
+    line-height: 1.75;
+    color: #1A1A1A;
+    opacity: 0.85;
+  }
+
+  /* ---- PREMIUM INGREDIENTS ---- */
+  .fp-ingredients {
+    background: #FAF7F2;
+  }
+  .fp-ingredient {
+    display: flex;
+    align-items: center;
+    min-height: 60vh;
+    gap: 0;
+  }
+  .fp-ingredient--img-left  { flex-direction: row; }
+  .fp-ingredient--img-right { flex-direction: row-reverse; }
+  .fp-ingredient__image-wrap {
+    flex: 1;
+    overflow: hidden;
+    align-self: stretch;
+  }
+  .fp-ingredient__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .fp-ingredient__content {
+    flex: 1;
+    padding: 5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.25rem;
+  }
+  .fp-ingredient__name {
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900;
+    color: #1A1A1A;
+    margin: 0;
+    line-height: 1.1;
+  }
+  .fp-ingredient__story {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #1A1A1A;
+    opacity: 0.85;
+    margin: 0;
+    max-width: 420px;
+  }
+
+  /* ---- FACTS ---- */
+  .fp-facts {
+    background: #FFFFFF;
+    padding: 4rem 2rem;
+  }
+  .fp-facts__inner {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .fp-accordion {
+    border-bottom: 1px solid rgba(26,26,26,0.15);
+  }
+  .fp-accordion:first-child { border-top: 1px solid rgba(26,26,26,0.15); }
+  .fp-accordion__summary {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #1A1A1A;
+    padding: 1.25rem 0;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  .fp-accordion__summary::-webkit-details-marker { display: none; }
+  .fp-accordion__body {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #1A1A1A;
+    opacity: 0.8;
+    padding: 0 0 1.25rem;
+  }
+
+  /* ---- BOTTOM CTA ---- */
+  .fp-bottom-cta {
+    background: #FAF7F2;
+    padding: 5rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* ---- PREV / NEXT ---- */
+  .fp-nav {
+    background: #FFFFFF;
+    border-top: 1px solid rgba(26,26,26,0.1);
+    padding: 2.5rem 2rem;
+  }
+  .fp-nav__inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .fp-nav__link {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #1A1A1A;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .fp-nav__link:hover { opacity: 1; }
+
+  /* ---- MOBILE ---- */
+  @media (max-width: 768px) {
+    .fp-hero {
+      flex-direction: column;
+      min-height: auto;
+    }
+    .fp-hero__image-panel {
+      padding: 2rem;
+      min-height: 50vw;
+    }
+    .fp-hero__content-panel {
+      padding: 2.5rem 1.5rem;
+    }
+    .fp-ingredient,
+    .fp-ingredient--img-right {
       flex-direction: column !important;
-      padding: 2rem 1.5rem;
+      min-height: auto;
+    }
+    .fp-ingredient__image-wrap {
+      width: 100%;
+      min-height: 60vw;
+    }
+    .fp-ingredient__content {
+      padding: 2.5rem 1.5rem;
+    }
+    .fp-nav__inner {
+      flex-direction: column;
+      gap: 1rem;
       text-align: center;
     }
-    .flavor-banner__image-wrap {
-      margin: 0;
-    }
-    .flavor-banner__buttons { justify-content: center; }
+    .fp-story { padding: 3rem 1.5rem; }
+    .fp-facts { padding: 2rem 1.5rem; }
   }
 </style>
 
 {% schema %}
 {
-  "name": "Flavor Banners",
-  "blocks": [
-    {
-      "type": "flavor",
-      "name": "Flavor",
-      "settings": [
-        { "type": "text",         "id": "title",       "label": "Titel",            "default": "Cookie Name" },
-        { "type": "textarea",     "id": "description", "label": "Beschreibung",     "default": "Kurze Beschreibung..." },
-        { "type": "color",        "id": "bg_color",    "label": "Hintergrundfarbe", "default": "#6B3B2A" },
-        { "type": "color",        "id": "text_color",  "label": "Textfarbe",        "default": "#FFFFFF" },
-        { "type": "image_picker", "id": "image",       "label": "Cookie Bild" },
-        { "type": "text",         "id": "btn1_label",  "label": "Button 1 Text",    "default": "Learn More" },
-        { "type": "url",          "id": "btn1_url",    "label": "Button 1 Link" },
-        { "type": "text",         "id": "btn2_label",  "label": "Button 2 Text",    "default": "Order Now" }
-      ]
-    }
-  ],
+  "name": "Flavor Profile",
+  "settings": [],
   "presets": [
-    { "name": "Flavor Banners" }
+    { "name": "Flavor Profile" }
   ]
 }
 {% endschema %}
