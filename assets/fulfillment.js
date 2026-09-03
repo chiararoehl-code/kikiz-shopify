@@ -12,6 +12,14 @@
  *    CHOOSE/CHANGE control)
  *  - a click on [data-cart-checkout] when no fulfillment choice exists yet
  *    (guards Checkout, then resumes it automatically once a choice is made)
+ *
+ * On a successful save, dispatches `fulfillment:updated` with
+ * { value, fromPostAdd } — fromPostAdd is true only when this chooser was
+ * opened via `fulfillment:request` (trigger is null in that case, unlike
+ * the cart page's CHOOSE/CHANGE button or the checkout guard, which both
+ * pass a real trigger element). post-add-flow.js uses that flag to redirect
+ * to /cart only for the post-add case, never for a CHOOSE/CHANGE edit made
+ * from the cart page itself or the checkout-guard's own resumed submit.
  */
 (function () {
   var chooser = document.querySelector('[data-fulfillment-chooser]');
@@ -122,9 +130,15 @@
           btn.disabled = false;
         });
 
+        var openedFromPostAdd = lastTrigger === null;
+
         currentFulfillment = value;
         updateCartSummaries();
         closeChooser();
+
+        document.dispatchEvent(
+          new CustomEvent('fulfillment:updated', { detail: { value: value, fromPostAdd: openedFromPostAdd } })
+        );
 
         if (pendingCheckoutTrigger) {
           var trigger = pendingCheckoutTrigger;
