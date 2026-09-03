@@ -720,7 +720,7 @@ input {
   .cookie-card {
     flex-direction: row;
     align-items: center;
-    gap: var(--space-8);
+    gap: var(--space-6);
   }
 
   .cookie-card--align-right {
@@ -780,15 +780,18 @@ input {
 .cookie-card__content {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: var(--space-3);
-  padding: var(--space-5);
-  border-radius: var(--radius-medium);
+  padding: var(--space-6);
+  border-radius: var(--radius-large);
+  background-color: var(--color-surface, #FFFFFF);
   transition: background-color 0.2s ease;
 }
 
 @media screen and (min-width: 990px) {
   .cookie-card__content {
     flex: 1;
+    padding: var(--space-7);
   }
 }
 
