@@ -37,7 +37,30 @@
     },
     "weekly_drop": {
       "empty": "Neue Sorten kommen bald — schau bald wieder vorbei.",
-      "empty_editor": "Add cookie flavors under Settings → Custom data → Cookie flavor, then mark them active and available this week."
+      "empty_editor": "Add cookie flavors under Settings → Custom data → Cookie flavor, then mark them active and available this week.",
+      "learn_more": "MEHR ERFAHREN"
+    },
+    "flavor_profile": {
+      "this_week_only": "THIS WEEK ONLY",
+      "always_available": "ALWAYS AVAILABLE",
+      "vegan": "VEGAN",
+      "vegetarian": "VEGETARISCH",
+      "order_cta": "BOX ZUSAMMENSTELLEN",
+      "back_to_flavors": "ZURÜCK ZU DEN FLAVORS",
+      "ingredients": "ZUTATEN",
+      "allergens": "ALLERGENE",
+      "nutrition": "NÄHRWERTE",
+      "previous_flavor": "VORHERIGER FLAVOR",
+      "next_flavor": "NÄCHSTER FLAVOR",
+      "not_found": "Diesen Flavor gibt es (noch) nicht.",
+      "not_found_cta": "ZU DEN FLAVORS DIESER WOCHE",
+      "nutrition_energy": "Brennwert",
+      "nutrition_fat": "Fett",
+      "nutrition_saturated_fat": "davon gesättigte Fettsäuren",
+      "nutrition_carbohydrates": "Kohlenhydrate",
+      "nutrition_sugars": "davon Zucker",
+      "nutrition_protein": "Eiweiss",
+      "nutrition_salt": "Salz"
     },
     "cart": {
       "your_cookie_box": "YOUR COOKIE BOX",

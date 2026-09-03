@@ -1,0 +1,55 @@
+{%- comment -%}
+  Reusable nutrition table — renders only the rows whose corresponding
+  Cookie Flavor field actually has a value. Every value is merchant-
+  entered text (so units like "12 g" or "450 kcal" stay attached);
+  nothing here computes, infers, or defaults a number.
+  Accepts:
+    flavor (cookie_flavor metaobject, required)
+{%- endcomment -%}
+
+<table class="nutrition-table">
+  <tbody>
+    {%- if flavor.nutrition_energy.value != blank -%}
+      <tr class="nutrition-table__row">
+        <th class="nutrition-table__label" scope="row">{{ 'sections.flavor_profile.nutrition_energy' | t }}</th>
+        <td class="nutrition-table__value">{{ flavor.nutrition_energy.value }}</td>
+      </tr>
+    {%- endif -%}
+    {%- if flavor.nutrition_fat.value != blank -%}
+      <tr class="nutrition-table__row">
+        <th class="nutrition-table__label" scope="row">{{ 'sections.flavor_profile.nutrition_fat' | t }}</th>
+        <td class="nutrition-table__value">{{ flavor.nutrition_fat.value }}</td>
+      </tr>
+    {%- endif -%}
+    {%- if flavor.nutrition_saturated_fat.value != blank -%}
+      <tr class="nutrition-table__row">
+        <th class="nutrition-table__label" scope="row">{{ 'sections.flavor_profile.nutrition_saturated_fat' | t }}</th>
+        <td class="nutrition-table__value">{{ flavor.nutrition_saturated_fat.value }}</td>
+      </tr>
+    {%- endif -%}
+    {%- if flavor.nutrition_carbohydrates.value != blank -%}
+      <tr class="nutrition-table__row">
+        <th class="nutrition-table__label" scope="row">{{ 'sections.flavor_profile.nutrition_carbohydrates' | t }}</th>
+        <td class="nutrition-table__value">{{ flavor.nutrition_carbohydrates.value }}</td>
+      </tr>
+    {%- endif -%}
+    {%- if flavor.nutrition_sugars.value != blank -%}
+      <tr class="nutrition-table__row">
+        <th class="nutrition-table__label" scope="row">{{ 'sections.flavor_profile.nutrition_sugars' | t }}</th>
+        <td class="nutrition-table__value">{{ flavor.nutrition_sugars.value }}</td>
+      </tr>
+    {%- endif -%}
+    {%- if flavor.nutrition_protein.value != blank -%}
+      <tr class="nutrition-table__row">
+        <th class="nutrition-table__label" scope="row">{{ 'sections.flavor_profile.nutrition_protein' | t }}</th>
+        <td class="nutrition-table__value">{{ flavor.nutrition_protein.value }}</td>
+      </tr>
+    {%- endif -%}
+    {%- if flavor.nutrition_salt.value != blank -%}
+      <tr class="nutrition-table__row">
+        <th class="nutrition-table__label" scope="row">{{ 'sections.flavor_profile.nutrition_salt' | t }}</th>
+        <td class="nutrition-table__value">{{ flavor.nutrition_salt.value }}</td>
+      </tr>
+    {%- endif -%}
+  </tbody>
+</table>

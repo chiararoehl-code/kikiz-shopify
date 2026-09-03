@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "flavor-profile",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

@@ -1,38 +1,62 @@
 {%- comment -%}
-  Large, visual, display-only flavor card for discovery contexts (Weekly Drop).
-  No quantity controls, no price, no add-to-cart — pure brand/product presentation.
-  For the compact picker used inside the box builder, see flavor-selector.liquid.
-  Accepts:
-    flavor (cookie_flavor metaobject, required)
-    featured (boolean, optional) — larger, Mango-bordered treatment for the
-      weekly special. Same card, different frame — no second component.
+  Large editorial flavor module for homepage discovery (Weekly Drop, and
+  Classics later — same component, same source of truth: the Cookie
+  Flavor metaobject). Pure display — no price, no add-to-cart; individual
+  cookies aren't sold on their own, only through the box system.
 
   `image` is a file_reference field. Runtime debug against a real
   metaobject entry confirmed flavor.image.reference is blank/invalid on
   this theme, while flavor.image.value resolves directly to the Image
   and pipes into image_url correctly. Use .value, not .reference.
+
+  Links to the flavor's own profile page at /pages/{flavor_key} — see
+  sections/flavor-profile.liquid for exactly why that's a plain Shopify
+  Page (not Shopify's native metaobject-storefront-page feature) and
+  what flavor_key has to match on the Page side for this to resolve.
+
+  The whole module is one <a> — safe because it wraps no other
+  interactive element (no buttons, no nested links), and its accessible
+  name is deliberately shortened via aria-label so screen readers
+  announce "Name – Mehr erfahren" instead of reading the full
+  description as part of the link.
+
+  Accepts:
+    flavor (cookie_flavor metaobject, required)
+    align ('left' or 'right', optional, default 'left') — which side the
+      image sits on at desktop widths.
 {%- endcomment -%}
 
 {%- liquid
   assign flavor_image = flavor.image.value
-  assign flavor_image_url = flavor_image | image_url: width: 800
+  assign flavor_image_url = flavor_image | image_url: width: 1200
+  assign flavor_key = flavor.system.handle
+  if flavor_key == blank
+    assign flavor_key = flavor.name.value | handleize
+  endif
+  assign align = align | default: 'left'
+  assign learn_more = 'sections.weekly_drop.learn_more' | t
 -%}
 
-<article class="cookie-card{% if featured %} cookie-card--featured{% endif %}">
+<a
+  href="{{ routes.root_url }}pages/{{ flavor_key }}"
+  class="cookie-card cookie-card--align-{{ align }}"
+  aria-label="{{ flavor.name.value }} – {{ learn_more }}"
+>
   <div class="cookie-card__media shape-rounded">
     {%- if flavor_image_url != blank -%}
       <img
         class="cookie-card__image"
         src="{{ flavor_image_url }}"
         srcset="
-          {{ flavor_image | image_url: width: 500 }} 500w,
-          {{ flavor_image | image_url: width: 800 }} 800w,
-          {{ flavor_image | image_url: width: 1100 }} 1100w
+          {{ flavor_image | image_url: width: 600 }} 600w,
+          {{ flavor_image | image_url: width: 900 }} 900w,
+          {{ flavor_image | image_url: width: 1200 }} 1200w,
+          {{ flavor_image | image_url: width: 1600 }} 1600w
         "
-        sizes="(min-width: 990px) 30vw, (min-width: 750px) 46vw, 82vw"
+        sizes="(min-width: 990px) 46vw, 100vw"
         width="{{ flavor_image.width }}"
         height="{{ flavor_image.height }}"
-        alt="{{ flavor_image.alt | default: flavor.name.value | escape }}"
+        alt=""
         loading="lazy"
       >
     {%- else -%}
@@ -47,9 +71,13 @@
   </div>
 
   <div class="cookie-card__content">
-    <h3 class="cookie-card__title h3">{{ flavor.name.value }}</h3>
+    <h3 class="cookie-card__title display-l" aria-hidden="true">{{ flavor.name.value }}</h3>
     {%- if flavor.short_description.value != blank -%}
-      <p class="cookie-card__description text-small">{{ flavor.short_description.value }}</p>
+      <p class="cookie-card__description body-lg" aria-hidden="true">{{ flavor.short_description.value }}</p>
     {%- endif -%}
+    <span class="cookie-card__link" aria-hidden="true">
+      {{ learn_more }}
+      <span class="cookie-card__link-arrow">→</span>
+    </span>
   </div>
-</article>
+</a>

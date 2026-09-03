@@ -1,0 +1,321 @@
+{%- comment -%}
+  Dedicated Flavor Profile page. One template, driven entirely by the
+  Cookie Flavor metaobject — no content is duplicated here that already
+  lives on the metaobject.
+
+  ROUTING, READ THIS FIRST:
+  This is a plain Shopify Page (routes.root_url + "pages/" + handle), not
+  Shopify's native "metaobject storefront pages" feature. That feature
+  may exist on this store/plan and would give fully automatic per-entry
+  URLs, but its exact Liquid context and generated URL shape could not be
+  verified without a live Shopify Admin to test against, and shipping a
+  guess for the one thing every link on this page depends on was judged
+  too risky. This Page-based route is 100% certain to work: Shopify Pages
+  always resolve at /pages/{handle}.
+
+  Wiring, per flavor:
+    1. Create a Shopify Page, template suffix "flavor" (this section is
+       templates/page.flavor.json's only section).
+    2. Set the Page's handle to match the flavor's stable key exactly —
+       the SAME key flavor-selector.liquid already uses for
+       data-flavor-key: flavor.system.handle, falling back to
+       flavor.name.value | handleize only if that's blank. E.g. the
+       flavor "Classic Chok" -> Page handle "classic-chok" ->
+       /pages/classic-chok.
+    3. Add a Page metafield, namespace/key custom.flavor, type
+       "Metaobject reference" (Cookie flavor), and set it to that same
+       flavor entry. This is how THIS page knows which flavor to render.
+
+  Matching the Page handle to the flavor key is what makes step 3's
+  reference optional to reverse-lookup: cookie-card.liquid, and the
+  previous/next links below, all compute the target URL directly from a
+  flavor's own key — nothing here ever searches all Pages to find one.
+{%- endcomment -%}
+
+{%- liquid
+  assign flavor = page.metafields.custom.flavor.value
+-%}
+
+{%- if flavor == blank -%}
+  <section class="flavor-profile flavor-profile--empty container">
+    <p class="h3">{{ 'sections.flavor_profile.not_found' | t }}</p>
+    <a href="{{ routes.root_url }}#weekly-drop" class="btn btn--primary">
+      {{ 'sections.flavor_profile.not_found_cta' | t }}
+    </a>
+  </section>
+{%- else -%}
+  {%- liquid
+    assign flavor_image = flavor.image.value
+    assign flavor_image_url = flavor_image | image_url: width: 1600
+    assign detail_image = flavor.detail_image.value
+
+    assign flavor_key_check = flavor.system.handle
+    if flavor_key_check == blank
+      assign flavor_key_check = flavor.name.value | handleize
+    endif
+
+    assign all_flavors = shop.metaobjects.cookie_flavor.values | sort: 'sort_order'
+    assign active_count = 0
+    assign current_position = -1
+    for candidate in all_flavors
+      if candidate.active.value and candidate.available_this_week.value
+        assign candidate_key = candidate.system.handle
+        if candidate_key == blank
+          assign candidate_key = candidate.name.value | handleize
+        endif
+        if candidate_key == flavor_key_check
+          assign current_position = active_count
+        endif
+        assign active_count = active_count | plus: 1
+      endif
+    endfor
+  -%}
+
+  <section class="flavor-profile">
+    <div class="flavor-profile__hero container">
+      <div class="flavor-profile__media shape-rounded">
+        {%- if flavor_image_url != blank -%}
+          <img
+            class="flavor-profile__image"
+            src="{{ flavor_image_url }}"
+            srcset="
+              {{ flavor_image | image_url: width: 800 }} 800w,
+              {{ flavor_image | image_url: width: 1200 }} 1200w,
+              {{ flavor_image | image_url: width: 1600 }} 1600w,
+              {{ flavor_image | image_url: width: 2000 }} 2000w
+            "
+            sizes="(min-width: 990px) 46vw, 100vw"
+            width="{{ flavor_image.width }}"
+            height="{{ flavor_image.height }}"
+            alt="{{ flavor_image.alt | default: flavor.name.value | escape }}"
+            loading="eager"
+            fetchpriority="high"
+          >
+        {%- else -%}
+          <div class="flavor-profile__media-placeholder" aria-hidden="true">
+            <span class="flavor-profile__placeholder-mark"></span>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="flavor-profile__content">
+        <div class="flavor-profile__badges">
+          {%- if flavor.available_this_week.value -%}
+            {%- render 'badge', text: 'sections.flavor_profile.this_week_only' | t, style: 'accent' -%}
+          {%- elsif flavor.classic.value -%}
+            {%- render 'badge', text: 'sections.flavor_profile.always_available' | t, style: 'accent' -%}
+          {%- endif -%}
+          {%- if flavor.dietary_vegan.value -%}
+            {%- render 'badge', text: 'sections.flavor_profile.vegan' | t, style: 'neutral' -%}
+          {%- endif -%}
+          {%- if flavor.dietary_vegetarian.value -%}
+            {%- render 'badge', text: 'sections.flavor_profile.vegetarian' | t, style: 'neutral' -%}
+          {%- endif -%}
+        </div>
+
+        <h1 class="flavor-profile__title display-xl">{{ flavor.name.value }}</h1>
+
+        {%- if flavor.short_description.value != blank -%}
+          <p class="flavor-profile__description body-lg">{{ flavor.short_description.value }}</p>
+        {%- endif -%}
+
+        <div class="flavor-profile__actions">
+          <a href="{{ routes.root_url }}#box-selector" class="btn btn--primary">
+            {{ 'sections.flavor_profile.order_cta' | t }}
+          </a>
+          <a href="{{ routes.root_url }}#weekly-drop" class="btn btn--text flavor-profile__back">
+            <span aria-hidden="true">←</span> {{ 'sections.flavor_profile.back_to_flavors' | t }}
+          </a>
+        </div>
+      </div>
+    </div>
+
+    {%- if flavor.story.value != blank -%}
+      <div class="flavor-profile__story">
+        <p class="flavor-profile__story-text body-lg">{{ flavor.story.value }}</p>
+      </div>
+    {%- endif -%}
+
+    {%- if flavor.ingredient_headline.value != blank or flavor.ingredient_1_name.value != blank or flavor.ingredient_2_name.value != blank -%}
+      <div class="flavor-profile__spotlight container">
+        {%- if flavor.ingredient_headline.value != blank -%}
+          <h2 class="flavor-profile__spotlight-heading display-l">{{ flavor.ingredient_headline.value }}</h2>
+        {%- endif -%}
+
+        <div class="flavor-profile__spotlight-list">
+          {%- if flavor.ingredient_1_name.value != blank -%}
+            <div class="flavor-profile__spotlight-item">
+              {%- assign ingredient_1_image = flavor.ingredient_1_image.value -%}
+              {%- if ingredient_1_image != blank -%}
+                <img
+                  class="flavor-profile__spotlight-image"
+                  src="{{ ingredient_1_image | image_url: width: 700 }}"
+                  width="{{ ingredient_1_image.width }}"
+                  height="{{ ingredient_1_image.height }}"
+                  alt="{{ ingredient_1_image.alt | default: flavor.ingredient_1_name.value | escape }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+              <h3 class="flavor-profile__spotlight-name h3">{{ flavor.ingredient_1_name.value }}</h3>
+              {%- if flavor.ingredient_1_story.value != blank -%}
+                <p class="flavor-profile__spotlight-story body">{{ flavor.ingredient_1_story.value }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if flavor.ingredient_2_name.value != blank -%}
+            <div class="flavor-profile__spotlight-item">
+              {%- assign ingredient_2_image = flavor.ingredient_2_image.value -%}
+              {%- if ingredient_2_image != blank -%}
+                <img
+                  class="flavor-profile__spotlight-image"
+                  src="{{ ingredient_2_image | image_url: width: 700 }}"
+                  width="{{ ingredient_2_image.width }}"
+                  height="{{ ingredient_2_image.height }}"
+                  alt="{{ ingredient_2_image.alt | default: flavor.ingredient_2_name.value | escape }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+              <h3 class="flavor-profile__spotlight-name h3">{{ flavor.ingredient_2_name.value }}</h3>
+              {%- if flavor.ingredient_2_story.value != blank -%}
+                <p class="flavor-profile__spotlight-story body">{{ flavor.ingredient_2_story.value }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if detail_image != blank -%}
+      <div class="flavor-profile__detail-media container">
+        <img
+          class="flavor-profile__detail-image"
+          src="{{ detail_image | image_url: width: 1600 }}"
+          srcset="
+            {{ detail_image | image_url: width: 800 }} 800w,
+            {{ detail_image | image_url: width: 1200 }} 1200w,
+            {{ detail_image | image_url: width: 1600 }} 1600w
+          "
+          sizes="100vw"
+          width="{{ detail_image.width }}"
+          height="{{ detail_image.height }}"
+          alt="{{ detail_image.alt | default: flavor.name.value | escape }}"
+          loading="lazy"
+        >
+      </div>
+    {%- endif -%}
+
+    {%- assign has_ingredients = flavor.ingredients.value != blank -%}
+    {%- assign has_allergens = flavor.allergens.value != blank -%}
+    {%- assign has_nutrition = false -%}
+    {%- if flavor.nutrition_energy.value != blank
+      or flavor.nutrition_fat.value != blank
+      or flavor.nutrition_saturated_fat.value != blank
+      or flavor.nutrition_carbohydrates.value != blank
+      or flavor.nutrition_sugars.value != blank
+      or flavor.nutrition_protein.value != blank
+      or flavor.nutrition_salt.value != blank
+    -%}
+      {%- assign has_nutrition = true -%}
+    {%- endif -%}
+
+    {%- if has_ingredients or has_allergens or has_nutrition -%}
+      <div class="flavor-profile__facts">
+        {%- if has_ingredients -%}
+          <details class="flavor-profile__accordion">
+            <summary class="flavor-profile__accordion-summary">
+              {{ 'sections.flavor_profile.ingredients' | t }}
+              <span class="flavor-profile__accordion-icon" aria-hidden="true">+</span>
+            </summary>
+            <div class="flavor-profile__accordion-content">
+              <p>{{ flavor.ingredients.value }}</p>
+            </div>
+          </details>
+        {%- endif -%}
+
+        {%- if has_allergens -%}
+          <details class="flavor-profile__accordion">
+            <summary class="flavor-profile__accordion-summary">
+              {{ 'sections.flavor_profile.allergens' | t }}
+              <span class="flavor-profile__accordion-icon" aria-hidden="true">+</span>
+            </summary>
+            <div class="flavor-profile__accordion-content">
+              <p>{{ flavor.allergens.value }}</p>
+            </div>
+          </details>
+        {%- endif -%}
+
+        {%- if has_nutrition -%}
+          <details class="flavor-profile__accordion">
+            <summary class="flavor-profile__accordion-summary">
+              {{ 'sections.flavor_profile.nutrition' | t }}
+              <span class="flavor-profile__accordion-icon" aria-hidden="true">+</span>
+            </summary>
+            <div class="flavor-profile__accordion-content">
+              {%- render 'nutrition-table', flavor: flavor -%}
+            </div>
+          </details>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if active_count > 1 and current_position > -1 -%}
+      {%- liquid
+        assign prev_position = current_position | minus: 1
+        if prev_position < 0
+          assign prev_position = active_count | minus: 1
+        endif
+        assign next_position = current_position | plus: 1
+        if next_position >= active_count
+          assign next_position = 0
+        endif
+
+        assign loop_index = 0
+        assign prev_flavor = null
+        assign next_flavor = null
+        for candidate in all_flavors
+          if candidate.active.value and candidate.available_this_week.value
+            if loop_index == prev_position
+              assign prev_flavor = candidate
+            endif
+            if loop_index == next_position
+              assign next_flavor = candidate
+            endif
+            assign loop_index = loop_index | plus: 1
+          endif
+        endfor
+
+        assign prev_key = prev_flavor.system.handle
+        if prev_key == blank
+          assign prev_key = prev_flavor.name.value | handleize
+        endif
+        assign next_key = next_flavor.system.handle
+        if next_key == blank
+          assign next_key = next_flavor.name.value | handleize
+        endif
+      -%}
+
+      <nav class="flavor-profile__nav container" aria-label="{{ 'sections.flavor_profile.next_flavor' | t }}">
+        {%- if prev_flavor != null and prev_key != flavor_key_check -%}
+          <a href="{{ routes.root_url }}pages/{{ prev_key }}" class="flavor-profile__nav-link flavor-profile__nav-link--prev">
+            <span class="flavor-profile__nav-label">← {{ 'sections.flavor_profile.previous_flavor' | t }}</span>
+            <span class="flavor-profile__nav-name">{{ prev_flavor.name.value }}</span>
+          </a>
+        {%- endif -%}
+        {%- if next_flavor != null and next_key != flavor_key_check -%}
+          <a href="{{ routes.root_url }}pages/{{ next_key }}" class="flavor-profile__nav-link flavor-profile__nav-link--next">
+            <span class="flavor-profile__nav-label">{{ 'sections.flavor_profile.next_flavor' | t }} →</span>
+            <span class="flavor-profile__nav-name">{{ next_flavor.name.value }}</span>
+          </a>
+        {%- endif -%}
+      </nav>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Flavor profile",
+  "settings": []
+}
+{% endschema %}

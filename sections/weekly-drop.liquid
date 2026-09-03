@@ -1,29 +1,22 @@
+{%- comment -%}
+  Every active, available-this-week flavor renders through the same large
+  editorial module (snippets/cookie-card.liquid), alternating image side
+  by position — no separate "featured" treatment. The weekly special (if
+  the merchant has set one via badge = "WEEKLY SPECIAL") still stands out
+  on its own, since cookie-card already renders that badge for whichever
+  flavor carries it; it just doesn't get a second, differently-sized card
+  system on top of that, per the redesign brief's "don't make this
+  visually complicated again."
+{%- endcomment -%}
+
 {%- liquid
   assign all_flavors = shop.metaobjects.cookie_flavor.values | sort: 'sort_order'
   assign flavor_count = 0
-  assign special_count = 0
-  assign weekly_special = null
-
   for flavor in all_flavors
     if flavor.active.value and flavor.available_this_week.value
       assign flavor_count = flavor_count | plus: 1
-      assign badge_normalized = flavor.badge.value | strip | upcase
-      if badge_normalized == 'WEEKLY SPECIAL'
-        assign special_count = special_count | plus: 1
-        assign weekly_special = flavor
-      endif
     endif
   endfor
-
-  assign show_special_separately = false
-  if special_count == 1
-    assign show_special_separately = true
-  endif
-
-  assign classics_limit = section.settings.flavor_limit
-  if show_special_separately
-    assign classics_limit = section.settings.flavor_limit | minus: 1
-  endif
 -%}
 
 <section id="weekly-drop" class="weekly-drop color-scheme--{{ section.settings.color_scheme }}{% if flavor_count == 0 %} weekly-drop--empty{% endif %}">
@@ -54,33 +47,19 @@
       </div>
     </div>
   {%- else -%}
-    {%- if show_special_separately -%}
-      <div class="weekly-drop__special container">
-        {%- render 'cookie-card', flavor: weekly_special, featured: true -%}
-      </div>
-    {%- endif -%}
-
-    <ul class="product-rail product-rail--classics container" role="list">
+    <div class="weekly-drop__list container">
       {%- assign shown = 0 -%}
       {%- for flavor in all_flavors -%}
-        {%- if flavor.active.value and flavor.available_this_week.value and shown < classics_limit -%}
-          {%- unless show_special_separately and flavor.handle == weekly_special.handle -%}
-            <li class="product-rail__item">
-              {%- render 'cookie-card', flavor: flavor -%}
-            </li>
-            {%- assign shown = shown | plus: 1 -%}
-          {%- endunless -%}
+        {%- if flavor.active.value and flavor.available_this_week.value and shown < section.settings.flavor_limit -%}
+          {%- assign align = 'left' -%}
+          {%- if shown | modulo: 2 == 1 -%}
+            {%- assign align = 'right' -%}
+          {%- endif -%}
+          {%- render 'cookie-card', flavor: flavor, align: align -%}
+          {%- assign shown = shown | plus: 1 -%}
         {%- endif -%}
       {%- endfor -%}
-    </ul>
-
-    {%- if section.settings.cta_label != blank -%}
-      <div class="weekly-drop__cta container">
-        <a href="#box-selector" class="btn btn--primary">
-          {{ section.settings.cta_label }}
-        </a>
-      </div>
-    {%- endif -%}
+    </div>
   {%- endif -%}
 </section>
 
@@ -120,19 +99,7 @@
       "min": 3,
       "max": 8,
       "step": 1,
-      "default": 5,
-      "info": "Includes the weekly special, when one is set (badge = \"WEEKLY SPECIAL\")."
-    },
-    {
-      "type": "header",
-      "content": "Button"
-    },
-    {
-      "type": "text",
-      "id": "cta_label",
-      "label": "Button label",
-      "default": "BOX BAUEN",
-      "info": "Scrolls to the Box Selector section (#box-selector)."
+      "default": 5
     },
     {
       "type": "header",
