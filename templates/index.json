@@ -28,6 +28,11 @@
         "color_scheme": "black"
       }
     },
+    "flavor_banners_yrUV9Y": {
+      "type": "flavor-banners",
+      "name": "Flavor Banners",
+      "settings": {}
+    },
     "weekly-drop": {
       "type": "weekly-drop",
       "settings": {
@@ -54,6 +59,7 @@
   "order": [
     "announcement-bar",
     "hero",
+    "flavor_banners_yrUV9Y",
     "weekly-drop",
     "box-selector"
   ]
