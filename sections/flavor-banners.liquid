@@ -23,7 +23,7 @@
             </a>
           {% endif %}
           {% if block.settings.btn2_label != blank %}
-            <a href="{{ block.settings.btn2_url }}" class="flavor-banner__btn flavor-banner__btn--filled">
+            <a href="#shopify-section-template--30037460779343__box-selector" class="flavor-banner__btn flavor-banner__btn--filled">
               {{ block.settings.btn2_label }}
             </a>
           {% endif %}
@@ -61,7 +61,7 @@
     min-height: 260px;
     background-color: #FFFFFF;
     color: #1A1A1A;
-    transition: background-color 0.4s ease, color 0.4s ease;
+    transition: background-color 0.25s ease, color 0.25s ease;
     cursor: default;
   }
 
@@ -83,7 +83,7 @@
     margin: 0 0 0.5rem;
     line-height: 1.1;
     color: inherit;
-    transition: color 0.4s ease;
+    transition: color 0.25s ease;
   }
 
   .flavor-banner__desc {
@@ -92,7 +92,7 @@
     max-width: 480px;
     opacity: 0.9;
     color: inherit;
-    transition: color 0.4s ease;
+    transition: color 0.25s ease;
   }
 
   .flavor-banner__buttons {
@@ -176,8 +176,7 @@
         { "type": "image_picker", "id": "image",       "label": "Cookie Bild" },
         { "type": "text",         "id": "btn1_label",  "label": "Button 1 Text",    "default": "Learn More" },
         { "type": "url",          "id": "btn1_url",    "label": "Button 1 Link" },
-        { "type": "text",         "id": "btn2_label",  "label": "Button 2 Text",    "default": "Order Now" },
-        { "type": "url",          "id": "btn2_url",    "label": "Button 2 Link" }
+        { "type": "text",         "id": "btn2_label",  "label": "Button 2 Text",    "default": "Order Now" }
       ]
     }
   ],
