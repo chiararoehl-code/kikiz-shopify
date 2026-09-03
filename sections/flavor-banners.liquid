@@ -1,4 +1,4 @@
-{% comment %} Flavor Banners Section — alternating image/text layout {% endcomment %}
+{% comment %} Flavor Banners Section — alternating image/text layout with hover color effect {% endcomment %}
 
 <div class="flavor-banners">
   {% for block in section.blocks %}
@@ -6,26 +6,24 @@
     {% assign banner_class = 'flavor-banner--img-left' %}
     {% if is_even == 0 %}{% assign banner_class = 'flavor-banner--img-right' %}{% endif %}
     <div class="flavor-banner {{ banner_class }}"
-         style="background-color: {{ block.settings.bg_color }};"
+         style="--flavor-bg: {{ block.settings.bg_color }}; --flavor-text: {{ block.settings.text_color }};"
          {{ block.shopify_attributes }}>
 
       <div class="flavor-banner__content">
-        <h2 class="flavor-banner__title" style="color: {{ block.settings.text_color }};">
+        <h2 class="flavor-banner__title">
           {{ block.settings.title }}
         </h2>
-        <p class="flavor-banner__desc" style="color: {{ block.settings.text_color }};">
+        <p class="flavor-banner__desc">
           {{ block.settings.description }}
         </p>
         <div class="flavor-banner__buttons">
           {% if block.settings.btn1_label != blank %}
-            <a href="{{ block.settings.btn1_url }}" class="flavor-banner__btn flavor-banner__btn--outline"
-               style="color: {{ block.settings.text_color }}; border-color: {{ block.settings.text_color }};">
+            <a href="{{ block.settings.btn1_url }}" class="flavor-banner__btn flavor-banner__btn--outline">
               {{ block.settings.btn1_label }}
             </a>
           {% endif %}
           {% if block.settings.btn2_label != blank %}
-            <a href="{{ block.settings.btn2_url }}" class="flavor-banner__btn flavor-banner__btn--filled"
-               style="background-color: {{ block.settings.text_color }}; color: {{ block.settings.bg_color }};">
+            <a href="{{ block.settings.btn2_url }}" class="flavor-banner__btn flavor-banner__btn--filled">
               {{ block.settings.btn2_label }}
             </a>
           {% endif %}
@@ -61,6 +59,15 @@
     position: relative;
     gap: 2rem;
     min-height: 260px;
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    cursor: default;
+  }
+
+  .flavor-banner:hover {
+    background-color: var(--flavor-bg);
+    color: var(--flavor-text);
   }
 
   .flavor-banner--img-right { flex-direction: row; }
@@ -75,6 +82,8 @@
     font-weight: 900;
     margin: 0 0 0.5rem;
     line-height: 1.1;
+    color: inherit;
+    transition: color 0.4s ease;
   }
 
   .flavor-banner__desc {
@@ -82,6 +91,8 @@
     margin: 0 0 1.5rem;
     max-width: 480px;
     opacity: 0.9;
+    color: inherit;
+    transition: color 0.4s ease;
   }
 
   .flavor-banner__buttons {
@@ -104,10 +115,19 @@
   .flavor-banner__btn--outline {
     border: 2px solid currentColor;
     background: transparent;
+    color: inherit;
   }
 
   .flavor-banner__btn--filled {
-    border: 2px solid transparent;
+    background-color: #1A1A1A;
+    color: #FFFFFF;
+    border: 2px solid #1A1A1A;
+  }
+
+  .flavor-banner:hover .flavor-banner__btn--filled {
+    background-color: var(--flavor-text);
+    color: var(--flavor-bg);
+    border-color: var(--flavor-text);
   }
 
   .flavor-banner__image-wrap {
