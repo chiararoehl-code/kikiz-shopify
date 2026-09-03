@@ -709,8 +709,8 @@ input {
    ========================================================================== */
 
 .cookie-card {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: var(--space-5);
   text-decoration: none;
   color: inherit;
@@ -718,13 +718,27 @@ input {
 
 @media screen and (min-width: 990px) {
   .cookie-card {
-    flex-direction: row;
-    align-items: center;
-    gap: var(--space-6);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0;
+    min-height: 620px;
   }
 
-  .cookie-card--align-right {
-    flex-direction: row-reverse;
+  .cookie-card__media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .cookie-card__content {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .cookie-card--align-right .cookie-card__media {
+    grid-column: 2;
+  }
+
+  .cookie-card--align-right .cookie-card__content {
+    grid-column: 1;
   }
 }
 
@@ -735,16 +749,12 @@ input {
   justify-content: center;
   aspect-ratio: 3 / 2;
   overflow: hidden;
-  padding: var(--space-6);
   background-color: var(--color-surface, #FFFFFF);
 }
 
 @media screen and (min-width: 990px) {
   .cookie-card__media {
-    flex: 0 0 calc(50% - var(--space-4));
-    width: calc(50% - var(--space-4));
-    min-width: 0;
-    padding: var(--space-7);
+    aspect-ratio: auto;
   }
 }
 
@@ -764,8 +774,8 @@ input {
 }
 
 .cookie-card__image {
-  width: 100%;
-  height: 100%;
+  width: 78%;
+  height: 78%;
   object-fit: contain;
   transition: transform 0.4s ease;
 }
@@ -788,16 +798,12 @@ input {
   justify-content: center;
   gap: var(--space-3);
   padding: var(--space-6);
-  border-radius: var(--radius-medium);
   transition: background-color 0.2s ease;
 }
 
 @media screen and (min-width: 990px) {
   .cookie-card__content {
-    flex: 0 0 calc(50% - var(--space-4));
-    width: calc(50% - var(--space-4));
-    min-width: 0;
-    padding: var(--space-7);
+    padding: var(--space-8);
   }
 }
 
@@ -860,6 +866,13 @@ input {
 
 .weekly-drop {
   padding-block: var(--space-9);
+}
+
+/* Wider than the shared .container: each flavor band is meant to feel
+   expansive and editorial, not boxed into the standard page column. */
+.weekly-drop__header.container,
+.weekly-drop__list.container {
+  max-width: 1440px;
 }
 
 .weekly-drop--empty {
