@@ -30,19 +30,72 @@
     },
     "flavor_banners_yrUV9Y": {
       "type": "flavor-banners",
+      "blocks": {
+        "flavor_cJEpjf": {
+          "type": "flavor",
+          "settings": {
+            "title": "CLASSIC CHOC",
+            "description": "unser Klassiker aus echten Zutaten",
+            "bg_color": "#EAD342",
+            "text_color": "#ffffff",
+            "image": "shopify://shop_images/images_488782dd-324b-43a0-8fe8-a5e1b7dcefc5.jpg",
+            "btn1_label": "Learn More",
+            "btn1_url": "",
+            "btn2_label": "Order Now",
+            "btn2_url": ""
+          }
+        },
+        "flavor_nATyLF": {
+          "type": "flavor",
+          "settings": {
+            "title": "Double Choc",
+            "description": "Echte schweizer Schoki",
+            "bg_color": "#6b3b2a",
+            "text_color": "#ffffff",
+            "image": "shopify://shop_images/images_488782dd-324b-43a0-8fe8-a5e1b7dcefc5.jpg",
+            "btn1_label": "Learn More",
+            "btn1_url": "",
+            "btn2_label": "Order Now",
+            "btn2_url": ""
+          }
+        },
+        "flavor_CzpzRH": {
+          "type": "flavor",
+          "settings": {
+            "title": "Red Velvet",
+            "description": "Red Velvet special Cookie nur für kurze Zeit",
+            "bg_color": "#D54F1F",
+            "text_color": "#ffffff",
+            "image": "shopify://shop_images/images_488782dd-324b-43a0-8fe8-a5e1b7dcefc5.jpg",
+            "btn1_label": "Learn More",
+            "btn1_url": "",
+            "btn2_label": "Order Now",
+            "btn2_url": ""
+          }
+        },
+        "flavor_8UJX38": {
+          "type": "flavor",
+          "settings": {
+            "title": "Pistacio",
+            "description": "Echte Pistazien aus Italien mit flüssigem Kerz aus Pistiazienmus",
+            "bg_color": "#A4CE55",
+            "text_color": "#ffffff",
+            "image": "shopify://shop_images/images_488782dd-324b-43a0-8fe8-a5e1b7dcefc5.jpg",
+            "btn1_label": "Learn More",
+            "btn1_url": "",
+            "btn2_label": "Order Now",
+            "btn2_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "flavor_cJEpjf",
+        "flavor_nATyLF",
+        "flavor_CzpzRH",
+        "flavor_8UJX38"
+      ],
       "name": "Flavor Banners",
       "settings": {}
-    },
-    "weekly-drop": {
-      "type": "weekly-drop",
-      "settings": {
-        "eyebrow": "",
-        "heading": "THIS WEEK'S DROP",
-        "supporting_text": "Nur diese Woche.",
-        "flavor_limit": 5,
-        "cta_label": "BOX BAUEN",
-        "color_scheme": "cream"
-      }
     },
     "box-selector": {
       "type": "box-selector",
@@ -60,7 +113,6 @@
     "announcement-bar",
     "hero",
     "flavor_banners_yrUV9Y",
-    "weekly-drop",
     "box-selector"
   ]
 }
