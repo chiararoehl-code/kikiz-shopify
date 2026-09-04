@@ -36,13 +36,12 @@
           "settings": {
             "title": "CLASSIC CHOC",
             "description": "unser Klassiker aus echten Zutaten",
-            "bg_color": "#EAD342",
+            "bg_color": "#ead342",
             "text_color": "#ffffff",
             "image": "shopify://shop_images/images_488782dd-324b-43a0-8fe8-a5e1b7dcefc5.jpg",
             "btn1_label": "Learn More",
-            "btn1_url": "",
-            "btn2_label": "Order Now",
-            "btn2_url": ""
+            "btn1_url": "/metaobjects/cookie_flavor/classic-chok",
+            "btn2_label": "Order Now"
           }
         },
         "flavor_nATyLF": {
@@ -54,9 +53,8 @@
             "text_color": "#ffffff",
             "image": "shopify://shop_images/images_488782dd-324b-43a0-8fe8-a5e1b7dcefc5.jpg",
             "btn1_label": "Learn More",
-            "btn1_url": "",
-            "btn2_label": "Order Now",
-            "btn2_url": ""
+            "btn1_url": "/metaobjects/cookie_flavor/double-choc",
+            "btn2_label": "Order Now"
           }
         },
         "flavor_CzpzRH": {
@@ -64,13 +62,12 @@
           "settings": {
             "title": "Red Velvet",
             "description": "Red Velvet special Cookie nur für kurze Zeit",
-            "bg_color": "#D54F1F",
+            "bg_color": "#d54f1f",
             "text_color": "#ffffff",
             "image": "shopify://shop_images/images_488782dd-324b-43a0-8fe8-a5e1b7dcefc5.jpg",
             "btn1_label": "Learn More",
-            "btn1_url": "",
-            "btn2_label": "Order Now",
-            "btn2_url": ""
+            "btn1_url": "/metaobjects/cookie_flavor/special-red-velvet",
+            "btn2_label": "Order Now"
           }
         },
         "flavor_8UJX38": {
@@ -78,13 +75,12 @@
           "settings": {
             "title": "Pistacio",
             "description": "Echte Pistazien aus Italien mit flüssigem Kerz aus Pistiazienmus",
-            "bg_color": "#A4CE55",
+            "bg_color": "#a4ce55",
             "text_color": "#ffffff",
             "image": "shopify://shop_images/images_488782dd-324b-43a0-8fe8-a5e1b7dcefc5.jpg",
             "btn1_label": "Learn More",
-            "btn1_url": "",
-            "btn2_label": "Order Now",
-            "btn2_url": ""
+            "btn1_url": "/metaobjects/cookie_flavor/pistacio",
+            "btn2_label": "Order Now"
           }
         }
       },
