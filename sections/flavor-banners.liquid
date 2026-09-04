@@ -17,7 +17,7 @@
           {{ block.settings.description }}
         </p>
         <div class="flavor-banner__buttons">
-          {% if block.settings.btn1_label != blank %}
+          {% if block.settings.btn1_label != blank and block.settings.btn1_url != blank %}
             <a href="{{ block.settings.btn1_url }}" class="flavor-banner__btn flavor-banner__btn--outline">
               {{ block.settings.btn1_label }}
             </a>
@@ -154,9 +154,7 @@
       padding: 2rem 1.5rem;
       text-align: center;
     }
-    .flavor-banner__image-wrap {
-      margin: 0;
-    }
+    .flavor-banner__image-wrap { margin: 0; }
     .flavor-banner__buttons { justify-content: center; }
   }
 </style>
@@ -185,4 +183,3 @@
   ]
 }
 {% endschema %}
-
