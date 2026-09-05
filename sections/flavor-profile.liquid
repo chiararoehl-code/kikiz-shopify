@@ -3,45 +3,45 @@
   Cookie Flavor metaobject — no content is duplicated here that already
   lives on the metaobject.
 
-  ROUTING: this is Shopify's native metaobject web page, not a Shopify
-  Page. It renders because the Cookie Flavor metaobject definition has
-  the Renderable + Online Store capabilities enabled in Admin (Settings
-  → Custom data → Cookie flavor → Access), with URL handle "flavors" and
-  this file at templates/metaobject/cookie_flavor.json. Shopify routes
-  each entry to /pages/flavors/{entry-handle} automatically and passes
-  the current entry into this template as `metaobject` — no Shopify Page
-  to create, no metafield reference to wire up, no handle-matching to get
-  right by hand. Page title/meta description are mapped at the
-  definition level too (Name / Short Description), so nothing here needs
-  to touch SEO either.
+  ROUTING (current): Shopify's native metaobject web page routing
+  (/pages/{urlHandle}/{entry-handle}, via templates/metaobject/
+  cookie_flavor.json passing the entry in as `metaobject`) kept 404ing
+  in production despite every documented capability/template/status
+  requirement being verified in Admin, so the public customer journey
+  now goes through an ordinary Shopify Page instead:
 
-  flavor.system.url is the Shopify-generated URL for any Cookie Flavor
-  entry (this one or another) and is what every link on this page and on
-  the homepage module (snippets/cookie-card.liquid) uses — never a
-  hand-built /pages/... string. It's populated once the capabilities
-  above are enabled; every url usage here is blank-guarded so a
-  not-yet-renderable entry just doesn't get a link, never a broken one.
+    Shopify Page (templates/page.flavor.json, this section as `main`)
+      → page metafield custom.flavor (Metaobject reference, single
+        value, restricted to Cookie Flavor — created in Admin, not in
+        theme code)
+      → the referenced Cookie Flavor metaobject entry
+
+  `page.metafields.custom.flavor.value` is the entry when rendered as
+  a Page; `metaobject` is the entry when rendered via the old native
+  template. Trying the page metafield first and falling back to
+  `metaobject` lets this one section serve either route without
+  duplicating any markup — Liquid resolves an object that isn't
+  populated in the current context to blank/nil, never an error, so
+  the unused side of that fallback is always safe. The old metaobject
+  template is kept (not deleted) for rollback; nothing here assumes
+  it's live.
 {%- endcomment -%}
 
 {%- liquid
-  assign flavor = metaobject
+  assign flavor = page.metafields.custom.flavor.value | default: metaobject
   assign flavor_image = flavor.image.value
   assign flavor_image_url = flavor_image | image_url: width: 1600
   assign detail_image = flavor.detail_image.value
-
-  assign all_flavors = shop.metaobjects.cookie_flavor.values | sort: 'sort_order'
-  assign active_count = 0
-  assign current_position = -1
-  for candidate in all_flavors
-    if candidate.active.value and candidate.available_this_week.value
-      if candidate.system.handle == flavor.system.handle
-        assign current_position = active_count
-      endif
-      assign active_count = active_count | plus: 1
-    endif
-  endfor
 -%}
 
+{%- if flavor == blank -%}
+  <div class="flavor-profile--empty container">
+    <p class="h3">{{ 'sections.flavor_profile.not_found' | t }}</p>
+    <a href="{{ routes.root_url }}#flavor-banners" class="btn btn--primary">
+      {{ 'sections.flavor_profile.not_found_cta' | t }}
+    </a>
+  </div>
+{%- else -%}
 <section class="flavor-profile">
   <div class="flavor-profile__hero container">
     <div class="flavor-profile__media shape-rounded">
@@ -94,7 +94,7 @@
         <a href="{{ routes.root_url }}#box-selector" class="btn btn--primary">
           {{ 'sections.flavor_profile.order_cta' | t }}
         </a>
-        <a href="{{ routes.root_url }}#weekly-drop" class="btn btn--text flavor-profile__back">
+        <a href="{{ routes.root_url }}#flavor-banners" class="btn btn--text flavor-profile__back">
           <span aria-hidden="true">←</span> {{ 'sections.flavor_profile.back_to_flavors' | t }}
         </a>
       </div>
@@ -212,49 +212,19 @@
     </div>
   {%- endif -%}
 
-  {%- if active_count > 1 and current_position > -1 -%}
-    {%- liquid
-      assign prev_position = current_position | minus: 1
-      if prev_position < 0
-        assign prev_position = active_count | minus: 1
-      endif
-      assign next_position = current_position | plus: 1
-      if next_position >= active_count
-        assign next_position = 0
-      endif
-
-      assign loop_index = 0
-      assign prev_flavor = null
-      assign next_flavor = null
-      for candidate in all_flavors
-        if candidate.active.value and candidate.available_this_week.value
-          if loop_index == prev_position
-            assign prev_flavor = candidate
-          endif
-          if loop_index == next_position
-            assign next_flavor = candidate
-          endif
-          assign loop_index = loop_index | plus: 1
-        endif
-      endfor
-    -%}
-
-    <nav class="flavor-profile__nav container" aria-label="{{ 'sections.flavor_profile.next_flavor' | t }}">
-      {%- if prev_flavor != null and prev_flavor.system.handle != flavor.system.handle and prev_flavor.system.url != blank -%}
-        <a href="{{ prev_flavor.system.url }}" class="flavor-profile__nav-link flavor-profile__nav-link--prev">
-          <span class="flavor-profile__nav-label">← {{ 'sections.flavor_profile.previous_flavor' | t }}</span>
-          <span class="flavor-profile__nav-name">{{ prev_flavor.name.value }}</span>
-        </a>
-      {%- endif -%}
-      {%- if next_flavor != null and next_flavor.system.handle != flavor.system.handle and next_flavor.system.url != blank -%}
-        <a href="{{ next_flavor.system.url }}" class="flavor-profile__nav-link flavor-profile__nav-link--next">
-          <span class="flavor-profile__nav-label">{{ 'sections.flavor_profile.next_flavor' | t }} →</span>
-          <span class="flavor-profile__nav-name">{{ next_flavor.name.value }}</span>
-        </a>
-      {%- endif -%}
-    </nav>
-  {%- endif -%}
+  {%- comment -%}
+    Previous/next cross-flavor navigation is intentionally disabled.
+    It used to walk shop.metaobjects.cookie_flavor.values and link via
+    candidate.system.url — reliable only under the native metaobject
+    route. Under the Page architecture there is no proven, stable
+    mapping from a Cookie Flavor entry back to the Shopify Page that
+    references it (no reverse Page reference exists yet), so
+    system.url would still resolve to the currently-404ing metaobject
+    URL rather than blank — the existing "!= blank" guard can't catch
+    that. Re-enable once a real Page-to-Page mapping exists.
+  {%- endcomment -%}
 </section>
+{%- endif -%}
 
 {% schema %}
 {

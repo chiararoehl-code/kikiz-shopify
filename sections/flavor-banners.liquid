@@ -1,6 +1,6 @@
 {% comment %} Flavor Banners Section — alternating image/text layout with hover color effect {% endcomment %}
 
-<div class="flavor-banners">
+<div class="flavor-banners" id="flavor-banners">
   {% for block in section.blocks %}
     {% assign is_even = forloop.index0 | modulo: 2 %}
     {% assign banner_class = 'flavor-banner--img-left' %}
