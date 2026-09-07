@@ -10,7 +10,7 @@
 {
   "sections": {
     "main": {
-      "type": "flavor-banners",
+      "type": "flavor-profile",
       "settings": {}
     }
   },
