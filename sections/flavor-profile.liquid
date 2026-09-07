@@ -40,6 +40,19 @@
   assign story_headline = flavor.ingredient_headline.value
 -%}
 
+{%- if request.design_mode -%}
+  {%- comment -%} TEMPORARY debug output — design_mode only, remove once the blank-page issue is confirmed fixed. {%- endcomment -%}
+  <pre style="background:#111;color:#0f0;padding:16px;font-size:12px;line-height:1.6;white-space:pre-wrap;overflow-wrap:break-word;">FLAVOR PROFILE DEBUG
+page.title: [{{ page.title }}]
+page.template_suffix: [{{ page.template_suffix }}]
+page.metafields.custom.flavor: [{{ page.metafields.custom.flavor }}]
+page.metafields.custom.flavor.value: [{{ page.metafields.custom.flavor.value }}]
+page.metafields.custom.flavor.value.type: [{{ page.metafields.custom.flavor.value.type }}]
+metaobject: [{{ metaobject }}]
+resolved flavor: [{{ flavor }}]
+flavor.name.value: [{{ flavor.name.value }}]</pre>
+{%- endif -%}
+
 {%- if flavor == blank -%}
   <div class="flavor-profile--empty container">
     <p class="h3">{{ 'sections.flavor_profile.not_found' | t }}</p>
