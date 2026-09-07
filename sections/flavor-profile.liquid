@@ -1,7 +1,9 @@
 {%- comment -%}
   Dedicated Flavor Profile page. One template, driven entirely by the
   Cookie Flavor metaobject — no content is duplicated here that already
-  lives on the metaobject.
+  lives on the metaobject. Informational only: no price, no quantity,
+  no add-to-cart. Individual cookies aren't sold on their own — every
+  CTA on this page routes back to the homepage Box Builder.
 
   ROUTING (current): Shopify's native metaobject web page routing
   (/pages/{urlHandle}/{entry-handle}, via templates/metaobject/
@@ -25,13 +27,17 @@
   the unused side of that fallback is always safe. The old metaobject
   template is kept (not deleted) for rollback; nothing here assumes
   it's live.
+
+  Hero image: detail_image first, falling back to image, so a flavor
+  with a dedicated hero shot uses it and everything else still works
+  off the one image every flavor has.
 {%- endcomment -%}
 
 {%- liquid
   assign flavor = page.metafields.custom.flavor.value | default: metaobject
-  assign flavor_image = flavor.image.value
+  assign flavor_image = flavor.detail_image.value | default: flavor.image.value
   assign flavor_image_url = flavor_image | image_url: width: 1600
-  assign detail_image = flavor.detail_image.value
+  assign story_headline = flavor.ingredient_headline.value
 -%}
 
 {%- if flavor == blank -%}
@@ -44,7 +50,7 @@
 {%- else -%}
 <section class="flavor-profile">
   <div class="flavor-profile__hero container">
-    <div class="flavor-profile__media shape-rounded">
+    <div class="flavor-profile__media">
       {%- if flavor_image_url != blank -%}
         <img
           class="flavor-profile__image"
@@ -55,7 +61,7 @@
             {{ flavor_image | image_url: width: 1600 }} 1600w,
             {{ flavor_image | image_url: width: 2000 }} 2000w
           "
-          sizes="(min-width: 990px) 46vw, 100vw"
+          sizes="(min-width: 990px) 50vw, 100vw"
           width="{{ flavor_image.width }}"
           height="{{ flavor_image.height }}"
           alt="{{ flavor_image.alt | default: flavor.name.value | escape }}"
@@ -70,24 +76,27 @@
     </div>
 
     <div class="flavor-profile__content">
-      <div class="flavor-profile__badges">
-        {%- if flavor.available_this_week.value -%}
-          {%- render 'badge', text: 'sections.flavor_profile.this_week_only' | t, style: 'accent' -%}
-        {%- elsif flavor.classic.value -%}
-          {%- render 'badge', text: 'sections.flavor_profile.always_available' | t, style: 'accent' -%}
-        {%- endif -%}
-        {%- if flavor.dietary_vegan.value -%}
-          {%- render 'badge', text: 'sections.flavor_profile.vegan' | t, style: 'neutral' -%}
-        {%- endif -%}
-        {%- if flavor.dietary_vegetarian.value -%}
-          {%- render 'badge', text: 'sections.flavor_profile.vegetarian' | t, style: 'neutral' -%}
-        {%- endif -%}
-      </div>
+      {%- if flavor.available_this_week.value -%}
+        <p class="flavor-profile__eyebrow label">{{ 'sections.flavor_profile.this_week_only' | t }}</p>
+      {%- elsif flavor.classic.value -%}
+        <p class="flavor-profile__eyebrow label">{{ 'sections.flavor_profile.always_available' | t }}</p>
+      {%- endif -%}
 
       <h1 class="flavor-profile__title display-xl">{{ flavor.name.value }}</h1>
 
       {%- if flavor.short_description.value != blank -%}
         <p class="flavor-profile__description body-lg">{{ flavor.short_description.value }}</p>
+      {%- endif -%}
+
+      {%- if flavor.dietary_vegan.value or flavor.dietary_vegetarian.value -%}
+        <div class="flavor-profile__badges">
+          {%- if flavor.dietary_vegan.value -%}
+            {%- render 'badge', text: 'sections.flavor_profile.vegan' | t, style: 'neutral' -%}
+          {%- endif -%}
+          {%- if flavor.dietary_vegetarian.value -%}
+            {%- render 'badge', text: 'sections.flavor_profile.vegetarian' | t, style: 'neutral' -%}
+          {%- endif -%}
+        </div>
       {%- endif -%}
 
       <div class="flavor-profile__actions">
@@ -101,60 +110,54 @@
     </div>
   </div>
 
-  {%- if flavor.story.value != blank -%}
-    <div class="flavor-profile__story">
-      <p class="flavor-profile__story-text body-lg">{{ flavor.story.value }}</p>
+  {%- if flavor.story.value != blank or story_headline != blank -%}
+    <div class="flavor-profile__story container">
+      <p class="flavor-profile__story-eyebrow label">{{ 'sections.flavor_profile.story_eyebrow' | t }}</p>
+      {%- if story_headline != blank -%}
+        <h2 class="flavor-profile__story-heading display-l">{{ story_headline }}</h2>
+      {%- endif -%}
+      {%- if flavor.story.value != blank -%}
+        <p class="flavor-profile__story-text body-lg">{{ flavor.story.value }}</p>
+      {%- endif -%}
     </div>
   {%- endif -%}
 
-  {%- if flavor.ingredient_headline.value != blank or flavor.premium_ingredients.value.size > 0 -%}
-    <div class="flavor-profile__spotlight container">
-      {%- if flavor.ingredient_headline.value != blank -%}
-        <h2 class="flavor-profile__spotlight-heading display-l">{{ flavor.ingredient_headline.value }}</h2>
-      {%- endif -%}
-
-      {%- if flavor.premium_ingredients.value.size > 0 -%}
-        <div class="flavor-profile__spotlight-list">
-          {%- for ingredient in flavor.premium_ingredients.value -%}
-            <div class="flavor-profile__spotlight-item">
-              {%- assign ingredient_image = ingredient.image.value -%}
-              {%- if ingredient_image != blank -%}
-                <img
-                  class="flavor-profile__spotlight-image"
-                  src="{{ ingredient_image | image_url: width: 700 }}"
-                  width="{{ ingredient_image.width }}"
-                  height="{{ ingredient_image.height }}"
-                  alt="{{ ingredient_image.alt | default: ingredient.name.value | escape }}"
-                  loading="lazy"
-                >
-              {%- endif -%}
-              <h3 class="flavor-profile__spotlight-name h3">{{ ingredient.name.value }}</h3>
-              {%- if ingredient.story.value != blank -%}
-                <p class="flavor-profile__spotlight-story body">{{ ingredient.story.value }}</p>
-              {%- endif -%}
-            </div>
-          {%- endfor -%}
+  {%- if flavor.premium_ingredients.value.size > 0 -%}
+    {%- assign ingredient_count = flavor.premium_ingredients.value.size -%}
+    <div class="flavor-profile__spotlight{% if ingredient_count == 1 %} flavor-profile__spotlight--single{% endif %}">
+      {%- for ingredient in flavor.premium_ingredients.value -%}
+        {%- assign ing_align = 'left' -%}
+        {%- if forloop.index0 | modulo: 2 == 1 -%}
+          {%- assign ing_align = 'right' -%}
+        {%- endif -%}
+        {%- assign ingredient_image = ingredient.image.value -%}
+        <div class="flavor-profile__spotlight-item flavor-profile__spotlight-item--align-{{ ing_align }}">
+          <div class="flavor-profile__spotlight-media">
+            {%- if ingredient_image != blank -%}
+              <img
+                class="flavor-profile__spotlight-image"
+                src="{{ ingredient_image | image_url: width: 900 }}"
+                srcset="
+                  {{ ingredient_image | image_url: width: 600 }} 600w,
+                  {{ ingredient_image | image_url: width: 900 }} 900w,
+                  {{ ingredient_image | image_url: width: 1200 }} 1200w
+                "
+                sizes="(min-width: 990px) 50vw, 100vw"
+                width="{{ ingredient_image.width }}"
+                height="{{ ingredient_image.height }}"
+                alt="{{ ingredient_image.alt | default: ingredient.name.value | escape }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div class="flavor-profile__spotlight-content">
+            <h3 class="flavor-profile__spotlight-name h2">{{ ingredient.name.value }}</h3>
+            {%- if ingredient.story.value != blank -%}
+              <p class="flavor-profile__spotlight-story body-lg">{{ ingredient.story.value }}</p>
+            {%- endif -%}
+          </div>
         </div>
-      {%- endif -%}
-    </div>
-  {%- endif -%}
-
-  {%- if detail_image != blank -%}
-    <div class="flavor-profile__detail-media container">
-      <img
-        class="flavor-profile__detail-image"
-        src="{{ detail_image | image_url: width: 1600 }}"
-        srcset="
-          {{ detail_image | image_url: width: 800 }} 800w,
-          {{ detail_image | image_url: width: 1200 }} 1200w,
-          {{ detail_image | image_url: width: 1600 }} 1600w
-        "
-        sizes="100vw"
-        width="{{ detail_image.width }}"
-        height="{{ detail_image.height }}"
-        alt="{{ detail_image.alt | default: flavor.name.value | escape }}"
-        loading="lazy"
-      >
+      {%- endfor -%}
     </div>
   {%- endif -%}
 
@@ -173,7 +176,7 @@
   {%- endif -%}
 
   {%- if has_ingredients or has_allergens or has_nutrition -%}
-    <div class="flavor-profile__facts">
+    <div class="flavor-profile__facts container">
       {%- if has_ingredients -%}
         <details class="flavor-profile__accordion">
           <summary class="flavor-profile__accordion-summary">
@@ -211,6 +214,21 @@
       {%- endif -%}
     </div>
   {%- endif -%}
+
+  <div class="flavor-profile__conversion">
+    <div class="flavor-profile__conversion-inner container">
+      <h2 class="flavor-profile__conversion-heading display-l">{{ 'sections.flavor_profile.box_cta_heading' | t }}</h2>
+      <p class="flavor-profile__conversion-supporting body-lg">{{ 'sections.flavor_profile.box_cta_supporting' | t }}</p>
+      <div class="flavor-profile__conversion-actions">
+        <a href="{{ routes.root_url }}#box-selector" class="btn btn--primary">
+          {{ 'sections.flavor_profile.order_cta' | t }}
+        </a>
+        <a href="{{ routes.root_url }}#flavor-banners" class="btn btn--text">
+          {{ 'sections.flavor_profile.back_to_flavors' | t }}
+        </a>
+      </div>
+    </div>
+  </div>
 
   {%- comment -%}
     Previous/next cross-flavor navigation is intentionally disabled.

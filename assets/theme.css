@@ -956,11 +956,12 @@ input {
 
 /* ==========================================================================
    Flavor profile page
-   Premium, editorial, restrained — the food and the story do the work.
+   Premium, editorial, food-first — the photography and the story carry
+   the page. Informational only: no price, no quantity, no add-to-cart.
    ========================================================================== */
 
 .flavor-profile {
-  padding-block: var(--space-9);
+  padding-bottom: var(--space-9);
 }
 
 .flavor-profile--empty {
@@ -971,39 +972,49 @@ input {
   padding-block: var(--space-9);
 }
 
+/* --- Hero: cookie photography left, product info right ------------------ */
+
 .flavor-profile__hero {
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
+  padding-top: var(--space-7);
 }
 
 @media screen and (min-width: 990px) {
   .flavor-profile__hero {
     flex-direction: row;
-    align-items: center;
-    gap: var(--space-8);
+    align-items: stretch;
+    gap: var(--space-6);
+    padding-top: var(--space-9);
+    min-height: 560px;
   }
 }
 
 .flavor-profile__media {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   aspect-ratio: 4 / 3;
   overflow: hidden;
+  padding: var(--space-6);
   background-color: var(--color-surface, #FFFFFF);
 }
 
 @media screen and (min-width: 990px) {
   .flavor-profile__media {
-    flex: 0 0 50%;
+    flex: 0 0 calc(50% - var(--space-3));
+    min-width: 0;
+    aspect-ratio: auto;
+    padding: var(--space-8);
   }
 }
 
 .flavor-profile__image {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
 }
 
 .flavor-profile__media-placeholder {
@@ -1024,19 +1035,21 @@ input {
 .flavor-profile__content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
+  padding-inline: var(--space-4);
 }
 
 @media screen and (min-width: 990px) {
   .flavor-profile__content {
-    flex: 1;
+    flex: 0 0 calc(50% - var(--space-3));
+    min-width: 0;
+    justify-content: center;
+    padding: var(--space-8);
   }
 }
 
-.flavor-profile__badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
+.flavor-profile__eyebrow {
+  color: var(--color-muted, #8F887C);
 }
 
 .flavor-profile__title {
@@ -1051,17 +1064,26 @@ input {
   text-transform: none;
 }
 
+.flavor-profile__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
 .flavor-profile__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-5);
-  margin-top: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 .flavor-profile__back {
   color: var(--color-muted, #8F887C);
 }
+
+/* --- Story: editorial headline + long-form text -------------------------- */
 
 .flavor-profile__story {
   max-width: 720px;
@@ -1069,69 +1091,113 @@ input {
   padding-inline: var(--space-4);
 }
 
+.flavor-profile__story-eyebrow {
+  color: var(--color-muted, #8F887C);
+  margin: 0 0 var(--space-3);
+}
+
+.flavor-profile__story-heading {
+  margin: 0 0 var(--space-5);
+  text-wrap: balance;
+}
+
 .flavor-profile__story-text {
   margin: 0;
   text-wrap: balance;
 }
 
+/* --- Premium ingredient spotlight: large editorial feature(s) ------------ */
+
 .flavor-profile__spotlight {
   margin-top: var(--space-9);
-  padding-inline: var(--space-4);
-}
-
-.flavor-profile__spotlight-heading {
-  margin: 0 0 var(--space-7);
-  text-align: center;
-}
-
-.flavor-profile__spotlight-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-8);
-  max-width: var(--page-width, 1280px);
-  margin-inline: auto;
-}
-
-@media screen and (min-width: 750px) {
-  .flavor-profile__spotlight-list {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
+  gap: var(--space-6);
 }
 
 .flavor-profile__spotlight-item {
-  flex: 1 1 240px;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+@media screen and (min-width: 990px) {
+  .flavor-profile__spotlight-item {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 0;
+    min-height: 440px;
+  }
+
+  .flavor-profile__spotlight-media {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .flavor-profile__spotlight-content {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .flavor-profile__spotlight-item--align-right .flavor-profile__spotlight-media {
+    grid-column: 2;
+  }
+
+  .flavor-profile__spotlight-item--align-right .flavor-profile__spotlight-content {
+    grid-column: 1;
+  }
+
+  .flavor-profile__spotlight--single .flavor-profile__spotlight-item {
+    min-height: 520px;
+  }
+}
+
+.flavor-profile__spotlight-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--color-surface, #FFFFFF);
+}
+
+@media screen and (min-width: 990px) {
+  .flavor-profile__spotlight-media {
+    aspect-ratio: auto;
+  }
 }
 
 .flavor-profile__spotlight-image {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 100%;
   object-fit: cover;
-  border-radius: var(--radius-medium);
+  display: block;
+}
+
+.flavor-profile__spotlight-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4);
+}
+
+@media screen and (min-width: 990px) {
+  .flavor-profile__spotlight-content {
+    padding: var(--space-8);
+  }
 }
 
 .flavor-profile__spotlight-name {
   margin: 0;
+  text-wrap: balance;
 }
 
 .flavor-profile__spotlight-story {
   margin: 0;
+  max-width: 46ch;
   color: var(--color-muted, #8F887C);
   text-transform: none;
 }
 
-.flavor-profile__detail-media {
-  margin-top: var(--space-9);
-}
-
-.flavor-profile__detail-image {
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-medium);
-}
+/* --- Facts: ingredients / allergens / nutrition, kept restrained -------- */
 
 .flavor-profile__facts {
   max-width: 720px;
@@ -1185,60 +1251,47 @@ input {
   white-space: pre-line;
 }
 
-.flavor-profile__nav {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
+/* --- Conversion block: back into the Box Builder journey ---------------- */
+
+.flavor-profile__conversion {
   margin-top: var(--space-9);
-  padding-top: var(--space-7);
-  border-top: 2px solid var(--color-black, #17130F);
+  padding-block: var(--space-9);
+  background-color: var(--color-background, #F5EFE1);
 }
 
-@media screen and (min-width: 750px) {
-  .flavor-profile__nav {
-    flex-direction: row;
-    justify-content: space-between;
-  }
-
-  .flavor-profile__nav-link--next {
-    text-align: right;
-    align-items: flex-end;
-  }
-}
-
-.flavor-profile__nav-link {
+.flavor-profile__conversion-inner {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
-  text-decoration: none;
-  color: inherit;
-  padding: var(--space-3);
-  border-radius: var(--radius-small);
-  transition: background-color 0.15s ease;
+  align-items: flex-start;
+  gap: var(--space-4);
+  max-width: 640px;
 }
 
-.flavor-profile__nav-link:hover,
-.flavor-profile__nav-link:focus-visible {
-  background-color: var(--color-brand-primary, #F2A900);
+.flavor-profile__conversion-heading {
+  margin: 0;
+  text-wrap: balance;
 }
 
-.flavor-profile__nav-label {
+.flavor-profile__conversion-supporting {
+  margin: 0;
   color: var(--color-muted, #8F887C);
-  font-size: var(--text-label);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  text-transform: none;
 }
 
-.flavor-profile__nav-name {
-  font-family: var(--font-display, Helvetica, Arial, sans-serif);
-  font-weight: 700;
-  font-size: var(--text-h3);
-  text-transform: uppercase;
+.flavor-profile__conversion-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5);
+  margin-top: var(--space-2);
 }
 
 @media screen and (max-width: 749px) {
-  .flavor-profile {
+  .flavor-profile__hero {
+    padding-top: var(--space-6);
+  }
+
+  .flavor-profile__conversion {
     padding-block: var(--space-7);
   }
 }
